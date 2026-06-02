@@ -33,7 +33,7 @@ export default function StartScreen({ onStart, totalEarnedStars, level, defaultC
               >
                 <div className={`w-full aspect-square rounded-xl overflow-hidden ${isActive ? 'ring-2 ring-green-400 ring-offset-2 ring-offset-transparent' : ''}`}>
                   <img
-                    src={`/images/${c.image || c.id}_${imgExpr}.${c.ext || 'webp'}`}
+                    src={`images/${c.image || c.id}_${imgExpr}.${c.ext || 'webp'}`}
                     alt={c.name}
                     className="w-full h-full object-cover"
                     onError={(e) => { e.target.style.display = 'none' }}

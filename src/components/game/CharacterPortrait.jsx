@@ -9,7 +9,7 @@ export default function CharacterPortrait({ characterId, expression, dialogue })
 
   const imgName = char.image || characterId
   const imgExt = char.ext || 'webp'
-  const imgSrc = `/images/${imgName}_${imgKey}.${imgExt}`
+  const imgSrc = `images/${imgName}_${imgKey}.${imgExt}`
 
   return (
     <div className="flex flex-col items-center gap-0.5">

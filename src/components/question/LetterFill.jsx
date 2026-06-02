@@ -96,7 +96,7 @@ export default function LetterFill({ question, onAnswer, unit }) {
   return (
     <div className="page-enter">
       <audio ref={audioRef} preload="none">
-        <source src={`/audio/${question.wordId}.mp3`} type="audio/mpeg" />
+        <source src={`audio/${question.wordId}.mp3`} type="audio/mpeg" />
       </audio>
 
       {/* 题目提示 + 语音按钮 */}

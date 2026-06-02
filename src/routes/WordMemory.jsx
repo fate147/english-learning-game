@@ -86,7 +86,7 @@ export default function WordMemory() {
       for (let r = 0; r < rounds; r++) {
         if (!readTimerRef.current) break
         setReadingIndex(i)
-        const audio = new Audio(`/audio/${words[i].id}.mp3`)
+        const audio = new Audio(`audio/${words[i].id}.mp3`)
         try { await audio.play() } catch {}
         // 等 speed 毫秒再播下一个（最后一次不等待）
         if (r < rounds - 1 || i < words.length - 1) {
@@ -335,10 +335,10 @@ export default function WordMemory() {
                 {/* 顶部：图片 + 单词信息 + 播放 */}
                 <div className="flex items-center gap-3 mb-3">
                   <img
-                    src={`/images/words/${word.id}.webp`}
+                    src={`images/words/${word.id}.webp`}
                     alt={word.word}
                     className="w-[72px] h-[72px] rounded-xl object-cover bg-[#f5f7ff] flex-shrink-0"
-                    onError={(e) => { e.target.src = '/images/words/apple.webp' }}
+                    onError={(e) => { e.target.src = 'images/words/apple.webp' }}
                   />
                   <div className="flex-1 min-w-0">
                     <div className="text-lg font-bold text-gray-800">{word.word}</div>

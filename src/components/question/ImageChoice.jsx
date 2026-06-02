@@ -46,7 +46,7 @@ export default function ImageChoice({ question, onAnswer, unit, disabled }) {
     <div className="page-enter">
       {/* 隐藏 audio 元素 */}
       <audio ref={audioRef} preload="none">
-        <source src={`/audio/${question.wordId}.mp3`} type="audio/mpeg" />
+        <source src={`audio/${question.wordId}.mp3`} type="audio/mpeg" />
       </audio>
 
       {/* 题目提示 + 播放按钮 */}
@@ -94,7 +94,7 @@ export default function ImageChoice({ question, onAnswer, unit, disabled }) {
             >
               <div className="aspect-square w-full overflow-hidden bg-gray-100 flex items-center justify-center p-2">
                 <img
-                  src={`/images/words/${choice.id}.webp`}
+                  src={`images/words/${choice.id}.webp`}
                   alt={choice.word}
                   className="w-full h-full object-contain"
                   onError={(e) => {
