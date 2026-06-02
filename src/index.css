@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== 游戏端主题（天蓝 → 薄荷绿） ===== */
+:root {
+  --theme-color: #F6D365;
+  --theme-color-light: #FDE096;
+  --theme-color-dark: #E8B84A;
+  --theme-bg: #fff8f0;
+  --theme-gradient: linear-gradient(135deg, #F6D365 0%, #FDA085 100%);
+}
+
+/* ===== 家长端深色主题 ===== */
+.theme-dark {
+  --parent-bg: #0f172a;
+  --parent-card: #1e293b;
+  --parent-border: #334155;
+  --parent-accent: #4DD0E1;
+  --parent-text: #f1f5f9;
+  --parent-muted: #94a3b8;
+}
+
+/* 基础重置 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  font-family: 'Comic Sans MS', 'Chalkboard SE', 'Noto Sans SC', cursive, sans-serif;
+  min-height: 100vh;
+}
+
+/* 游戏页面渐变背景 */
+.game-page-bg {
+  background: var(--theme-gradient);
+}
+
+
+
+/* 大播放按钮 */
+.play-btn-large {
+  width: 112px;
+  height: 112px;
+  border-radius: 999px;
+  box-shadow: 0 10px 22px rgba(76,175,80,0.28);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  touch-action: manipulation;
+}
+.play-btn-large:active {
+  transform: scale(0.95);
+}
+
+
+
+/* 滚动条美化 */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* 深色滚动条 */
+.theme-dark ::-webkit-scrollbar-thumb {
+  background: #475569;
+}
+.theme-dark ::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+/* 字母填空 — 空白槽闪烁光标（底部下划线样式，避免和边框形成十字） */
+.empty-slot {
+  position: relative;
+}
+.empty-slot::after {
+  content: '';
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  width: 20px;
+  height: 3px;
+  background: #667eea;
+  border-radius: 2px;
+  transform: translateX(-50%);
+  animation: slot-blink 1s step-end infinite;
+}
+
+@keyframes slot-blink {
+  50% { opacity: 0; }
+}

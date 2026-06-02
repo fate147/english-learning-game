@@ -1,0 +1,224 @@
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth.js'
+import { useChild } from '../hooks/useChild.js'
+
+import LoadingSpinner from '../components/ui/LoadingSpinner.jsx'
+import PageShell from '../components/ui/PageShell.jsx'
+
+import UnitTree from '../components/parent/UnitTree.jsx'
+import RewardEditor from '../components/parent/RewardEditor.jsx'
+import RewardRecord from '../components/parent/RewardRecord.jsx'
+import OverviewCards from '../components/stats/OverviewCards.jsx'
+import AccuracyChart from '../components/stats/AccuracyChart.jsx'
+import ErrorRanking from '../components/stats/ErrorRanking.jsx'
+import UnitProgress from '../components/stats/UnitProgress.jsx'
+import { getLearningState, upsertLearningState, getWordProgress } from '../lib/game.js'
+import { getRewardTemplates, createRewardTemplate, getRewardRecords, addRewardRecord } from '../lib/rewards.js'
+import { getStars, spendStars } from '../lib/stars.js'
+import { getAggregatedStats } from '../lib/stats.js'
+import { DEFAULT_REWARD_TEMPLATES } from '../config/rewards.js'
+
+
+const AVATARS = ['🐱', '🐶', '🐰', '🐼', '🦊', '🐸', '🐵', '🦁']
+
+const SECTIONS = [
+  { key: 'unlock',  label: '单词解锁', icon: '🔓', color: 'border-blue-500/30', desc: '管理孩子可学习的单词' },
+  { key: 'rewards', label: '学习奖励', icon: '🎁', color: 'border-yellow-500/30', desc: '设置星星兑换奖励' },
+  { key: 'stats',   label: '学习统计', icon: '📊', color: 'border-green-500/30', desc: '查看学习数据和进度' },
+]
+
+export default function ParentDashboard() {
+  const { user } = useAuth()
+  const { activeChild, childrenList, fetchChildren } = useChild()
+  const navigate = useNavigate()
+  const [selectedChildId, setSelectedChildId] = useState(null)
+  const [tab, setTab] = useState('unlock') // 'unlock' | 'rewards' | 'stats'
+
+  useEffect(() => {
+    fetchChildren()
+  }, [fetchChildren])
+
+  // 默认选中第一个孩子
+  const childList = childrenList || []
+  const currentChildId = selectedChildId || (childList.length > 0 ? childList[0].child_id : null)
+
+  const handleBack = () => {
+    navigate('/select-child')
+  }
+
+
+
+  return (
+    <PageShell title="👨‍👩‍👧 家长管理" theme="parent">
+      <div className="flex gap-6 h-full items-stretch">
+        {/* ===== 左侧边栏 ===== */}
+        <div className="w-56 shrink-0 flex flex-col">
+          {/* 孩子列表 */}
+          <div className="flex-1 space-y-1">
+
+            {childList.length === 0 ? (
+              <p className="text-slate-500 text-sm">暂无孩子</p>
+            ) : (
+              childList.map((c) => {
+                const isActive = c.child_id === currentChildId
+                return (
+                  <button
+                    key={c.child_id}
+                    onClick={() => setSelectedChildId(c.child_id)}
+                    className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all text-left
+                      ${isActive
+                        ? 'bg-slate-700 text-slate-100 ring-1 ring-slate-500'
+                        : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'
+                      }`}
+                  >
+                    <span className="text-xl">{AVATARS[parseInt(c.avatar)] || '🐱'}</span>
+                    <div className="min-w-0 flex-1">
+                      <div className="truncate">{c.name}</div>
+                      <div className="text-xs text-slate-500">⭐ {c.total_earned_stars || 0}</div>
+                    </div>
+                  </button>
+                )
+              })
+            )}
+          </div>
+
+          {/* 底部：返回按钮 — 固定在底部不动 */}
+          <button
+            onClick={handleBack}
+            className="mt-auto w-full py-3 rounded-xl text-sm font-bold text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-all border border-slate-700"
+          >
+            ← 返回
+          </button>
+        </div>
+
+        {/* ===== 右侧内容区 ===== */}
+        <div className="flex-1 min-w-0 flex flex-col">
+          {/* 标签栏 */}
+          <div className="flex border-b border-slate-700 mb-6">
+            {SECTIONS.map((s) => (
+              <button
+                key={s.key}
+                onClick={() => setTab(s.key)}
+                className={`flex-1 py-3 text-sm font-bold border-b-2 transition-all duration-200
+                  ${tab === s.key
+                    ? 'border-[var(--theme-color)] text-[var(--theme-color)]'
+                    : 'border-transparent text-slate-400 hover:text-slate-200'}`}
+              >
+                {s.icon} {s.label}
+              </button>
+            ))}
+          </div>
+
+          {/* 标签内容 — 带切换动效 */}
+          <div key={tab} className="page-enter">
+            {tab === 'unlock' && <UnlockPanel key={currentChildId} childId={currentChildId} />}
+            {tab === 'rewards' && <RewardsPanel key={currentChildId} childId={currentChildId} />}
+            {tab === 'stats' && <StatsPanel key={currentChildId} childId={currentChildId} />}
+          </div>
+        </div>
+      </div>
+    </PageShell>
+  )
+}
+
+/* ===== 单词解锁面板 ===== */
+function UnlockPanel({ childId }) {
+  const { user } = useAuth()
+  const [unlocked, setUnlocked] = useState([])
+  const [progress, setProgress] = useState({})
+  useEffect(() => {
+    if (!user || !childId) return
+    Promise.all([getLearningState(user.id, childId), getWordProgress(user.id, childId)]).then(([s, wp]) => {
+      if (s.data?.unlocked_words) setUnlocked(s.data.unlocked_words)
+      const map = {}
+      if (wp.data) wp.data.forEach((w) => { map[w.word_id] = w })
+      setProgress(map)
+    })
+  }, [user, childId])
+  const toggle = async (wordId) => {
+    const next = unlocked.includes(wordId) ? unlocked.filter((id) => id !== wordId) : [...unlocked, wordId]
+    setUnlocked(next)
+    await upsertLearningState(user.id, childId, { unlocked_words: next })
+  }
+  const toggleAll = async (wordIds, allUnlocked) => {
+    const next = allUnlocked ? unlocked.filter((id) => !wordIds.includes(id)) : [...new Set([...unlocked, ...wordIds])]
+    setUnlocked(next)
+    await upsertLearningState(user.id, childId, { unlocked_words: next })
+  }
+  if (!childId) return <p className="text-slate-400 text-center py-8">请先在左侧选择一个孩子</p>
+  return (
+    <div>
+      <UnitTree unlockedWords={unlocked} wordProgress={progress} onToggleWord={toggle} onToggleAll={toggleAll} />
+    </div>
+  )
+}
+
+/* ===== 奖励面板 ===== */
+function RewardsPanel({ childId }) {
+  const { user } = useAuth()
+  const [templates, setTemplates] = useState([])
+  const [records, setRecords] = useState([])
+  const [stars, setStars] = useState(0)
+  useEffect(() => {
+    if (!user || !childId) return
+    Promise.all([getRewardTemplates(user.id, childId), getRewardRecords(user.id, childId), getStars(user.id, childId)])
+      .then(async ([t, r, s]) => {
+        let tmpls = t.data || []
+        if (tmpls.length === 0) {
+          for (const d of DEFAULT_REWARD_TEMPLATES) {
+            const { data } = await createRewardTemplate(user.id, childId, d)
+            if (data) tmpls.push(data)
+          }
+        }
+        setTemplates(tmpls)
+        if (r.data) setRecords(r.data)
+        if (s.data) setStars(s.data.available_stars)
+      })
+  }, [user, childId])
+  const redeem = async (tmpl) => {
+    const { error } = await spendStars(user.id, childId, tmpl.cost)
+    if (error) return alert(error.message)
+    setStars((s) => s - tmpl.cost)
+    setRecords((prev) => [{ id: Date.now().toString(), name: tmpl.name, cost: tmpl.cost, created_at: new Date().toISOString() }, ...prev])
+    addRewardRecord(user.id, childId, tmpl.id, tmpl.name, tmpl.cost)
+  }
+  if (!childId) return <p className="text-slate-400 text-center py-8">请先在左侧选择一个孩子</p>
+  return (
+    <div className="space-y-6">
+      <RewardRecord templates={templates} onRedeem={redeem} availableStars={stars} records={records} />
+      <div className="border-t border-slate-700 pt-6 mt-6">
+        <RewardEditor onAdd={(t) => createRewardTemplate(user.id, childId, t).then(({ data }) => data && setTemplates((p) => [...p, data]))} />
+      </div>
+    </div>
+  )
+}
+
+/* ===== 统计面板 ===== */
+function StatsPanel({ childId }) {
+  const { user } = useAuth()
+  const [stats, setStats] = useState(null)
+  const [loading, setLoading] = useState(false)
+  useEffect(() => {
+    if (!user || !childId) return
+    setLoading(true)
+    getAggregatedStats(user.id, childId).then(({ data }) => { setStats(data); setLoading(false) })
+  }, [user, childId])
+  if (!childId) return <p className="text-slate-400 text-center py-8">请先在左侧选择一个孩子</p>
+  return (
+    <div>
+      {loading ? <LoadingSpinner /> : stats ? (
+        <div className="space-y-5">
+          <OverviewCards stats={stats} />
+          <AccuracyChart dailyStats={stats.dailyStats} />
+          <ErrorRanking errorRanking={stats.errorRanking} />
+          <UnitProgress wordProgress={stats.wordProgress} />
+        </div>
+      ) : (
+        <p className="text-slate-400 text-center py-8">暂无统计数据</p>
+      )}
+    </div>
+  )
+}
+
+
