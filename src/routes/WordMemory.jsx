@@ -149,7 +149,7 @@ export default function WordMemory() {
     const unitKeys = Object.keys(unitWords).map(Number).sort()
 
     return (
-      <PageShell title="📝 选择要练习的单词" onBack={() => navigate('/select-child')}>
+      <PageShell title="📝 选择要练习的单词" onBack={() => navigate('/select-child')} className="bg-question-purple">
         <div className="max-w-2xl mx-auto page-enter">
           {/* 顶部统计 + 开始按钮 */}
           <div className="flex items-center justify-between mb-4">
@@ -254,7 +254,7 @@ export default function WordMemory() {
   // Step 3: 填空练习（顶部播报 + 卡片网格 — 旧版风格）
   if (step === 'playing') {
     return (
-      <PageShell onBack={() => { stopReadAloud(); setStep('select') }}>
+      <PageShell onBack={() => { stopReadAloud(); setStep('select') }} className="bg-question-purple">
         <div className="page-enter">
           {/* 进度 + 得分 */}
           <div className="flex items-center justify-between mb-3">
@@ -328,21 +328,21 @@ export default function WordMemory() {
             return (
               <div
                 key={word.id}
-                className={`bg-white rounded-2xl p-4 shadow-lg transition-all duration-300 ${
+                className={`bg-white/15 backdrop-blur-md rounded-2xl p-4 transition-all duration-300 ${
                   done ? 'border-2 border-green-300 opacity-80' : 'border-2 border-transparent'
-                } ${isReading ? 'ring-2 ring-green-400 ring-offset-2' : ''}`}
+                } ${isReading ? 'ring-2 ring-green-400' : ''}`}
               >
                 {/* 顶部：图片 + 单词信息 + 播放 */}
                 <div className="flex items-center gap-3 mb-3">
                   <img
                     src={`images/words/${word.id}.webp`}
                     alt={word.word}
-                    className="w-[72px] h-[72px] rounded-xl object-cover bg-[#f5f7ff] flex-shrink-0"
+                    className="w-[72px] h-[72px] rounded-xl object-cover bg-white/20 flex-shrink-0"
                     onError={(e) => { e.target.src = 'images/words/apple.webp' }}
                   />
                   <div className="flex-1 min-w-0">
-                    <div className="text-lg font-bold text-gray-800">{word.word}</div>
-                    <div className="text-sm text-gray-500">{word.meaning}</div>
+                    <div className="text-lg font-bold text-white/90">{word.word}</div>
+                    <div className="text-sm text-white/60">{word.meaning}</div>
                   </div>
 
                 </div>
@@ -356,7 +356,7 @@ export default function WordMemory() {
                 ) : (
                   <div className="text-center py-3">
                     <span className="inline-block px-4 py-1.5 rounded-full text-sm font-bold
-                      bg-green-100 text-green-700">
+                      bg-green-500/20 text-green-300">
                       ✅ 完成
                     </span>
                   </div>

@@ -43,44 +43,44 @@ export default function ImageChoice({ question, onAnswer, unit, disabled }) {
   }
 
   return (
-    <div className="page-enter">
+    <div className="page-enter flex flex-col items-center gap-4">
       {/* 隐藏 audio 元素 */}
       <audio ref={audioRef} preload="none">
         <source src={`audio/${question.wordId}.mp3`} type="audio/mpeg" />
       </audio>
 
-      {/* 题目提示 + 播放按钮 */}
-      <div className="text-center mb-4">
-        <p className="text-sm text-gray-500 mb-1">{STRINGS.imageChoice.hint}</p>
-        <p className="text-base font-medium text-gray-700 mb-3">
-          &ldquo;{question.meaning}&rdquo;
-        </p>
-        <button
-          onClick={playAudio}
-          disabled={disabled}
-          className={`play-btn-large bg-green-500 text-white text-lg font-bold
-                     hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed
-                     ${!audioPlayed ? 'animate-pulse' : ''}`}
-        >
-          <span className="flex flex-col items-center gap-0.5">
-            <span className="text-xl font-bold">听</span>
-            <span className="text-xs">{audioFailed ? '重试' : (audioPlayed ? '再听一次' : '点击播放')}</span>
-          </span>
-        </button>
+      {/* 播放按钮 */}
+      <button onClick={playAudio} disabled={disabled} className="play-btn-pulse" type="button">
+        🔊
+      </button>
+
+      {/* 题目卡片 */}
+      <div className="q-card-glass w-full max-w-4xl">
+        <div className="text-xs font-bold tracking-wider text-white/60 uppercase mb-2">
+          🎧 {STRINGS.imageChoice.hint}
+        </div>
+        <div className="text-lg font-extrabold text-white">
+          哪个是 <strong className="text-[#fff5d6]">"{question.meaning}"</strong> ？
+        </div>
+        {audioFailed && (
+          <div className="text-xs text-red-300 mt-2">播放失败，点击重试</div>
+        )}
       </div>
 
-      {/* 图片选择网格 */}
-      <div className="grid grid-cols-2 gap-4 max-w-md mx-auto">
+      {/* 图片选择网格 — 大图模式 */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-4xl">
         {choices.map((choice) => {
           const isSelected = selectedId === choice.id
           const isCorrect = choice.id === question.wordId
           const showResult = selectedId !== null
 
-          let borderColor = 'border-gray-200'
+          let extraStyle = ''
           if (showResult && isSelected) {
-            borderColor = isCorrect ? 'border-green-500 bg-green-50' : 'border-red-500 bg-red-50'
+            extraStyle = isCorrect
+              ? 'ring-4 ring-green-400 bg-green-500/20 scale-105'
+              : 'ring-4 ring-red-400 bg-red-500/20'
           } else if (showResult && isCorrect) {
-            borderColor = 'border-green-300 bg-green-50'
+            extraStyle = 'ring-4 ring-green-300 bg-green-500/10'
           }
 
           return (
@@ -88,11 +88,9 @@ export default function ImageChoice({ question, onAnswer, unit, disabled }) {
               key={choice.id}
               onClick={() => handleSelect(choice.id)}
               disabled={disabled || selectedId !== null}
-              className={`flex flex-col relative rounded-2xl border-2 ${borderColor} overflow-hidden
-                         transition-all duration-200 hover:border-green-400
-                         ${selectedId ? 'cursor-default' : 'cursor-pointer hover:shadow-md'}`}
+              className={`glass-option flex flex-col items-center gap-1.5 p-4 relative ${extraStyle} ${selectedId ? 'cursor-default' : ''}`}
             >
-              <div className="aspect-square w-full overflow-hidden bg-gray-100 flex items-center justify-center p-2">
+              <div className="w-full aspect-square rounded-2xl overflow-hidden bg-white/10 flex items-center justify-center p-3">
                 <img
                   src={`images/words/${choice.id}.webp`}
                   alt={choice.word}
@@ -103,19 +101,18 @@ export default function ImageChoice({ question, onAnswer, unit, disabled }) {
                   }}
                 />
               </div>
-              <div className="text-center py-1.5 px-1 bg-white border-t border-gray-100">
-                <div className="text-sm font-bold text-gray-700">{choice.word}</div>
-                <div className="text-xs text-gray-400">{choice.meaning}</div>
-              </div>
+              <div className="text-sm font-bold text-white/80">{choice.word}</div>
+              <div className="text-xs text-white/50">{choice.phonetic}</div>
+              <div className="text-xs text-white/70">{choice.meaning}</div>
               {showResult && isCorrect && (
                 <div className="absolute top-2 right-2 w-8 h-8 rounded-full bg-green-500 text-white
-                                flex items-center justify-center text-lg feedback-icon-appear">
+                                flex items-center justify-center text-lg font-bold">
                   ✓
                 </div>
               )}
               {showResult && isSelected && !isCorrect && (
                 <div className="absolute top-2 right-2 w-8 h-8 rounded-full bg-red-500 text-white
-                                flex items-center justify-center text-lg feedback-icon-appear">
+                                flex items-center justify-center text-lg font-bold">
                   ✗
                 </div>
               )}
