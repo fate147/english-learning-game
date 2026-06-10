@@ -70,6 +70,9 @@ export default function WordMemory() {
   }
 
   const stopReadAloud = useCallback(() => {
+    if (readTimerRef.current && typeof readTimerRef.current === 'number') {
+      clearTimeout(readTimerRef.current)
+    }
     readTimerRef.current = null
     setReadingAloud(false)
     setReadingIndex(0)
@@ -91,7 +94,13 @@ export default function WordMemory() {
         // 等 speed 毫秒再播下一个（最后一次不等待）
         if (r < rounds - 1 || i < words.length - 1) {
           await new Promise(resolve => {
-            readTimerRef.current = setTimeout(resolve, speed)
+            const timerId = setTimeout(resolve, speed)
+            if (!readTimerRef.current) {
+              clearTimeout(timerId)
+              resolve()
+            } else {
+              readTimerRef.current = timerId
+            }
           })
         }
         if (!readTimerRef.current) break
