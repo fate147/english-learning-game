@@ -6,6 +6,10 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        display: ['Nunito', 'Inter', 'sans-serif'],
+      },
       colors: {
         game: {
           cyan: '#4DD0E1',

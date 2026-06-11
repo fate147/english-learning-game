@@ -1,8 +1,5 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import Button from '../ui/Button.jsx'
-import Card from '../ui/Card.jsx'
-import PageShell from '../ui/PageShell.jsx'
 import { CHARACTERS } from '../../config/characters.js'
 import { STRINGS } from '../../config/strings.js'
 
@@ -11,16 +8,27 @@ export default function StartScreen({ onStart, totalEarnedStars, level, defaultC
   const navigate = useNavigate()
 
   return (
-    <PageShell title={STRINGS.game.startTitle} onBack={onBack}>
-      <div className="flex flex-col items-center gap-6 py-4">
-        {/* 等级 + 星星 */}
-        <div className="flex items-center gap-4 text-white/80 text-sm">
-          <span>{STRINGS.game.levelLabel.replace('{n}', level)}</span>
-          <span>{STRINGS.game.starLabel.replace('{n}', totalEarnedStars)}</span>
+    <div className="game-page-bg min-h-screen flex flex-col">
+      {/* 头部 */}
+      <header className="relative z-10">
+        <div className="max-w-lg mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <button onClick={onBack} className="back-btn">← 返回</button>
+            <h1 className="text-lg font-black text-white drop-shadow-sm">🐉 选一个小伙伴</h1>
+            <span className="stars-display">⭐ {totalEarnedStars}</span>
+          </div>
         </div>
+      </header>
 
-        {/* 四个角色 */}
-        <div className="grid grid-cols-2 gap-4 w-full max-w-xs">
+      {/* 装饰元素 */}
+      <div className="deco-cloud float-cloud" style={{width:'120px',height:'36px',top:'8%',left:'5%'}} />
+      <div className="deco-cloud float-cloud" style={{width:'80px',height:'26px',top:'15%',right:'10%',animationDelay:'1s'}} />
+      <div className="deco-star" style={{top:'10%',left:'50%'}}>✨</div>
+
+      {/* 主内容 */}
+      <main className="flex-1 flex flex-col items-center justify-center px-6 relative z-10">
+        {/* 角色网格 — 更大，方形展示 */}
+        <div className="grid grid-cols-2 gap-6 w-full max-w-md">
           {CHARACTERS.map((c) => {
             const isActive = selectedChar === c.id
             const imgExpr = isActive ? 'happy' : 'normal'
@@ -28,41 +36,44 @@ export default function StartScreen({ onStart, totalEarnedStars, level, defaultC
               <button
                 key={c.id}
                 onClick={() => setSelectedChar(c.id)}
-                className={`flex flex-col items-center gap-1 transition-all
-                  ${isActive ? 'scale-110' : 'opacity-60 hover:opacity-90'}`}
+                className={`glass-card flex flex-col items-center gap-2 p-5 ${isActive ? 'active' : ''}`}
               >
-                <div className={`w-full aspect-square rounded-xl overflow-hidden ${isActive ? 'ring-2 ring-green-400 ring-offset-2 ring-offset-transparent' : ''}`}>
+                <div className="w-full aspect-square rounded-xl overflow-hidden bg-white/10">
                   <img
                     src={`images/${c.image || c.id}_${imgExpr}.${c.ext || 'webp'}`}
                     alt={c.name}
                     className="w-full h-full object-cover"
-                    onError={(e) => { e.target.style.display = 'none' }}
+                    onError={(e) => { e.target.style.display = 'none'; e.target.parentElement.textContent = c.emoji || '🐉' }}
                   />
                 </div>
-                <span className="text-sm text-white font-medium">{c.name}</span>
+                <span className="text-base font-extrabold text-white/90">{c.name}</span>
               </button>
             )
           })}
         </div>
 
-        {/* 两个同级按钮 */}
-        <div className="flex gap-4 w-full max-w-xs">
-          <button
-            onClick={() => onStart(selectedChar)}
-            className="flex-1 py-3.5 rounded-xl bg-white text-[var(--theme-color-dark)] font-bold text-base
-                       shadow-md hover:brightness-110 active:scale-95 transition-all"
-          >
-            {STRINGS.game.startButton}
-          </button>
+        {/* 按钮行 — 更大 */}
+        <div className="flex gap-3 w-full max-w-md mt-8">
           <button
             onClick={() => navigate('/memory')}
-            className="flex-1 py-3.5 rounded-xl border-2 border-white/50 text-white font-bold text-base
-                       hover:bg-white/10 active:scale-95 transition-all"
+            className="btn-game-secondary"
           >
-            {STRINGS.wordMemory.title}
+            📖 单词本
+          </button>
+          <button
+            onClick={() => navigate('/dialogue?char=' + selectedChar)}
+            className="btn-game-secondary"
+          >
+            💬 对话
+          </button>
+          <button
+            onClick={() => onStart(selectedChar)}
+            className="btn-game-primary"
+          >
+            🎮 开始游戏
           </button>
         </div>
-      </div>
-    </PageShell>
+      </main>
+    </div>
   )
 }

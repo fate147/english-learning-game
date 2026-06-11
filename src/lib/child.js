@@ -64,6 +64,15 @@ export async function archiveChild(userId, childId) {
   return updateChild(userId, childId, { is_archived: true })
 }
 
+export async function deleteChild(userId, childId) {
+  const { error } = await supabase
+    .from('child_profiles')
+    .delete()
+    .eq('user_id', userId)
+    .eq('child_id', childId)
+  return { error }
+}
+
 export async function setParentPassword(userId, childId, password) {
   const hashed = await hashPassword(password)
   return updateChild(userId, childId, { parent_password: hashed })

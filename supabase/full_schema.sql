@@ -123,3 +123,11 @@ begin
     ', t, t, t, t, t, t);
   end loop;
 end $$;
+
+-- 额外加 delete 策略
+create policy if not exists "users_delete_own_child_profiles" on public.child_profiles
+  for delete using (user_id = auth.uid());
+create policy if not exists "users_delete_own_reward_templates" on public.reward_templates
+  for delete using (user_id = auth.uid());
+create policy if not exists "users_delete_own_reward_records" on public.reward_records
+  for delete using (user_id = auth.uid());

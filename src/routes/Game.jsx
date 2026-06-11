@@ -11,17 +11,13 @@ import { calcScore } from '../engines/scoring.js'
 import { enqueue, isOnline } from '../lib/offline.js'
 
 import StartScreen from '../components/game/StartScreen.jsx'
-import ProgressBar from '../components/game/ProgressBar.jsx'
-import StarCounter from '../components/game/StarCounter.jsx'
-import ComboIndicator from '../components/game/ComboIndicator.jsx'
 import ResultScreen from '../components/game/ResultScreen.jsx'
 import ImageChoice from '../components/question/ImageChoice.jsx'
 import LetterFill from '../components/question/LetterFill.jsx'
 import FeedbackOverlay from '../components/question/FeedbackOverlay.jsx'
-import PageShell from '../components/ui/PageShell.jsx'
-import Card from '../components/ui/Card.jsx'
+import ComboIndicator from '../components/game/ComboIndicator.jsx'
 import { getWordById } from '../lib/words.js'
-import { getRandomDialogue } from '../config/characters.js'
+import { getRandomDialogue, CHARACTERS } from '../config/characters.js'
 
 export default function Game() {
   const navigate = useNavigate()
@@ -213,44 +209,57 @@ export default function Game() {
   }
 
   // 游戏中
-  return (
-    <PageShell onBack={() => navigate('/select-child')}>
-      <Card className="max-w-lg mx-auto page-enter">
-        {/* 顶部栏 */}
-        <div className="flex items-center gap-3 mb-4">
-          <button
-            onClick={() => navigate('/select-child')}
-            className="text-gray-400 hover:text-gray-600 transition-colors"
-          >
-            ← 返回
-          </button>
-          <div className="flex-1">
-            <ProgressBar current={currentIndex + 1} total={GAME_QUESTIONS_PER_ROUND} />
-          </div>
-          <StarCounter score={score} combo={combo} />
-        </div>
+  const currentUnit = WORDS.find(w => w.id === currentQuestion?.wordId)?.unit || 1
 
+  return (
+    <div className="bg-question-purple min-h-screen flex flex-col">
+      {/* 顶部栏 */}
+      <header className="relative z-10">
+        <div className="max-w-lg mx-auto px-4 py-4">
+          <div className="flex items-center justify-between header-light">
+            <button onClick={() => navigate('/select-child')} className="back-btn">
+              ← 返回
+            </button>
+            <h1>🐉 {CHARACTERS.find(c => c.id === character)?.name || '小伙伴'}</h1>
+            <span className="stars-display">⭐ {score}</span>
+          </div>
+        </div>
+      </header>
+
+      {/* 进度点 */}
+      <div className="relative z-10 flex justify-center px-4 mb-2">
+        <div className="progress-dots">
+          {Array.from({ length: GAME_QUESTIONS_PER_ROUND }, (_, i) => {
+            let dotClass = 'progress-dot'
+            if (i === currentIndex) dotClass += ' active'
+            return <span key={i} className={dotClass} />
+          })}
+        </div>
+      </div>
+
+      {/* 主内容 */}
+      <main className="flex-1 flex flex-col justify-center px-4 pb-8 relative z-10">
         {/* 题目区域 */}
         {currentQuestion?.type === 'image_choice' ? (
           <ImageChoice
             question={currentQuestion}
             onAnswer={handleAnswer}
-            unit={WORDS.find(w => w.id === currentQuestion?.wordId)?.unit || 1}
+            unit={currentUnit}
             disabled={isProcessing}
           />
         ) : currentQuestion?.type === 'letter_fill' ? (
           <LetterFill
             question={currentQuestion}
             onAnswer={handleAnswer}
-            unit={WORDS.find(w => w.id === currentQuestion?.wordId)?.unit || 1}
+            unit={currentUnit}
           />
         ) : (
-          <div className="text-center text-gray-400 py-12">加载题目中...</div>
+          <div className="text-center text-white/60 py-12">加载题目中...</div>
         )}
+      </main>
 
-        {/* 连击提示 */}
-        <ComboIndicator combo={combo} />
-      </Card>
+      {/* 连击提示 */}
+      <ComboIndicator combo={combo} />
 
       {/* 反馈气泡 */}
       {showFeedback && (
@@ -264,6 +273,6 @@ export default function Game() {
           score={score}
         />
       )}
-    </PageShell>
+    </div>
   )
 }

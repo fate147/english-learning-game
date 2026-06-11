@@ -1,9 +1,18 @@
 import { useState, useMemo } from 'react'
 import { getWordsByUnit } from '../../lib/words.js'
 
+const UNIT_NAMES = {
+  1: { name: '感觉', emoji: '😊' },
+  2: { name: '身体', emoji: '🦵' },
+  3: { name: '衣服', emoji: '👕' },
+  4: { name: '天气', emoji: '☀️' },
+  5: { name: '日常', emoji: '📅' },
+  6: { name: '食物', emoji: '🍎' },
+}
+
 export default function UnitTree({ unlockedWords, wordProgress, onToggleWord, onToggleAll }) {
   const [expanded, setExpanded] = useState([1])
-  const [filter, setFilter] = useState('all') // 'all' | 'unlocked' | 'locked'
+  const [filter, setFilter] = useState('all')
 
   const units = [1, 2, 3, 4, 5, 6]
 
@@ -21,22 +30,51 @@ export default function UnitTree({ unlockedWords, wordProgress, onToggleWord, on
     { key: 'locked', label: '未解锁' },
   ]
 
+  // 顶部统计卡片
+  const unlockedCount = unlockedWords.length
+  const lockedCount = totalWords - unlockedCount
+  const pct = totalWords > 0 ? Math.round((unlockedCount / totalWords) * 100) : 0
+
   return (
     <div>
-      {/* 顶部工具栏：统计 + 筛选 */}
-      <div className="flex items-center justify-between mb-4">
-        <span className="text-sm text-slate-300">
-          已解锁 <span className="font-bold text-[var(--theme-color)]">{unlockedWords.length}</span> / {totalWords} 个单词
+      {/* 概览统计 */}
+      <div className="grid grid-cols-4 gap-2.5 mb-4">
+        <div className="bg-slate-800/40 border border-slate-700/30 rounded-xl px-4 py-3.5 text-center border-t-2 border-t-cyan-400">
+          <div className="text-xl mb-1">📖</div>
+          <div className="text-xl font-extrabold text-slate-100">{totalWords}</div>
+          <div className="text-[11px] text-slate-500 mt-0.5">总单词</div>
+        </div>
+        <div className="bg-slate-800/40 border border-slate-700/30 rounded-xl px-4 py-3.5 text-center border-t-2 border-t-green-400">
+          <div className="text-xl mb-1">🔓</div>
+          <div className="text-xl font-extrabold text-slate-100">{unlockedCount}</div>
+          <div className="text-[11px] text-slate-500 mt-0.5">已解锁</div>
+        </div>
+        <div className="bg-slate-800/40 border border-slate-700/30 rounded-xl px-4 py-3.5 text-center border-t-2 border-t-yellow-400">
+          <div className="text-xl mb-1">🔒</div>
+          <div className="text-xl font-extrabold text-slate-100">{lockedCount}</div>
+          <div className="text-[11px] text-slate-500 mt-0.5">未解锁</div>
+        </div>
+        <div className="bg-slate-800/40 border border-slate-700/30 rounded-xl px-4 py-3.5 text-center border-t-2 border-t-purple-400">
+          <div className="text-xl mb-1">📊</div>
+          <div className="text-xl font-extrabold text-slate-100">{pct}%</div>
+          <div className="text-[11px] text-slate-500 mt-0.5">完成率</div>
+        </div>
+      </div>
+
+      {/* 筛选按钮 */}
+      <div className="flex items-center justify-between mb-3">
+        <span className="text-sm text-slate-400">
+          已解锁 <span className="font-bold text-cyan-400">{unlockedCount}</span> / {totalWords}
         </span>
-        <div className="flex gap-1.5">
+        <div className="flex gap-1">
           {filters.map((f) => (
             <button
               key={f.key}
               onClick={() => setFilter(f.key)}
-              className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all
+              className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all
                 ${filter === f.key
-                  ? 'bg-[var(--theme-color)] text-white'
-                  : 'bg-slate-700 text-slate-400 hover:bg-slate-600'}`}
+                  ? 'bg-cyan-500/20 text-cyan-400'
+                  : 'bg-slate-700/50 text-slate-500 hover:text-slate-300'}`}
             >
               {f.label}
             </button>
@@ -44,14 +82,13 @@ export default function UnitTree({ unlockedWords, wordProgress, onToggleWord, on
         </div>
       </div>
 
-      {/* 单元列表 */}
-      <div className="space-y-3">
+      {/* 单元列表 — 卡片风格 */}
+      <div className="flex flex-col gap-3">
         {units.map((unit) => {
           const words = getWordsByUnit(unit)
-          const unlockedCount = words.filter((w) => unlockedWords.includes(w.id)).length
+          const unlockedInUnit = words.filter((w) => unlockedWords.includes(w.id)).length
           const isOpen = expanded.includes(unit)
 
-          // 筛选过滤
           const filteredWords = words.filter((w) => {
             const isUnlocked = unlockedWords.includes(w.id)
             if (filter === 'unlocked') return isUnlocked
@@ -59,79 +96,48 @@ export default function UnitTree({ unlockedWords, wordProgress, onToggleWord, on
             return true
           })
 
-          // 如果筛选后没有单词，跳过这个单元
           if (filteredWords.length === 0) return null
 
           return (
-            <div key={unit} className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
+            <div key={unit} className="border border-slate-700/30 rounded-xl overflow-hidden">
               {/* 单元标题 */}
               <div
                 onClick={() => toggleUnit(unit)}
-                className="w-full flex items-center justify-between px-4 py-3 bg-slate-700/50 hover:bg-slate-700 transition-colors cursor-pointer select-none"
+                className="flex items-center justify-between px-4 py-3 bg-slate-900/30 hover:bg-slate-800/30 transition-colors cursor-pointer select-none"
               >
-                <div className="text-left">
-                  <h3 className="font-bold text-slate-100">Unit {unit}</h3>
-                  <p className="text-xs text-slate-400">
-                    {unlockedCount}/{words.length}
-                  </p>
+                <div className="flex items-center gap-3">
+                  <span className={`text-slate-500 text-xs transition-transform ${isOpen ? '' : '-rotate-90'}`}>▼</span>
+                  <div>
+                    <h3 className="font-semibold text-sm text-slate-200">Unit {unit} · {UNIT_NAMES[unit]?.name || ''} {UNIT_NAMES[unit]?.emoji || ''}</h3>
+                    <p className="text-[11px] text-slate-500">{unlockedInUnit}/{words.length}</p>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={(e) => { e.stopPropagation(); onToggleAll?.(words.map(w => w.id), unlockedCount === words.length); }}
-                    className="px-3 py-1 rounded-full text-xs font-bold bg-slate-700 text-slate-300 hover:bg-slate-600 transition-all"
-                  >
-                    {unlockedCount === words.length ? '取消全选' : '全选'}
-                  </button>
-
-                </div>
+                <button
+                  onClick={(e) => { e.stopPropagation(); onToggleAll?.(words.map(w => w.id), unlockedInUnit === words.length); }}
+                  className="px-3 py-1 rounded-full text-[11px] font-semibold text-cyan-400 hover:text-cyan-300 transition-all"
+                >
+                  {unlockedInUnit === words.length ? '全部锁定' : '全部解锁'}
+                </button>
               </div>
 
               {/* 单词网格 */}
               {isOpen && (
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 p-3">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1.5 p-3">
                   {filteredWords.map((w) => {
                     const isUnlocked = unlockedWords.includes(w.id)
-                    const progress = wordProgress[w.id]
-                    const stage = progress?.level || 0
-
-                    let stageLabel = ''
-                    if (isUnlocked) {
-                      if (stage === 0) stageLabel = '新'
-                      else if (stage === 1) stageLabel = '认'
-                      else if (stage === 2) stageLabel = '记'
-                      else stageLabel = '复习'
-                    }
-
                     return (
-                      <label
+                      <div
                         key={w.id}
                         onClick={() => onToggleWord?.(w.id)}
-                        className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl border-2 cursor-pointer transition-all select-none
+                        className={`flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer transition-all select-none text-sm font-medium
                           ${isUnlocked
-                            ? 'border-green-500/60 bg-green-500/10 hover:bg-green-500/15'
-                            : 'border-slate-600 bg-slate-700/50 hover:border-slate-500'
+                            ? 'bg-cyan-400/10 text-slate-200 hover:bg-cyan-400/15'
+                            : 'bg-slate-900/20 text-slate-600 hover:bg-slate-800/30'
                           }`}
                       >
-                        {/* 复选框指示器 */}
-                        <div className={`w-5 h-5 rounded-md flex items-center justify-center text-xs font-bold shrink-0 transition-all
-                          ${isUnlocked
-                            ? 'bg-green-500 text-white'
-                            : 'border-2 border-slate-500 bg-transparent'
-                          }`}
-                        >
-                          {isUnlocked ? '✓' : ''}
-                        </div>
-                        {/* 单词信息 */}
-                        <div className="min-w-0">
-                          <div className={`text-sm font-bold truncate ${isUnlocked ? 'text-slate-100' : 'text-slate-400'}`}>
-                            {w.word}
-                          </div>
-                          <div className={`text-xs truncate ${isUnlocked ? 'text-slate-400' : 'text-slate-500'}`}>
-                            {w.meaning}
-                            {stageLabel && <span className="ml-1.5 text-[var(--theme-color)] font-medium">{stageLabel}</span>}
-                          </div>
-                        </div>
-                      </label>
+                        <span className="text-xs">{isUnlocked ? '🔓' : '🔒'}</span>
+                        <span>{w.word}</span>
+                      </div>
                     )
                   })}
                 </div>

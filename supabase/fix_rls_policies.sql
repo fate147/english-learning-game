@@ -11,6 +11,9 @@ create policy "users_insert_own_child_profiles" on public.child_profiles
   for insert with check (user_id = auth.uid());
 create policy "users_update_own_child_profiles" on public.child_profiles
   for update using (user_id = auth.uid());
+drop policy if exists "users_delete_own_child_profiles" on public.child_profiles;
+create policy "users_delete_own_child_profiles" on public.child_profiles
+  for delete using (user_id = auth.uid());
 
 -- ===== learning_app_state =====
 drop policy if exists "users_select_own_learning_app_state" on public.learning_app_state;
@@ -59,6 +62,9 @@ create policy "users_insert_own_reward_templates" on public.reward_templates
   for insert with check (user_id = auth.uid());
 create policy "users_update_own_reward_templates" on public.reward_templates
   for update using (user_id = auth.uid());
+drop policy if exists "users_delete_own_reward_templates" on public.reward_templates;
+create policy "users_delete_own_reward_templates" on public.reward_templates
+  for delete using (user_id = auth.uid());
 
 -- ===== reward_records =====
 drop policy if exists "users_select_own_reward_records" on public.reward_records;
@@ -71,3 +77,6 @@ create policy "users_insert_own_reward_records" on public.reward_records
   for insert with check (user_id = auth.uid());
 create policy "users_update_own_reward_records" on public.reward_records
   for update using (user_id = auth.uid());
+drop policy if exists "users_delete_own_reward_records" on public.reward_records;
+create policy "users_delete_own_reward_records" on public.reward_records
+  for delete using (user_id = auth.uid());

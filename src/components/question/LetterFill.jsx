@@ -94,30 +94,32 @@ export default function LetterFill({ question, onAnswer, unit }) {
   const allDisabled = showResult
 
   return (
-    <div className="page-enter">
+    <div className="page-enter flex flex-col items-center gap-6">
       <audio ref={audioRef} preload="none">
         <source src={`audio/${question.wordId}.mp3`} type="audio/mpeg" />
       </audio>
 
       {/* 题目提示 + 语音按钮 */}
-      <div className="text-center mb-6">
-        <p className="text-sm text-gray-500 mb-2">{STRINGS.letterFill.hint}</p>
+      <div className="q-card-glass w-full max-w-sm">
+        <div className="text-xs font-bold tracking-wider text-white/60 uppercase mb-2">
+          ✏️ {STRINGS.letterFill.hint}
+        </div>
         <div className="flex items-center justify-center gap-3">
-          <p className="text-lg font-medium text-gray-700">&ldquo;{question.meaning}&rdquo;</p>
+          <span className="text-lg font-extrabold text-white">&ldquo;{question.meaning}&rdquo;</span>
           <button
             onClick={playAudio}
-            className="w-10 h-10 rounded-full bg-green-500 text-white text-sm font-bold
-                       hover:brightness-110 transition-all flex items-center justify-center"
+            className="w-9 h-9 rounded-full bg-white/20 text-white text-sm font-bold
+                       hover:bg-white/30 transition-all flex items-center justify-center"
             title="听发音"
             disabled={allDisabled}
           >
-            {audioFailed ? '!' : '听'}
+            🔊
           </button>
         </div>
       </div>
 
-      {/* 填字区 — 旧版风格 */}
-      <div className="flex justify-center items-center gap-1.5 mb-8 flex-wrap max-w-sm mx-auto">
+      {/* 填字区 — 新紫色背景适配 */}
+      <div className="flex justify-center items-center gap-1.5 flex-wrap max-w-sm mx-auto">
         {letters.map((letter, i) => {
           const isBlank = blankIndices.includes(i)
           const blank = blanks.find((b) => b.index === i)
@@ -125,22 +127,22 @@ export default function LetterFill({ question, onAnswer, unit }) {
 
           let slotStyle = ''
           if (!isBlank) {
-            // 已知字母 — 浅底浅字
-            slotStyle = 'border-2 border-[#e1e6ff] bg-[#f5f7ff] text-[#555]'
+            // 已知字母 — 半透明白底
+            slotStyle = 'bg-white/20 border border-white/20 text-white/80'
           } else if (showResult) {
             // 结果展示
             const correct = blank?.filled?.toLowerCase() === blank?.correctLetter?.toLowerCase()
             if (correct) {
-              slotStyle = 'border-2 border-[#4CAF50] bg-[#f0fff0] text-[#2f8f34]'
+              slotStyle = 'border-2 border-green-400 bg-green-500/20 text-green-300'
             } else {
-              slotStyle = 'border-2 border-[#f44336] bg-[#fff0f0] text-[#d94235]'
+              slotStyle = 'border-2 border-red-400 bg-red-500/20 text-red-300'
             }
           } else if (isFilled) {
             // 已填未判断 — 绿色
-            slotStyle = 'border-2 border-[#4CAF50] bg-[#f0fff0] text-[#2f8f34] cursor-pointer hover:brightness-95'
+            slotStyle = 'border-2 border-green-400/60 bg-green-500/15 text-green-300 cursor-pointer hover:brightness-95'
           } else {
-            // 空格 — 旧版紫色边框 + 闪烁光标
-            slotStyle = 'border-2 border-[#667eea] empty-slot'
+            // 空格 — 白色虚线框
+            slotStyle = 'border-2 border-dashed border-white/40 empty-slot-purple'
           }
 
           return (
@@ -166,7 +168,7 @@ export default function LetterFill({ question, onAnswer, unit }) {
         })}
       </div>
 
-      {/* 候选字母区 — 旧版风格 */}
+      {/* 候选字母区 */}
       <div className="flex justify-center gap-2.5 flex-wrap max-w-xs mx-auto">
         {(() => {
           const buttons = []
@@ -181,8 +183,8 @@ export default function LetterFill({ question, onAnswer, unit }) {
                     w-[52px] h-[52px] rounded-xl font-bold text-2xl
                     transition-all duration-150 select-none
                     ${allDisabled
-                      ? 'border-2 border-[#eee] bg-[#f5f5f5] text-[#ccc] cursor-not-allowed'
-                      : 'border-2 border-[#ddd] bg-white text-[#333] cursor-pointer hover:border-[#667eea] hover:bg-[#f0f4ff] hover:-translate-y-0.5 active:scale-[0.92]'
+                      ? 'bg-white/10 text-white/30 cursor-not-allowed'
+                      : 'bg-white/25 text-white border-2 border-white/20 cursor-pointer hover:bg-white/35 hover:-translate-y-0.5 active:scale-[0.92]'
                     }
                   `}
                 >

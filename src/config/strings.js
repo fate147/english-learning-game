@@ -84,6 +84,18 @@ export const STRINGS = {
     practiceAgain: '再练一次',
   },
 
+  dialogue: {
+    title: '💬 对话练习',
+    selectCharacter: '选一个小伙伴',
+    startButton: '开始对话',
+    progress: '对话进度',
+    complete: '对话完成！',
+    correctCount: '答对',
+    playAgain: '再来一次',
+    goHome: '返回首页',
+    starLabel: '星星',
+  },
+
   parent: {
     title: '👨‍👩‍👧 家长管理',
     tabUnlock: '📖 单词解锁',

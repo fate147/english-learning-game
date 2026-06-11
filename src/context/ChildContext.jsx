@@ -1,6 +1,6 @@
 import { createContext, useState, useCallback, useContext, useEffect } from 'react'
 import { AuthContext } from './AuthContext.jsx'
-import { getChildren, createChild, updateChild } from '../lib/child.js'
+import { getChildren, createChild, updateChild, deleteChild } from '../lib/child.js'
 
 const CACHE_KEY = 'eng_game_children'
 
@@ -81,6 +81,21 @@ export function ChildProvider({ children }) {
     [user, activeChild]
   )
 
+  const removeChild = useCallback(
+    async (childId) => {
+      if (!user) return { error: new Error('未登录') }
+      const { error } = await deleteChild(user.id, childId)
+      if (!error) {
+        setChildrenList((prev) => prev.filter((c) => c.child_id !== childId))
+        if (activeChild?.child_id === childId) {
+          setActiveChild(null)
+        }
+      }
+      return { error }
+    },
+    [user, activeChild]
+  )
+
   return (
     <ChildContext.Provider
       value={{
@@ -91,6 +106,7 @@ export function ChildProvider({ children }) {
         addChild,
         selectChild,
         refreshActiveChild,
+        removeChild,
       }}
     >
       {children}

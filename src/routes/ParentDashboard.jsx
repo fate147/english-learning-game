@@ -7,14 +7,13 @@ import LoadingSpinner from '../components/ui/LoadingSpinner.jsx'
 import PageShell from '../components/ui/PageShell.jsx'
 
 import UnitTree from '../components/parent/UnitTree.jsx'
-import RewardEditor from '../components/parent/RewardEditor.jsx'
 import RewardRecord from '../components/parent/RewardRecord.jsx'
 import OverviewCards from '../components/stats/OverviewCards.jsx'
 import AccuracyChart from '../components/stats/AccuracyChart.jsx'
 import ErrorRanking from '../components/stats/ErrorRanking.jsx'
 import UnitProgress from '../components/stats/UnitProgress.jsx'
 import { getLearningState, upsertLearningState, getWordProgress } from '../lib/game.js'
-import { getRewardTemplates, createRewardTemplate, getRewardRecords, addRewardRecord } from '../lib/rewards.js'
+import { getRewardTemplates, createRewardTemplate, deleteRewardTemplate, getRewardRecords, addRewardRecord } from '../lib/rewards.js'
 import { getStars, spendStars } from '../lib/stars.js'
 import { getAggregatedStats } from '../lib/stats.js'
 import { DEFAULT_REWARD_TEMPLATES } from '../config/rewards.js'
@@ -22,18 +21,12 @@ import { DEFAULT_REWARD_TEMPLATES } from '../config/rewards.js'
 
 const AVATARS = ['🐱', '🐶', '🐰', '🐼', '🦊', '🐸', '🐵', '🦁']
 
-const SECTIONS = [
-  { key: 'unlock',  label: '单词解锁', icon: '🔓', color: 'border-blue-500/30', desc: '管理孩子可学习的单词' },
-  { key: 'rewards', label: '学习奖励', icon: '🎁', color: 'border-yellow-500/30', desc: '设置星星兑换奖励' },
-  { key: 'stats',   label: '学习统计', icon: '📊', color: 'border-green-500/30', desc: '查看学习数据和进度' },
-]
-
 export default function ParentDashboard() {
   const { user } = useAuth()
-  const { activeChild, childrenList, fetchChildren } = useChild()
+  const { activeChild, childrenList, fetchChildren, removeChild } = useChild()
   const navigate = useNavigate()
   const [selectedChildId, setSelectedChildId] = useState(null)
-  const [tab, setTab] = useState('unlock') // 'unlock' | 'rewards' | 'stats'
+  const [tab, setTab] = useState('stats') // 'stats' | 'unlock' | 'rewards'
 
   useEffect(() => {
     fetchChildren()
@@ -50,10 +43,20 @@ export default function ParentDashboard() {
 
 
   return (
-    <PageShell title="👨‍👩‍👧 家长管理" theme="parent">
-      <div className="flex gap-6 h-full items-stretch">
+    <div className="bg-[#0a0e1a] min-h-screen flex items-start justify-center p-3 sm:p-5">
+      <div className="w-full max-w-[1280px]">
+        {/* 顶部栏 */}
+        <div className="flex items-center justify-between px-5 py-3.5 bg-slate-900/85 backdrop-blur-md border-b border-slate-700/50 rounded-t-xl">
+          <button onClick={handleBack} className="text-slate-400 text-sm font-medium hover:text-slate-200 transition-colors">
+            ← 返回
+          </button>
+          <h1 className="text-base font-bold text-slate-100">👨‍👩‍👧 家长管理</h1>
+          <span className="w-[60px]" />
+        </div>
+
+        <div className="flex gap-5 p-5 bg-slate-900 border border-slate-700/30 border-t-0 rounded-b-xl min-h-[600px]">
         {/* ===== 左侧边栏 ===== */}
-        <div className="w-56 shrink-0 flex flex-col">
+        <div className="w-52 shrink-0 flex flex-col gap-1">
           {/* 孩子列表 */}
           <div className="flex-1 space-y-1">
 
@@ -63,51 +66,77 @@ export default function ParentDashboard() {
               childList.map((c) => {
                 const isActive = c.child_id === currentChildId
                 return (
-                  <button
+                  <div
                     key={c.child_id}
-                    onClick={() => setSelectedChildId(c.child_id)}
-                    className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all text-left
+                    className={`flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all border cursor-pointer
                       ${isActive
-                        ? 'bg-slate-700 text-slate-100 ring-1 ring-slate-500'
-                        : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'
+                        ? 'bg-gradient-to-r from-cyan-500/10 to-transparent border-cyan-500/30 text-slate-100'
+                        : 'border-transparent text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'
                       }`}
                   >
-                    <span className="text-xl">{AVATARS[parseInt(c.avatar)] || '🐱'}</span>
-                    <div className="min-w-0 flex-1">
-                      <div className="truncate">{c.name}</div>
-                      <div className="text-xs text-slate-500">⭐ {c.total_earned_stars || 0}</div>
+                    <div className="flex items-center gap-2.5 flex-1 min-w-0" onClick={() => setSelectedChildId(c.child_id)}>
+                      <span className="w-9 h-9 rounded-full flex items-center justify-center text-lg bg-gradient-to-br from-slate-700 to-slate-600 shrink-0">
+                        {AVATARS[parseInt(c.avatar)] || '🐱'}
+                      </span>
+                      <div className="min-w-0">
+                        <div className="truncate font-semibold">{c.name}</div>
+                        <div className="text-xs text-slate-500">⭐ {c.total_earned_stars || 0}</div>
+                      </div>
                     </div>
-                  </button>
+                    <button
+                      onClick={() => {
+                        if (window.confirm(`确定要删除孩子「${c.name}」吗？此操作不可恢复。`)) {
+                          removeChild(c.child_id)
+                        }
+                      }}
+                      className="w-6 h-6 rounded-full bg-slate-700/50 text-slate-500 hover:bg-red-500 hover:text-white flex items-center justify-center text-xs transition-all shrink-0"
+                      title="删除此孩子"
+                    >
+                      ✕
+                    </button>
+                  </div>
                 )
               })
             )}
           </div>
 
-          {/* 底部：返回按钮 — 固定在底部不动 */}
-          <button
-            onClick={handleBack}
-            className="mt-auto w-full py-3 rounded-xl text-sm font-bold text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-all border border-slate-700"
-          >
-            ← 返回
-          </button>
+
         </div>
 
         {/* ===== 右侧内容区 ===== */}
         <div className="flex-1 min-w-0 flex flex-col">
           {/* 标签栏 */}
-          <div className="flex border-b border-slate-700 mb-6">
-            {SECTIONS.map((s) => (
-              <button
-                key={s.key}
-                onClick={() => setTab(s.key)}
-                className={`flex-1 py-3 text-sm font-bold border-b-2 transition-all duration-200
-                  ${tab === s.key
-                    ? 'border-[var(--theme-color)] text-[var(--theme-color)]'
-                    : 'border-transparent text-slate-400 hover:text-slate-200'}`}
-              >
-                {s.icon} {s.label}
-              </button>
-            ))}
+          <div className="flex border-b border-slate-700 mb-5">
+            <button
+              key="stats-tab"
+              onClick={() => setTab('stats')}
+              className={`px-5 py-2.5 text-sm font-semibold border-b-2 transition-all duration-200
+                ${tab === 'stats'
+                  ? 'text-cyan-400 border-b-cyan-400'
+                  : 'border-transparent text-slate-500 hover:text-slate-300'}`}
+            >
+              📊 学习统计
+            </button>
+            <button
+              key="unlock-tab"
+              onClick={() => setTab('unlock')}
+              className={`px-5 py-2.5 text-sm font-semibold border-b-2 transition-all duration-200
+                ${tab === 'unlock'
+                  ? 'text-cyan-400 border-b-cyan-400'
+                  : 'border-transparent text-slate-500 hover:text-slate-300'}`}
+            >
+              🔓 单词解锁
+            </button>
+            <button
+              key="rewards-tab"
+              onClick={() => setTab('rewards')}
+              className={`px-5 py-2.5 text-sm font-semibold border-b-2 transition-all duration-200
+                ${tab === 'rewards'
+                  ? 'text-cyan-400 border-b-cyan-400'
+                  : 'border-transparent text-slate-500 hover:text-slate-300'}`}
+            >
+              🎁 学习奖励
+            </button>
           </div>
 
           {/* 标签内容 — 带切换动效 */}
@@ -117,8 +146,9 @@ export default function ParentDashboard() {
             {tab === 'stats' && <StatsPanel key={currentChildId} childId={currentChildId} />}
           </div>
         </div>
+        </div>
       </div>
-    </PageShell>
+    </div>
   )
 }
 
@@ -183,13 +213,22 @@ function RewardsPanel({ childId }) {
     setRecords((prev) => [{ id: Date.now().toString(), name: tmpl.name, cost: tmpl.cost, created_at: new Date().toISOString() }, ...prev])
     addRewardRecord(user.id, childId, tmpl.id, tmpl.name, tmpl.cost)
   }
+  const handleDeleteTemplate = async (templateId) => {
+    const { error } = await deleteRewardTemplate(user.id, childId, templateId)
+    if (error) return alert(error.message)
+    setTemplates((prev) => prev.filter((t) => t.id !== templateId))
+  }
   if (!childId) return <p className="text-slate-400 text-center py-8">请先在左侧选择一个孩子</p>
   return (
-    <div className="space-y-6">
-      <RewardRecord templates={templates} onRedeem={redeem} availableStars={stars} records={records} />
-      <div className="border-t border-slate-700 pt-6 mt-6">
-        <RewardEditor onAdd={(t) => createRewardTemplate(user.id, childId, t).then(({ data }) => data && setTemplates((p) => [...p, data]))} />
-      </div>
+    <div className="space-y-5">
+      <RewardRecord
+        templates={templates}
+        onRedeem={redeem}
+        availableStars={stars}
+        records={records}
+        onAddTemplate={(t) => createRewardTemplate(user.id, childId, t).then(({ data }) => data && setTemplates((p) => [...p, data]))}
+        onDeleteTemplate={handleDeleteTemplate}
+      />
     </div>
   )
 }
@@ -208,11 +247,13 @@ function StatsPanel({ childId }) {
   return (
     <div>
       {loading ? <LoadingSpinner /> : stats ? (
-        <div className="space-y-5">
+        <div className="space-y-4">
           <OverviewCards stats={stats} />
           <AccuracyChart dailyStats={stats.dailyStats} />
-          <ErrorRanking errorRanking={stats.errorRanking} />
-          <UnitProgress wordProgress={stats.wordProgress} />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <ErrorRanking errorRanking={stats.errorRanking} />
+            <UnitProgress wordProgress={stats.wordProgress} />
+          </div>
         </div>
       ) : (
         <p className="text-slate-400 text-center py-8">暂无统计数据</p>

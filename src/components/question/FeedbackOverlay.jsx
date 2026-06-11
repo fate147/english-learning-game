@@ -95,10 +95,10 @@ export default function FeedbackOverlay({ isCorrect, word, onComplete, character
     >
       <div
         className={`
-          px-6 py-4 rounded-2xl shadow-2xl flex flex-col items-center gap-1 min-w-[200px]
+          px-6 py-5 rounded-2xl shadow-2xl flex flex-col items-center gap-2 min-w-[200px] backdrop-blur-md
           ${isCorrect
-            ? 'bg-green-500 text-white feedback-correct-pulse scale-105'
-            : 'bg-red-500 text-white feedback-error-shake'
+            ? 'bg-green-500/90 text-white feedback-correct-pulse'
+            : 'bg-red-500/90 text-white feedback-error-shake'
           }
         `}
       >
@@ -128,7 +128,7 @@ export default function FeedbackOverlay({ isCorrect, word, onComplete, character
           </div>
         )}
         {word && !isCorrect && (
-          <div className="mt-1 bg-white rounded-lg px-4 py-2 text-center border-2 border-red-300">
+          <div className="mt-1 bg-white/90 backdrop-blur rounded-lg px-4 py-2 text-center border-2 border-red-300">
             <div className="text-xl font-black text-red-600">{word.word}</div>
             <div className="text-xs font-medium text-red-400">{word.meaning}</div>
           </div>
