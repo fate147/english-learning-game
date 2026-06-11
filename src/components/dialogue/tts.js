@@ -1,14 +1,12 @@
 /**
  * 朗读英文文本（Web Speech API）
  * 按平台优选语音：iOS → Samantha，Windows → Zira/David，Android → Google
- * 兼容华为等国产平板（需已安装英文语音数据）
+ * 兼容鸿蒙等无英文语音数据的设备：用系统默认引擎朗读，不卡流程
  */
 
 let voicesReady = false
-let voiceQueue = []
 
-// 等待语音列表加载完成（某些浏览器需要异步加载）
-function ensureVoicesLoaded() {
+function waitVoices() {
   return new Promise((resolve) => {
     if (voicesReady) {
       resolve()
@@ -20,17 +18,15 @@ function ensureVoicesLoaded() {
       resolve()
       return
     }
-    // 等待 onvoiceschanged 事件
     window.speechSynthesis.onvoiceschanged = () => {
       voicesReady = true
       window.speechSynthesis.onvoiceschanged = null
       resolve()
     }
-    // 兜底：1 秒后不管有没有都继续
     setTimeout(() => {
       voicesReady = true
       resolve()
-    }, 1000)
+    }, 1500)
   })
 }
 
@@ -45,9 +41,9 @@ function pickVoice(voices) {
 }
 
 export async function speakText(text) {
-  if (!window.speechSynthesis) return
+  if (!window.speechSynthesis) return false
 
-  await ensureVoicesLoaded()
+  await waitVoices()
   window.speechSynthesis.cancel()
 
   return new Promise((resolve) => {
@@ -57,15 +53,17 @@ export async function speakText(text) {
     utterance.pitch = 1.0
     utterance.volume = 1.0
 
+    // 有英文语音就优选，没有就交给系统默认引擎
     const voices = window.speechSynthesis.getVoices()
     const voice = pickVoice(voices)
     if (voice) utterance.voice = voice
 
-    utterance.onend = () => resolve()
-    utterance.onerror = () => {
-      // 无声卡或语音数据缺失时静默跳过，不影响流程
-      resolve()
+    utterance.onend = () => resolve(true)
+    utterance.onerror = () => resolve(false)
+    try {
+      window.speechSynthesis.speak(utterance)
+    } catch {
+      resolve(false)
     }
-    window.speechSynthesis.speak(utterance)
   })
 }
