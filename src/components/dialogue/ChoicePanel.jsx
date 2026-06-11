@@ -1,29 +1,5 @@
 import { useState, useCallback, useRef } from 'react'
-
-/**
- * 朗读英文文本（Web Speech API）
- * 返回 Promise，朗读完成后 resolve
- */
-function speakText(text) {
-  return new Promise((resolve) => {
-    if (!window.speechSynthesis) {
-      resolve()
-      return
-    }
-    window.speechSynthesis.cancel()
-    const utterance = new SpeechSynthesisUtterance(text)
-    utterance.lang = 'en-US'
-    utterance.rate = 0.85
-    utterance.pitch = 1.0
-    utterance.volume = 1.0
-    const voices = window.speechSynthesis.getVoices()
-    const enVoice = voices.find((v) => v.lang.startsWith('en'))
-    if (enVoice) utterance.voice = enVoice
-    utterance.onend = () => resolve()
-    utterance.onerror = () => resolve()
-    window.speechSynthesis.speak(utterance)
-  })
-}
+import { speakText } from './tts.js'
 
 /**
  * 选项面板组件

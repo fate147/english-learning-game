@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { CHARACTERS } from '../../config/characters.js'
+import { speakText } from './tts.js'
 
 /**
  * NPC 对话气泡组件
@@ -43,27 +44,10 @@ export default function DialogueBubble({ characterId, text, cn, onTypingDone, au
   useEffect(() => {
     if (!isTyping && autoSpeak && !spokenRef.current && text) {
       spokenRef.current = true
-      speakText(text)
+      setIsSpeaking(true)
+      speakText(text).then(() => setIsSpeaking(false))
     }
   }, [isTyping, autoSpeak, text])
-
-  // 朗读函数
-  function speakText(txt) {
-    if (!window.speechSynthesis) return
-    window.speechSynthesis.cancel()
-    const utterance = new SpeechSynthesisUtterance(txt)
-    utterance.lang = 'en-US'
-    utterance.rate = 0.85
-    utterance.pitch = 1.0
-    utterance.volume = 1.0
-    const voices = window.speechSynthesis.getVoices()
-    const enVoice = voices.find((v) => v.lang.startsWith('en'))
-    if (enVoice) utterance.voice = enVoice
-    setIsSpeaking(true)
-    utterance.onend = () => setIsSpeaking(false)
-    utterance.onerror = () => setIsSpeaking(false)
-    window.speechSynthesis.speak(utterance)
-  }
 
   return (
     <div className="flex items-start gap-3 max-w-lg mx-auto">
