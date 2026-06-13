@@ -1,0 +1,87 @@
+{
+  "unit": 6,
+  "topic": "Happy Birthday!",
+  "topicCn": "生日快乐！",
+  "dialogues": [
+    {
+      "id": "dial_g3s1u6_01",
+      "npc": "Happy birthday! How old are you?",
+      "cn": "生日快乐！你几岁了？",
+      "choices": [
+        { "text": "I'm eight years old!", "cn": "我八岁了！", "correct": true },
+        { "text": "I like cakes!", "cn": "我喜欢蛋糕！", "correct": false },
+        { "text": "I'm fine, thank you.", "cn": "我很好，谢谢。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u6_02",
+      "npc": "This gift is for you! Open it!",
+      "cn": "这是给你的礼物！打开它！",
+      "choices": [
+        { "text": "Wow! A toy! Thank you!", "cn": "哇！一个玩具！谢谢你！", "correct": true },
+        { "text": "I have a pencil.", "cn": "我有一支铅笔。", "correct": false },
+        { "text": "I can jump.", "cn": "我会跳。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u6_03",
+      "npc": "Let's count the candles! One, two, three...",
+      "cn": "我们来数蜡烛！一、二、三……",
+      "choices": [
+        { "text": "Four, five, six, seven, eight!", "cn": "四、五、六、七、八！", "correct": true },
+        { "text": "I like bread.", "cn": "我喜欢面包。", "correct": false },
+        { "text": "It's a cat.", "cn": "是一只猫。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u6_04",
+      "npc": "Let's eat the birthday cake! It's so nice!",
+      "cn": "我们来吃生日蛋糕吧！太好看了！",
+      "choices": [
+        { "text": "Yummy! I love birthday cake!", "cn": "好吃！我爱生日蛋糕！", "correct": true },
+        { "text": "I have a ruler.", "cn": "我有一把尺子。", "correct": false },
+        { "text": "Close your book.", "cn": "合上你的书。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u6_05",
+      "npc": "Look at the balloons! One, two, three... How many?",
+      "cn": "看那些气球！一、二、三……有几个？",
+      "choices": [
+        { "text": "Six balloons!", "cn": "六个气球！", "correct": true },
+        { "text": "It's blue.", "cn": "是蓝色的。", "correct": false },
+        { "text": "I'm happy.", "cn": "我很开心。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u6_06",
+      "npc": "Let's play a game! Jump three times!",
+      "cn": "我们来玩游戏！跳三下！",
+      "choices": [
+        { "text": "One, two, three! I jumped!", "cn": "一、二、三！我跳了！", "correct": true },
+        { "text": "I like milk.", "cn": "我喜欢牛奶。", "correct": false },
+        { "text": "This is my hand.", "cn": "这是我的手。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u6_07",
+      "npc": "Here's a plate of apples. How many apples?",
+      "cn": "这里有一盘苹果。有几个苹果？",
+      "choices": [
+        { "text": "One, two, three, four, five! Five apples!", "cn": "一、二、三、四、五！五个苹果！", "correct": true },
+        { "text": "I like red.", "cn": "我喜欢红色。", "correct": false },
+        { "text": "I'm eight.", "cn": "我八岁。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u6_08",
+      "npc": "Let's sing! Happy birthday to you...",
+      "cn": "我们来唱歌！祝你生日快乐……",
+      "choices": [
+        { "text": "Happy birthday to you! Let's sing together!", "cn": "祝你生日快乐！我们一起唱！", "correct": true },
+        { "text": "I have a pen.", "cn": "我有一支钢笔。", "correct": false },
+        { "text": "Goodbye!", "cn": "再见！", "correct": false }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+[
+  {
+    "id": "m_g3s2u7_01",
+    "stage": "concrete",
+    "visual": "💰 10元 = 10.00元\n💰 5元 + 3元 + 2元 = 10.00元",
+    "question": "5元3角用小数怎么表示？",
+    "options": [
+      { "text": "5.3元", "correct": true },
+      { "text": "5.03元", "correct": false },
+      { "text": "53元", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u7_02",
+    "stage": "concrete",
+    "visual": "📏 一把尺子\n 0cm  1cm  2cm  3cm\n铅笔的另一端在2.5cm处",
+    "question": "这支铅笔长多少厘米？",
+    "options": [
+      { "text": "2.5厘米", "correct": true },
+      { "text": "2厘米5毫米", "correct": false },
+      { "text": "25厘米", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u7_03",
+    "stage": "pictorial",
+    "visual": "┌──┬──┬──┬──┬──┬──┬──┬──┬──┬──┐\n│0 │0.1│0.2│0.3│0.4│0.5│0.6│0.7│0.8│0.9│1│\n└──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┘\n一条线段平均分成10份",
+    "question": "0.5在图上对应哪两个整数之间？",
+    "options": [
+      { "text": "0和1之间", "correct": true },
+      { "text": "5和6之间", "correct": false },
+      { "text": "0和5之间", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u7_04",
+    "stage": "pictorial",
+    "visual": "┌──┬──┬──┬──┬──┐\n│1 │1.1│1.2│1.3│1.4│1.5│\n└──┴──┴──┴──┴──┴──┘\n数轴上的点",
+    "question": "1.3和1.5之间相差多少？",
+    "options": [
+      { "text": "1.5 - 1.3 = 0.2", "correct": true },
+      { "text": "1.5 + 1.3 = 2.8", "correct": false },
+      { "text": "1.5 ÷ 1.3 ≈ 1.15", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u7_05",
+    "stage": "abstract",
+    "visual": null,
+    "question": "小明买了一本故事书12.5元，一支笔3.8元。一共花了多少钱？",
+    "questionLabel": "小数加法要注意什么？",
+    "options": [
+      { "text": "小数点要对齐：12.5 + 3.8 = 16.3元", "correct": true },
+      { "text": "12.5 + 3.8 = 15.13元", "correct": false },
+      { "text": "12 + 3 = 15元", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u7_06",
+    "stage": "abstract",
+    "visual": null,
+    "question": "小红有20元，买文具盒用了15.6元，还剩多少钱？",
+    "questionLabel": "这道题用减法，要注意什么？",
+    "options": [
+      { "text": "20.0 - 15.6 = 4.4元", "correct": true },
+      { "text": "20 - 15.6 = 14.4元", "correct": false },
+      { "text": "20 - 15 = 5元", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u7_07",
+    "stage": "synthesis",
+    "visual": null,
+    "question": "妈妈买了一条毛巾6.8元，一块香皂9.6元。妈妈付了20元，应找回多少钱？",
+    "questionLabel": "下面哪个算法是正确的？",
+    "options": [
+      { "text": "6.8 + 9.6 = 16.4，20 - 16.4 = 3.6元", "correct": true },
+      { "text": "20 - 6.8 = 13.2，13.2 - 9.6 = 3.6元", "correct": false },
+      { "text": "20 - 6.8 - 9.6 = 4.6元", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u7_08",
+    "stage": "synthesis",
+    "visual": null,
+    "question": "小明身高1.3米，小刚身高1.5米。小明站在一个高0.3米的凳子上，能比小刚高吗？",
+    "questionLabel": "这道题需要用到小数的什么运算？",
+    "options": [
+      { "text": "1.3 + 0.3 = 1.6，1.6 > 1.5，能", "correct": true },
+      { "text": "1.3 + 0.3 = 1.6，1.6 < 1.5，不能", "correct": false },
+      { "text": "1.5 - 1.3 = 0.2，不能", "correct": false }
+    ]
+  }
+]

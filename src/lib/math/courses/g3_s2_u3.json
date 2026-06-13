@@ -1,0 +1,90 @@
+[
+  {
+    "id": "m_g3s2u3_01",
+    "stage": "concrete",
+    "visual": "足球：正正正  篮球：正正  乒乓球：正  跳绳：正正",
+    "question": "上面的正字表示什么？每个正代表几？",
+    "options": [
+      { "text": "每个正代表1个人", "correct": false },
+      { "text": "每个正代表5个人", "correct": true },
+      { "text": "每个正代表10个人", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u3_02",
+    "stage": "concrete",
+    "visual": "某月20天天气：晴14天，雨3天，阴3天",
+    "question": "这20天中，晴天有几天？",
+    "options": [
+      { "text": "晴天有15天", "correct": false },
+      { "text": "晴天有14天", "correct": true },
+      { "text": "晴天有10天", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u3_03",
+    "stage": "pictorial",
+    "visual": "颜色 | 三(1)班 | 三(2)班\n红色 | 8 | 6\n蓝色 | 10 | 12\n绿色 | 6 | 4\n黄色 | 4 | 6",
+    "question": "两个班加起来喜欢什么颜色的人最多？",
+    "options": [
+      { "text": "红色", "correct": false },
+      { "text": "蓝色", "correct": true },
+      { "text": "绿色", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u3_04",
+    "stage": "pictorial",
+    "visual": "等级 | 三(1)班 | 三(2)班\n优秀 | 15 | 12\n良好 | 12 | 14\n及格 | 5 | 6\n不及格 | 2 | 1",
+    "question": "三(1)班一共有多少人？",
+    "options": [
+      { "text": "15+12+5+2 = 34人", "correct": true },
+      { "text": "15+12 = 27人", "correct": false },
+      { "text": "12+14+6+1 = 33人", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u3_05",
+    "stage": "abstract",
+    "question": "统计表显示：三(1)班男生20人，女生18人。三(2)班男生19人，女生17人。哪个班的总人数多？",
+    "questionLabel": "应该怎么比较？",
+    "options": [
+      { "text": "分别算出各班总人数再比较", "correct": true },
+      { "text": "只比较男生人数", "correct": false },
+      { "text": "只比较女生人数", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u3_06",
+    "stage": "abstract",
+    "question": "第一小组同学身高：小明138cm，小红135cm，小刚140cm，小丽132cm，小华137cm。平均身高是多少？",
+    "questionLabel": "求平均身高怎么算？",
+    "options": [
+      { "text": "选出最高的", "correct": false },
+      { "text": "138+135+140+132+137=682，682/5=136.4cm", "correct": true },
+      { "text": "138+135+140+132+137=682cm", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u3_07",
+    "stage": "synthesis",
+    "question": "下面哪组数据最适合用统计表来整理？",
+    "questionLabel": "选一个需要用统计表整理的场景",
+    "options": [
+      { "text": "全班同学最喜欢的水果", "correct": true },
+      { "text": "小明今天吃了几个苹果", "correct": false },
+      { "text": "一根铅笔的长度", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u3_08",
+    "stage": "synthesis",
+    "question": "上学方式统计：步行12人，骑车8人，坐车10人。每个正字代表5人，步行的人数应该用几个正字表示？",
+    "questionLabel": "这道题是求什么？",
+    "options": [
+      { "text": "12/5=2余2，用2个正再加2画", "correct": true },
+      { "text": "12x5=60画", "correct": false },
+      { "text": "12-5=7画", "correct": false }
+    ]
+  }
+]

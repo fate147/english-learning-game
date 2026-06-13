@@ -1,0 +1,94 @@
+[
+  {
+    "id": "m_g3s2u4_01",
+    "stage": "concrete",
+    "visual": "🍭 🍭 🍭 🍭 🍭 🍭 🍭 🍭 🍭 🍭\n每排10个棒棒糖，有3排",
+    "question": "一共有多少个棒棒糖？用乘法怎么算？",
+    "options": [
+      { "text": "10 × 3 = 30", "correct": true },
+      { "text": "10 + 3 = 13", "correct": false },
+      { "text": "10 ÷ 3 ≈ 3.3", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u4_02",
+    "stage": "concrete",
+    "visual": "📚每排12本书，有4排\n📚📚📚📚📚📚📚📚📚📚📚📚\n📚📚📚📚📚📚📚📚📚📚📚📚\n📚📚📚📚📚📚📚📚📚📚📚📚\n📚📚📚📚📚📚📚📚📚📚📚📚",
+    "question": "一共有多少本书？",
+    "options": [
+      { "text": "12 × 4 = 48本", "correct": true },
+      { "text": "12 + 4 = 16本", "correct": false },
+      { "text": "12 × 40 = 480本", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u4_03",
+    "stage": "pictorial",
+    "visual": "┌──┬──┬──┬──┐  ┌──┬──┬──┬──┐\n│10│10│10│10│  │10│10│10│10│\n├──┼──┼──┼──┤  ├──┼──┼──┼──┤\n│10│10│10│10│  │10│10│10│3 │\n└──┴──┴──┴──┘  └──┴──┴──┴──┘\n  14×3=?        23×4=?",
+    "question": "看图：23×4应该怎么拆分计算？",
+    "options": [
+      { "text": "20×4 + 3×4 = 80+12 = 92", "correct": true },
+      { "text": "23×4 = 82", "correct": false },
+      { "text": "23+23+23+23 = 92，但拆算法不对", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u4_04",
+    "stage": "pictorial",
+    "visual": "┌─────────────┐\n│   ?         │\n├──────┬──────┤\n│   ?  │   ?  │\n├──┬───┼──┬───┤\n│? │ ? │? │ ? │\n└──┴───┴──┴───┘\n15×13用格子图",
+    "question": "15 × 13 可以拆成哪四个数的和？",
+    "options": [
+      { "text": "10×10 + 10×5 + 3×10 + 3×5 = 100+50+30+15 = 195", "correct": true },
+      { "text": "15×10 + 15×3 = 150+45 = 195", "correct": false },
+      { "text": "15×13 = 185", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u4_05",
+    "stage": "abstract",
+    "visual": null,
+    "question": "电影院每排有24个座位，共有12排。电影院一共有多少个座位？",
+    "questionLabel": "这道题用什么方法？",
+    "options": [
+      { "text": "24 + 12 = 36", "correct": false },
+      { "text": "24 × 12 = 288", "correct": true },
+      { "text": "24 ÷ 12 = 2", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u4_06",
+    "stage": "abstract",
+    "visual": null,
+    "question": "一箱苹果重25千克，一辆卡车装了16箱。这辆卡车一共装了多少千克苹果？",
+    "questionLabel": "估算一下，结果大约是多少？",
+    "options": [
+      { "text": "25 × 16 = 400千克", "correct": true },
+      { "text": "25 + 16 = 41千克", "correct": false },
+      { "text": "25 × 10 = 250千克", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u4_07",
+    "stage": "synthesis",
+    "visual": null,
+    "question": "李老师带21名同学去划船，每条船限坐4人。至少需要租几条船？",
+    "questionLabel": "这道题需要注意什么？",
+    "options": [
+      { "text": "李老师也要算进去：21+1=22人，22÷4=5.5，需要6条船", "correct": true },
+      { "text": "21 ÷ 4 = 5.25，需要5条船", "correct": false },
+      { "text": "21 + 4 = 25，需要25条船", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u4_08",
+    "stage": "synthesis",
+    "visual": null,
+    "question": "学校组织三年级180人去春游，每辆车限坐42人。租4辆车够吗？",
+    "questionLabel": "要判断够不够，应该怎么做？",
+    "options": [
+      { "text": "42 × 4 = 168，168 < 180，不够", "correct": true },
+      { "text": "180 ÷ 4 = 45，45 > 42，不够", "correct": false },
+      { "text": "42 × 4 = 168，168 > 180，够了", "correct": false }
+    ]
+  }
+]

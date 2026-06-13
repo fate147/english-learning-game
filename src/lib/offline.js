@@ -1,5 +1,5 @@
 // localStorage 键名
-const CACHE_PREFIX = 'eng_game_'
+const CACHE_PREFIX = 'app_'
 const CACHE_KEY = CACHE_PREFIX + 'data'
 const QUEUE_KEY = CACHE_PREFIX + 'queue'
 const DIRTY_KEY = CACHE_PREFIX + 'dirty'

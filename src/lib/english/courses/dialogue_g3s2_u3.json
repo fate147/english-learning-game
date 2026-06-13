@@ -1,0 +1,87 @@
+{
+  "unit": 3,
+  "topic": "At the Zoo",
+  "topicCn": "在动物园",
+  "dialogues": [
+    {
+      "id": "dial_g3s2u3_01",
+      "npc": "Look at the elephant! It's so big!",
+      "cn": "看那头大象！它好大！",
+      "choices": [
+        { "text": "Wow! It has big ears and a long nose!", "cn": "哇！它有大耳朵和长鼻子！", "correct": true },
+        { "text": "I like bread.", "cn": "我喜欢面包。", "correct": false },
+        { "text": "This is my hand.", "cn": "这是我的手。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u3_02",
+      "npc": "Look at the giraffe! It's so tall!",
+      "cn": "看那只长颈鹿！它好高！",
+      "choices": [
+        { "text": "Yes! It's very tall! I'm short.", "cn": "是的！它非常高！我很矮。", "correct": true },
+        { "text": "I have a book.", "cn": "我有一本书。", "correct": false },
+        { "text": "I'm from China.", "cn": "我来自中国。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u3_03",
+      "npc": "Look at the monkey! It has a long tail.",
+      "cn": "看那只猴子！它有一条长尾巴。",
+      "choices": [
+        { "text": "And it can jump and climb!", "cn": "而且它会跳会爬！", "correct": true },
+        { "text": "I like milk.", "cn": "我喜欢牛奶。", "correct": false },
+        { "text": "I'm six.", "cn": "我六岁了。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u3_04",
+      "npc": "The bear is big and fat! Look at its body.",
+      "cn": "这头熊又大又胖！看它的身体。",
+      "choices": [
+        { "text": "Ha ha! It's so cute!", "cn": "哈哈！它好可爱！", "correct": true },
+        { "text": "I have a pen.", "cn": "我有一支钢笔。", "correct": false },
+        { "text": "Goodbye!", "cn": "再见！", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u3_05",
+      "npc": "Look at the bird! It's small but it can fly high.",
+      "cn": "看那只鸟！它很小但能飞得很高。",
+      "choices": [
+        { "text": "Amazing! I want to fly too!", "cn": "太神奇了！我也想飞！", "correct": true },
+        { "text": "I like apples.", "cn": "我喜欢苹果。", "correct": false },
+        { "text": "I can jump.", "cn": "我会跳。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u3_06",
+      "npc": "Let's feed the rabbits! They are so cute.",
+      "cn": "我们来喂兔子吧！它们好可爱。",
+      "choices": [
+        { "text": "Yes! The rabbits are white and soft!", "cn": "好的！兔子又白又软！", "correct": true },
+        { "text": "I'm tired.", "cn": "我累了。", "correct": false },
+        { "text": "I have a ruler.", "cn": "我有一把尺子。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u3_07",
+      "npc": "Look at the panda! It's black and white.",
+      "cn": "看熊猫！它是黑白相间的。",
+      "choices": [
+        { "text": "Pandas are so cute! I love pandas!", "cn": "熊猫太可爱了！我爱熊猫！", "correct": true },
+        { "text": "I like blue.", "cn": "我喜欢蓝色。", "correct": false },
+        { "text": "This is my ear.", "cn": "这是我的耳朵。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u3_08",
+      "npc": "The zoo is so fun! I want to come again!",
+      "cn": "动物园真好玩！我还想来！",
+      "choices": [
+        { "text": "Me too! Let's come again next time!", "cn": "我也是！下次我们再来！", "correct": true },
+        { "text": "I'm happy.", "cn": "我很开心。", "correct": false },
+        { "text": "I have a book.", "cn": "我有一本书。", "correct": false }
+      ]
+    }
+  ]
+}

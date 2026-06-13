@@ -1,0 +1,87 @@
+{
+  "unit": 2,
+  "topic": "My Family",
+  "topicCn": "我的家庭",
+  "dialogues": [
+    {
+      "id": "dial_g3s2u2_01",
+      "npc": "Who's that man? Is he your father?",
+      "cn": "那个男人是谁？他是你爸爸吗？",
+      "choices": [
+        { "text": "Yes, he is my father!", "cn": "是的，他是我爸爸！", "correct": true },
+        { "text": "I like apples.", "cn": "我喜欢苹果。", "correct": false },
+        { "text": "I'm eight.", "cn": "我八岁了。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u2_02",
+      "npc": "Who's that woman? She's beautiful!",
+      "cn": "那个女人是谁？她好漂亮！",
+      "choices": [
+        { "text": "She's my mother!", "cn": "她是我妈妈！", "correct": true },
+        { "text": "He's my father.", "cn": "他是我爸爸。", "correct": false },
+        { "text": "It's a cat.", "cn": "是一只猫。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u2_03",
+      "npc": "Look at my family photo! This is my brother.",
+      "cn": "看我的全家福！这是我弟弟。",
+      "choices": [
+        { "text": "Cool! He looks like you!", "cn": "酷！他长得像你！", "correct": true },
+        { "text": "I have a book.", "cn": "我有一本书。", "correct": false },
+        { "text": "I'm from China.", "cn": "我来自中国。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u2_04",
+      "npc": "My sister is a student. What about your sister?",
+      "cn": "我姐姐是学生。你姐姐呢？",
+      "choices": [
+        { "text": "My sister is a student too!", "cn": "我姐姐也是学生！", "correct": true },
+        { "text": "I like bread.", "cn": "我喜欢面包。", "correct": false },
+        { "text": "This is my nose.", "cn": "这是我的鼻子。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u2_05",
+      "npc": "I love my grandpa. He's so kind.",
+      "cn": "我爱我爷爷。他非常好。",
+      "choices": [
+        { "text": "Me too! My grandpa is kind!", "cn": "我也是！我爷爷也很好！", "correct": true },
+        { "text": "I have a ruler.", "cn": "我有一把尺子。", "correct": false },
+        { "text": "I like blue.", "cn": "我喜欢蓝色。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u2_06",
+      "npc": "Is this your grandmother?",
+      "cn": "这是你奶奶吗？",
+      "choices": [
+        { "text": "Yes, she is my grandma.", "cn": "是的，她是我奶奶。", "correct": true },
+        { "text": "No, I'm fine.", "cn": "不，我很好。", "correct": false },
+        { "text": "I'm six.", "cn": "我六岁了。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u2_07",
+      "npc": "Let's draw our family!",
+      "cn": "我们来画我们的家庭吧！",
+      "choices": [
+        { "text": "Great! I'll draw my mom and dad!", "cn": "太棒了！我要画我妈妈和爸爸！", "correct": true },
+        { "text": "I can jump.", "cn": "我会跳。", "correct": false },
+        { "text": "Goodbye!", "cn": "再见！", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u2_08",
+      "npc": "How many people are there in your family?",
+      "cn": "你家有几口人？",
+      "choices": [
+        { "text": "Four! My dad, mom, sister and me.", "cn": "四口！我爸爸、妈妈、妹妹和我。", "correct": true },
+        { "text": "I like milk.", "cn": "我喜欢牛奶。", "correct": false },
+        { "text": "I'm fine.", "cn": "我很好。", "correct": false }
+      ]
+    }
+  ]
+}

@@ -1,8 +1,7 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { WORDS } from '../lib/words.js'
 import { useStars } from '../hooks/useStars.js'
-import { addEarnedStars } from '../lib/stars.js'
 import { useAuth } from '../hooks/useAuth.js'
 import { useChild } from '../hooks/useChild.js'
 import LetterFill from '../components/question/LetterFill.jsx'
@@ -12,9 +11,12 @@ import Card from '../components/ui/Card.jsx'
 
 export default function WordMemory() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const subject = searchParams.get('subject') || 'english'
+  const grade = parseInt(searchParams.get('grade')) || 3
   const { user } = useAuth()
   const { activeChild } = useChild()
-  const { refreshStars } = useStars()
+  const { addStars, refreshStars } = useStars()
   const navigatedRef = useRef(false)
 
   const [step, setStep] = useState('select') // select | playing | done
@@ -134,7 +136,7 @@ export default function WordMemory() {
       const timer = setTimeout(() => {
         setStep('done')
         if (activeChild && user && finalScore > 0) {
-          addEarnedStars(user.id, activeChild.child_id, finalScore, finalScore)
+          addStars(finalScore, finalScore)
             .then(() => refreshStars())
         }
       }, 600)

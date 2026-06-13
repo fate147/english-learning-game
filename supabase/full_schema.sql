@@ -27,10 +27,12 @@ create table if not exists public.child_profiles (
 create table if not exists public.learning_app_state (
   user_id uuid not null references auth.users(id) on delete cascade,
   child_id text not null,
+  subject text not null default 'english',
+  grade integer not null default 3,
   unlocked_words text[] default '{}',
   today_counts jsonb default '{}',
   updated_at timestamptz default now(),
-  primary key (user_id, child_id)
+  primary key (user_id, child_id, subject, grade)
 );
 
 -- =====================================================
@@ -39,6 +41,8 @@ create table if not exists public.learning_app_state (
 create table if not exists public.word_progress (
   user_id uuid not null references auth.users(id) on delete cascade,
   child_id text not null,
+  subject text not null default 'english',
+  grade integer not null default 3,
   word_id text not null,
   level integer default 0,
   next_review timestamptz,
@@ -47,7 +51,7 @@ create table if not exists public.word_progress (
   last_seen timestamptz,
   review_candidate boolean default false,
   updated_at timestamptz default now(),
-  primary key (user_id, child_id, word_id)
+  primary key (user_id, child_id, subject, grade, word_id)
 );
 
 -- =====================================================
@@ -61,6 +65,8 @@ create table if not exists public.game_sessions (
   client_session_id text unique not null,
   played_on date not null,
   character text default 'default',
+  subject text not null default 'english',
+  grade integer not null default 3,
   correct_count integer default 0,
   wrong_count integer default 0,
   results jsonb default '[]',

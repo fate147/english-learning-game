@@ -22,13 +22,13 @@ export default function SelectChild() {
     // 选孩子时立即缓存星星数据 + 最后选的孩子 ID
     // 下次启动时 StarContext 可以直接从缓存恢复主题色，无需等待服务器
     try {
-      localStorage.setItem('eng_last_child_id', child.child_id)
-      localStorage.setItem('eng_stars_' + child.child_id, JSON.stringify({
+      localStorage.setItem('app_last_child_id', child.child_id)
+      localStorage.setItem('app_stars_' + child.child_id, JSON.stringify({
         total_earned_stars: child.total_earned_stars || 0,
         available_stars: child.available_stars || 0,
       }))
     } catch {}
-    navigate('/game')
+    navigate('/home')
   }
 
   const handleAddChild = async (childId, name, avatar) => {

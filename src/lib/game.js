@@ -12,7 +12,6 @@ export function generateClientSessionId() {
 }
 
 export async function saveGameSession(session) {
-  // 确保 client_session_id 不为空
   const clientSessionId = session.client_session_id || generateClientSessionId()
   const { error } = await supabase
     .from('game_sessions')
@@ -20,6 +19,8 @@ export async function saveGameSession(session) {
       {
         user_id: session.user_id,
         child_id: session.child_id,
+        subject: session.subject || 'english',
+        grade: session.grade || 3,
         client_session_id: clientSessionId,
         played_on: session.played_on,
         character: session.character || 'default',
@@ -38,78 +39,92 @@ export async function saveGameSession(session) {
   return { data: null, error }
 }
 
-export async function getGameSessions(userId, childId, limit = 50) {
-  const { data, error } = await supabase
+export async function getGameSessions(userId, childId, limit = 50, subject, grade) {
+  let query = supabase
     .from('game_sessions')
     .select('*')
     .eq('user_id', userId)
     .eq('child_id', childId)
+  if (subject) query = query.eq('subject', subject)
+  if (grade) query = query.eq('grade', grade)
+  const { data, error } = await query
     .order('played_on', { ascending: false })
     .limit(limit)
   return { data, error }
 }
 
-export async function getTodaySessions(userId, childId) {
+export async function getTodaySessions(userId, childId, subject, grade) {
   const today = new Date().toISOString().split('T')[0]
-  const { data, error } = await supabase
+  let query = supabase
     .from('game_sessions')
     .select('*')
     .eq('user_id', userId)
     .eq('child_id', childId)
     .eq('played_on', today)
+  if (subject) query = query.eq('subject', subject)
+  if (grade) query = query.eq('grade', grade)
+  const { data, error } = await query
   return { data, error }
 }
 
 // 学习状态（learning_app_state 表）
-export async function getLearningState(userId, childId) {
+export async function getLearningState(userId, childId, subject = 'english', grade = 3) {
   const { data, error } = await supabase
     .from('learning_app_state')
     .select('*')
     .eq('user_id', userId)
     .eq('child_id', childId)
+    .eq('subject', subject)
+    .eq('grade', grade)
     .maybeSingle()
   return { data, error }
 }
 
-// 单词进度（word_progress 表 CRUD）
-export async function getWordProgress(userId, childId) {
+// 单词/题目进度（word_progress 表）
+export async function getWordProgress(userId, childId, subject = 'english', grade = 3) {
   const { data, error } = await supabase
     .from('word_progress')
     .select('*')
     .eq('user_id', userId)
     .eq('child_id', childId)
+    .eq('subject', subject)
+    .eq('grade', grade)
   return { data, error }
 }
 
-export async function upsertWordProgress(userId, childId, wordId, updates) {
+export async function upsertWordProgress(userId, childId, wordId, updates, subject = 'english', grade = 3) {
   const { data, error } = await supabase
     .from('word_progress')
     .upsert(
       {
         user_id: userId,
         child_id: childId,
+        subject,
+        grade,
         word_id: wordId,
         ...updates,
         updated_at: new Date().toISOString(),
       },
-      { onConflict: 'user_id, child_id, word_id' }
+      { onConflict: 'user_id, child_id, subject, grade, word_id' }
     )
     .select()
     .single()
   return { data, error }
 }
 
-export async function upsertLearningState(userId, childId, updates) {
+export async function upsertLearningState(userId, childId, updates, subject = 'english', grade = 3) {
   const { data, error } = await supabase
     .from('learning_app_state')
     .upsert(
       {
         user_id: userId,
         child_id: childId,
+        subject,
+        grade,
         ...updates,
         updated_at: new Date().toISOString(),
       },
-      { onConflict: 'user_id, child_id' }
+      { onConflict: 'user_id, child_id, subject, grade' }
     )
     .select()
     .single()

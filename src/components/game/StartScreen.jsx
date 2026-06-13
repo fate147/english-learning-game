@@ -1,11 +1,8 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { CHARACTERS } from '../../config/characters.js'
-import { STRINGS } from '../../config/strings.js'
 
 export default function StartScreen({ onStart, totalEarnedStars, level, defaultChar, onBack }) {
   const [selectedChar, setSelectedChar] = useState(defaultChar || 'dragon')
-  const navigate = useNavigate()
 
   return (
     <div className="game-page-bg min-h-screen flex flex-col">
@@ -52,23 +49,11 @@ export default function StartScreen({ onStart, totalEarnedStars, level, defaultC
           })}
         </div>
 
-        {/* 按钮行 — 更大 */}
-        <div className="flex gap-3 w-full max-w-md mt-8">
-          <button
-            onClick={() => navigate('/memory')}
-            className="btn-game-secondary"
-          >
-            📖 单词本
-          </button>
-          <button
-            onClick={() => navigate('/dialogue?char=' + selectedChar)}
-            className="btn-game-secondary"
-          >
-            💬 对话
-          </button>
+        {/* 按钮 — 开始游戏 */}
+        <div className="w-full max-w-md mt-8">
           <button
             onClick={() => onStart(selectedChar)}
-            className="btn-game-primary"
+            className="btn-game-primary w-full"
           >
             🎮 开始游戏
           </button>

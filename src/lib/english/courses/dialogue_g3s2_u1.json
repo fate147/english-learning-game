@@ -1,0 +1,87 @@
+{
+  "unit": 1,
+  "topic": "Welcome Back to School",
+  "topicCn": "欢迎回到学校",
+  "dialogues": [
+    {
+      "id": "dial_g3s2u1_01",
+      "npc": "Welcome back to school! Nice to see you again!",
+      "cn": "欢迎回到学校！很高兴再次见到你！",
+      "choices": [
+        { "text": "Nice to see you too!", "cn": "我也很高兴见到你！", "correct": true },
+        { "text": "I'm hungry.", "cn": "我饿了。", "correct": false },
+        { "text": "I have a book.", "cn": "我有一本书。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u1_02",
+      "npc": "Where are you from?",
+      "cn": "你来自哪里？",
+      "choices": [
+        { "text": "I'm from China.", "cn": "我来自中国。", "correct": true },
+        { "text": "I like pears.", "cn": "我喜欢梨。", "correct": false },
+        { "text": "I'm eight years old.", "cn": "我八岁了。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u1_03",
+      "npc": "Hello! I'm Amy. I'm from the UK.",
+      "cn": "你好！我是艾米。我来自英国。",
+      "choices": [
+        { "text": "Hi, Amy! I'm from China.", "cn": "你好，艾米！我来自中国。", "correct": true },
+        { "text": "I have a book.", "cn": "我有一本书。", "correct": false },
+        { "text": "Goodbye!", "cn": "再见！", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u1_04",
+      "npc": "We have a new friend today! This is Mike.",
+      "cn": "今天我们有一位新朋友！这是迈克。",
+      "choices": [
+        { "text": "Hello, Mike! Welcome!", "cn": "你好，迈克！欢迎！", "correct": true },
+        { "text": "I'm tired.", "cn": "我累了。", "correct": false },
+        { "text": "I like cats.", "cn": "我喜欢猫。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u1_05",
+      "npc": "Let's go to the classroom! This is our new classroom.",
+      "cn": "我们去教室吧！这是我们的新教室。",
+      "choices": [
+        { "text": "Wow! It's big and nice!", "cn": "哇！又大又漂亮！", "correct": true },
+        { "text": "I'm six years old.", "cn": "我六岁了。", "correct": false },
+        { "text": "I have a ruler.", "cn": "我有一把尺子。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u1_06",
+      "npc": "Can I use your crayon? I want to draw.",
+      "cn": "我能用一下你的蜡笔吗？我想画画。",
+      "choices": [
+        { "text": "Sure! Here you are.", "cn": "当然！给你。", "correct": true },
+        { "text": "I like milk.", "cn": "我喜欢牛奶。", "correct": false },
+        { "text": "I can jump.", "cn": "我会跳。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u1_07",
+      "npc": "Let's read a story together!",
+      "cn": "我们一起读故事吧！",
+      "choices": [
+        { "text": "Great! I love stories!", "cn": "太棒了！我喜欢故事！", "correct": true },
+        { "text": "No, thank you.", "cn": "不，谢谢。", "correct": false },
+        { "text": "I have a pen.", "cn": "我有一支钢笔。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u1_08",
+      "npc": "Time to go home. See you tomorrow!",
+      "cn": "该回家了。明天见！",
+      "choices": [
+        { "text": "See you tomorrow! Bye!", "cn": "明天见！再见！", "correct": true },
+        { "text": "I'm happy.", "cn": "我很开心。", "correct": false },
+        { "text": "This is my ear.", "cn": "这是我的耳朵。", "correct": false }
+      ]
+    }
+  ]
+}

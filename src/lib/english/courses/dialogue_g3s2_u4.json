@@ -1,0 +1,87 @@
+{
+  "unit": 4,
+  "topic": "Where Is My Car?",
+  "topicCn": "我的车在哪里？",
+  "dialogues": [
+    {
+      "id": "dial_g3s2u4_01",
+      "npc": "Where is my pencil? I can't find it!",
+      "cn": "我的铅笔在哪？我找不到它！",
+      "choices": [
+        { "text": "Is it in your pencil box?", "cn": "在你的铅笔盒里吗？", "correct": true },
+        { "text": "I like milk.", "cn": "我喜欢牛奶。", "correct": false },
+        { "text": "I'm eight.", "cn": "我八岁了。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u4_02",
+      "npc": "Where is your bag? Is it on the desk?",
+      "cn": "你的书包在哪？在桌子上吗？",
+      "choices": [
+        { "text": "No, it's under the desk.", "cn": "不，它在桌子下面。", "correct": true },
+        { "text": "Yes, I'm happy.", "cn": "是的，我很开心。", "correct": false },
+        { "text": "I like apples.", "cn": "我喜欢苹果。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u4_03",
+      "npc": "Let's clean up! Put the book in the bag.",
+      "cn": "我们收拾吧！把书放进包里。",
+      "choices": [
+        { "text": "OK! And the pen is in the pencil box!", "cn": "好的！钢笔在铅笔盒里！", "correct": true },
+        { "text": "I'm tired.", "cn": "我累了。", "correct": false },
+        { "text": "I'm from China.", "cn": "我来自中国。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u4_04",
+      "npc": "Where is my toy car? I put it here!",
+      "cn": "我的玩具车在哪？我把它放这儿了！",
+      "choices": [
+        { "text": "Look! It's under the chair!", "cn": "看！它在椅子下面！", "correct": true },
+        { "text": "I like dogs.", "cn": "我喜欢狗。", "correct": false },
+        { "text": "Goodbye!", "cn": "再见！", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u4_05",
+      "npc": "Let's play hide and seek! You hide first!",
+      "cn": "我们来玩捉迷藏！你先躲！",
+      "choices": [
+        { "text": "OK! I'll hide behind the door!", "cn": "好的！我躲在门后面！", "correct": true },
+        { "text": "I have a pen.", "cn": "我有一支钢笔。", "correct": false },
+        { "text": "I like bread.", "cn": "我喜欢面包。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u4_06",
+      "npc": "Is the cat in the box?",
+      "cn": "猫在盒子里吗？",
+      "choices": [
+        { "text": "No, it's on the box!", "cn": "不，它在盒子上面！", "correct": true },
+        { "text": "Yes, I'm fine.", "cn": "是的，我很好。", "correct": false },
+        { "text": "I can jump.", "cn": "我会跳。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u4_07",
+      "npc": "Where is my cap? I need it for school.",
+      "cn": "我的帽子在哪？我需要戴它上学。",
+      "choices": [
+        { "text": "It's on your head! Ha ha!", "cn": "在你头上！哈哈！", "correct": true },
+        { "text": "I have a book.", "cn": "我有一本书。", "correct": false },
+        { "text": "This is my nose.", "cn": "这是我的鼻子。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u4_08",
+      "npc": "Let's draw a room! Put a bed in the room.",
+      "cn": "我们来画一个房间！在房间里放一张床。",
+      "choices": [
+        { "text": "OK! And a desk near the bed!", "cn": "好的！在床旁边放一张书桌！", "correct": true },
+        { "text": "I'm six.", "cn": "我六岁了。", "correct": false },
+        { "text": "I like blue.", "cn": "我喜欢蓝色。", "correct": false }
+      ]
+    }
+  ]
+}

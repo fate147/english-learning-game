@@ -1,22 +1,28 @@
 import { supabase } from './supabase.js'
 
-export async function getAggregatedStats(userId, childId) {
+export async function getAggregatedStats(userId, childId, subject, grade) {
   // 获取所有游戏记录
-  const { data: sessions, error: sessionsError } = await supabase
+  let query = supabase
     .from('game_sessions')
     .select('*')
     .eq('user_id', userId)
     .eq('child_id', childId)
+  if (subject) query = query.eq('subject', subject)
+  if (grade) query = query.eq('grade', grade)
+  const { data: sessions, error: sessionsError } = await query
     .order('played_on', { ascending: false })
 
   if (sessionsError) return { data: null, error: sessionsError }
 
   // 获取 word_progress
-  const { data: wordProgress, error: wordError } = await supabase
+  let wpQuery = supabase
     .from('word_progress')
     .select('*')
     .eq('user_id', userId)
     .eq('child_id', childId)
+  if (subject) wpQuery = wpQuery.eq('subject', subject)
+  if (grade) wpQuery = wpQuery.eq('grade', grade)
+  const { data: wordProgress, error: wordError } = await wpQuery
 
   if (wordError) return { data: null, error: wordError }
 
@@ -61,8 +67,9 @@ export async function getAggregatedStats(userId, childId) {
         const results =
           typeof s.results === 'string' ? JSON.parse(s.results) : s.results
         results.forEach((r) => {
-          if (r && !r.correct && r.wordId) {
-            errorMap[r.wordId] = (errorMap[r.wordId] || 0) + 1
+          const errKey = r.wordId || r.questionId
+          if (r && !r.correct && errKey) {
+            errorMap[errKey] = (errorMap[errKey] || 0) + 1
           }
         })
       }

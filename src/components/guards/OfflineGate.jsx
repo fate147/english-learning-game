@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { STRINGS } from '../../config/strings.js'
 
-const CACHE_KEY = 'eng_game_data'
+const CACHE_KEY = 'app_game_data'
 
 export default function OfflineGate({ children }) {
   const [checking, setChecking] = useState(true)

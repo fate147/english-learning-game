@@ -9,9 +9,9 @@ export const StarContext = createContext(null)
 // 尝试从缓存恢复上次选中的孩子的星星数据（避免初始渲染绿色闪烁）
 function initStarsFromCache() {
   try {
-    const lastChildId = localStorage.getItem('eng_last_child_id')
+    const lastChildId = localStorage.getItem('app_last_child_id')
     if (!lastChildId) return { total: 0, avail: 0 }
-    const cache = localStorage.getItem('eng_stars_' + lastChildId)
+    const cache = localStorage.getItem('app_stars_' + lastChildId)
     if (!cache) return { total: 0, avail: 0 }
     const parsed = JSON.parse(cache)
     return { total: parsed.total_earned_stars || 0, avail: parsed.available_stars || 0 }
@@ -32,11 +32,11 @@ export function StarProvider({ children }) {
 
     const childId = activeChild.child_id
     // 更新 last_child_id，下次启动时可以恢复颜色
-    try { localStorage.setItem('eng_last_child_id', childId) } catch {}
+    try { localStorage.setItem('app_last_child_id', childId) } catch {}
 
     // 先读本地缓存（同步），立即恢复主题色，无闪烁
     try {
-      const starCache = localStorage.getItem('eng_stars_' + childId)
+      const starCache = localStorage.getItem('app_stars_' + childId)
       if (starCache) {
         const parsed = JSON.parse(starCache)
         if (parsed.total_earned_stars !== totalEarned) setTotalEarned(parsed.total_earned_stars)
@@ -48,7 +48,7 @@ export function StarProvider({ children }) {
       if (!error && data) {
         setTotalEarned(data.total_earned_stars)
         setAvailable(data.available_stars)
-        try { localStorage.setItem('eng_stars_' + childId, JSON.stringify(data)) } catch {}
+        try { localStorage.setItem('app_stars_' + childId, JSON.stringify(data)) } catch {}
       }
     })
   }, [user, activeChild])

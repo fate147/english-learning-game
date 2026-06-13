@@ -5,8 +5,7 @@ import { useStars } from '../hooks/useStars.js'
 import { getLearningState, saveGameSession } from '../lib/game.js'
 import { enqueue, isOnline } from '../lib/offline.js'
 import { CHARACTERS } from '../config/characters.js'
-import { getRandomDialogue } from '../config/english/dialogues.js'
-import { WORDS } from '../lib/words.js'
+import { pickRandomRounds } from '../lib/english/courses/index.js'
 import DialogueBubble from '../components/dialogue/DialogueBubble.jsx'
 import ChoicePanel from '../components/dialogue/ChoicePanel.jsx'
 
@@ -20,6 +19,8 @@ export default function DialoguePractice() {
   const navigatedRef = useRef(false)
 
   const character = searchParams.get('char') || 'dragon'
+  const subject = searchParams.get('subject') || 'english'
+  const grade = parseInt(searchParams.get('grade')) || 3
 
   // gameKey 递增时重新开始对话
   const [gameKey, setGameKey] = useState(0)
@@ -48,44 +49,16 @@ export default function DialoguePractice() {
   useEffect(() => {
     if (!activeChild) return
 
-    const cacheKey = 'eng_learning_state_' + activeChild.child_id
-    let unlockedUnits = []
-    try {
-      const cached = localStorage.getItem(cacheKey)
-      if (cached) {
-        const data = JSON.parse(cached)
-        if (data.unlockedWords?.length) {
-          const unitIds = new Set()
-          data.unlockedWords.forEach((id) => {
-            const word = WORDS.find((w) => w.id === id)
-            if (word) unitIds.add(word.unit)
-          })
-          unlockedUnits = [...unitIds]
-        }
-      }
-    } catch {}
+    // 新管道：从 courses/ 加载全部单元
+    const allUnitIds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    const picked = pickRandomRounds(allUnitIds, ROUNDS_PER_SESSION)
+    // 打乱选项顺序
+    const lines = picked.map((d) => ({
+      ...d,
+      choices: [...d.choices].sort(() => Math.random() - 0.5),
+    }))
 
-    if (unlockedUnits.length === 0) {
-      unlockedUnits = [1]
-    }
-
-    // 随机选对话，凑满 8 轮
-    const allLines = []
-    const usedIds = new Set()
-    while (allLines.length < ROUNDS_PER_SESSION) {
-      const d = getRandomDialogue(unlockedUnits)
-      if (usedIds.has(d.id) && usedIds.size >= 4) break
-      usedIds.add(d.id)
-      for (const line of d.lines) {
-        // 打乱选项顺序，正确答案不固定在第一位
-        const shuffled = [...line.choices].sort(() => Math.random() - 0.5)
-        allLines.push({ ...line, choices: shuffled, scenario: d.scenario })
-        if (allLines.length >= ROUNDS_PER_SESSION) break
-      }
-    }
-    const pickedLines = allLines.slice(0, ROUNDS_PER_SESSION)
-
-    setLines(pickedLines)
+    setLines(lines)
     setRoundIndex(0)
     setScore(0)
     setResults([])
@@ -142,8 +115,7 @@ export default function DialoguePractice() {
       wrong_count: wrongCount,
       results: results.map((r) => ({
         questionIndex: r.round - 1,
-        wordId: 'dialogue',
-        word: `Dialogue round ${r.round}`,
+        questionId: lines[r.round - 1]?.id || 'dialogue',
         correct: r.correct,
         type: 'dialogue',
       })),

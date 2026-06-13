@@ -1,0 +1,94 @@
+[
+  {
+    "id": "m_g3s2u6_01",
+    "stage": "concrete",
+    "visual": "📅 二月\n日 一 二 三 四 五 六\n                  1\n 2  3  4  5  6  7  8\n 9 10 11 12 13 14 15\n16 17 18 19 20 21 22\n23 24 25 26 27 28",
+    "question": "这是一个闰年的二月日历，二月有多少天？",
+    "options": [
+      { "text": "28天", "correct": false },
+      { "text": "29天", "correct": true },
+      { "text": "30天", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u6_02",
+    "stage": "concrete",
+    "visual": "3月 8日 🎉\n这是妈妈的生日",
+    "question": "妈妈的生日是几月几日？",
+    "options": [
+      { "text": "8月3日", "correct": false },
+      { "text": "3月8日", "correct": true },
+      { "text": "3月8日 和 8月3日一样", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u6_03",
+    "stage": "pictorial",
+    "visual": "┌───┬───┬───┬───┐\n│一 │二 │三 │四 │\n├───┼───┼───┼───┤\n│五 │六 │七 │八 │\n├───┼───┼───┼───┤\n│九 │十 │十一│十二│\n└───┴───┴───┴───┘\n 一年有12个月",
+    "question": "一年中哪几个月有31天？哪几个月有30天？",
+    "options": [
+      { "text": "1,3,5,7,8,10,12有31天；4,6,9,11有30天", "correct": true },
+      { "text": "1-6月有31天，7-12月有30天", "correct": false },
+      { "text": "每个月都有30天", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u6_04",
+    "stage": "pictorial",
+    "visual": "24小时时钟：\n┌───────┐\n│0 1 2 ... 12 ... 23│\n└───────┘\n凌晨 → 上午 → 下午 → 晚上",
+    "question": "下午3时用24时计时法怎么表示？",
+    "options": [
+      { "text": "3时", "correct": false },
+      { "text": "15时", "correct": true },
+      { "text": "13时", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u6_05",
+    "stage": "abstract",
+    "visual": null,
+    "question": "学校7月5日放暑假，9月1日开学。暑假一共有多少天？",
+    "questionLabel": "这道题需要知道什么？",
+    "options": [
+      { "text": "7月有31天，31-5+1=27天，加8月31天，共58天", "correct": true },
+      { "text": "9月1日减去7月5日 = 58天", "correct": false },
+      { "text": "7月5日到9月1日算头不算尾", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u6_06",
+    "stage": "abstract",
+    "visual": null,
+    "question": "一列火车上午8:30出发，下午4:30到达目的地。火车行驶了多长时间？",
+    "questionLabel": "这道题怎么算？",
+    "options": [
+      { "text": "下午4:30 = 16:30，16:30-8:30=8小时", "correct": true },
+      { "text": "上午到下午是12小时", "correct": false },
+      { "text": "4:30-8:30=-4小时，不对", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u6_07",
+    "stage": "synthesis",
+    "visual": null,
+    "question": "足球赛从晚上7:30开始，上下半场各45分钟，中场休息15分钟。这场球赛什么时间结束？",
+    "questionLabel": "这道题需要几步计算？",
+    "options": [
+      { "text": "45+45+15=105分钟=1小时45分，7:30+1:45=9:15", "correct": true },
+      { "text": "45×2=90分钟，7:30+1:30=9:00", "correct": false },
+      { "text": "7:30+45=8:15，8:15+45=9:00", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u6_08",
+    "stage": "synthesis",
+    "visual": null,
+    "question": "小明从7月15日到8月20日参加夏令营。他一共参加了多少天？",
+    "questionLabel": "下面哪个问题的算法跟这道题一样？",
+    "options": [
+      { "text": "从3月10日到4月5日一共有多少天", "correct": true },
+      { "text": "下午2:30到5:30是几小时", "correct": false },
+      { "text": "小明每天跑步30分钟，一周跑多少分钟", "correct": false }
+    ]
+  }
+]

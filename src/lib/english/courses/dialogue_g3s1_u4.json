@@ -1,0 +1,87 @@
+{
+  "unit": 4,
+  "topic": "We Love Animals",
+  "topicCn": "我们爱动物",
+  "dialogues": [
+    {
+      "id": "dial_g3s1u4_01",
+      "npc": "Look! What's this? It's a cat!",
+      "cn": "看！这是什么？是一只猫！",
+      "choices": [
+        { "text": "It's a cat. I like cats!", "cn": "是一只猫。我喜欢猫！", "correct": true },
+        { "text": "It's a duck.", "cn": "是一只鸭子。", "correct": false },
+        { "text": "I have a book.", "cn": "我有一本书。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u4_02",
+      "npc": "Quack, quack! What animal is that?",
+      "cn": "嘎嘎！那是什么动物？",
+      "choices": [
+        { "text": "It's a duck!", "cn": "是一只鸭子！", "correct": true },
+        { "text": "It's a panda.", "cn": "是一只熊猫。", "correct": false },
+        { "text": "It's a book.", "cn": "是一本书。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u4_03",
+      "npc": "Let's go to the zoo! I want to see a monkey.",
+      "cn": "我们去动物园吧！我想看猴子。",
+      "choices": [
+        { "text": "Great! I want to see a panda!", "cn": "太棒了！我想看熊猫！", "correct": true },
+        { "text": "I'm tired.", "cn": "我累了。", "correct": false },
+        { "text": "I have a pen.", "cn": "我有一支钢笔。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u4_04",
+      "npc": "What's that? It's big and brown.",
+      "cn": "那是什么？又大又棕色的。",
+      "choices": [
+        { "text": "It's a bear!", "cn": "是一只熊！", "correct": true },
+        { "text": "It's a cat.", "cn": "是一只猫。", "correct": false },
+        { "text": "It's a pig.", "cn": "是一头猪。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u4_05",
+      "npc": "Look at the bird! It can fly.",
+      "cn": "看那只鸟！它会飞。",
+      "choices": [
+        { "text": "Yes! It's so beautiful!", "cn": "是的！它太美了！", "correct": true },
+        { "text": "I like bread.", "cn": "我喜欢面包。", "correct": false },
+        { "text": "Close the door.", "cn": "关上门。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u4_06",
+      "npc": "Act like a dog! Woof, woof!",
+      "cn": "像狗一样表演！汪汪！",
+      "choices": [
+        { "text": "Woof, woof! I'm a dog!", "cn": "汪汪！我是一只狗！", "correct": true },
+        { "text": "Moo, moo!", "cn": "哞哞！", "correct": false },
+        { "text": "I'm happy.", "cn": "我很开心。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u4_07",
+      "npc": "I have a pet rabbit. It's white.",
+      "cn": "我有一只宠物兔。它是白色的。",
+      "choices": [
+        { "text": "Wow! I want to see it!", "cn": "哇！我想看看它！", "correct": true },
+        { "text": "I have a book.", "cn": "我有一本书。", "correct": false },
+        { "text": "I like blue.", "cn": "我喜欢蓝色。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u4_08",
+      "npc": "Let's act like monkeys! Jump, jump!",
+      "cn": "我们像猴子一样表演！跳，跳！",
+      "choices": [
+        { "text": "Ha ha! I can jump like a monkey!", "cn": "哈哈！我能像猴子一样跳！", "correct": true },
+        { "text": "I can swim.", "cn": "我会游泳。", "correct": false },
+        { "text": "I'm scared.", "cn": "我很害怕。", "correct": false }
+      ]
+    }
+  ]
+}

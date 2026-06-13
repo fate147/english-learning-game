@@ -2,13 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ===== 游戏端主题（天蓝 → 薄荷绿） ===== */
+/* ===== 游戏端主题（柔和暖色） ===== */
 :root {
-  --theme-color: #F6D365;
-  --theme-color-light: #FDE096;
-  --theme-color-dark: #E8B84A;
-  --theme-bg: #fff8f0;
-  --theme-gradient: linear-gradient(135deg, #F6D365 0%, #FDA085 100%);
+  --theme-color: #e8c86a;
+  --theme-color-light: #f0d68a;
+  --theme-color-dark: #d4b04a;
+  --theme-bg: #faf5ea;
+  --theme-gradient: linear-gradient(135deg, #e8c86a 0%, #e8b08a 100%);
 }
 
 /* ===== 家长端深色主题 ===== */
@@ -43,18 +43,18 @@ html, body, #root {
 
 /* 毛玻璃卡片（角色选择、答题用） */
 .glass-card {
-  background: rgba(255,255,255,0.12);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 2px solid transparent;
   border-radius: 16px;
   transition: all 0.25s;
 }
 .glass-card:hover {
-  background: rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.25);
 }
 .glass-card.active {
-  background: rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.32);
   border-color: rgba(255,255,255,0.6);
   transform: scale(1.05);
   box-shadow: 0 8px 24px rgba(0,0,0,0.15);
@@ -62,7 +62,7 @@ html, body, #root {
 
 /* 毛玻璃选项按钮（答题用） */
 .glass-option {
-  background: rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.20);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border-radius: 20px;
@@ -73,14 +73,14 @@ html, body, #root {
   cursor: pointer;
 }
 .glass-option:hover {
-  background: rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.30);
   border-color: rgba(255,255,255,0.3);
   transform: translateY(-2px);
 }
 
 /* 毛玻璃答题卡片 */
 .q-card-glass {
-  background: rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.25);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-radius: 20px;
@@ -89,9 +89,24 @@ html, body, #root {
   border: 1px solid rgba(255,255,255,0.2);
 }
 
-/* 紫色渐变背景（答题页） */
+/* 玻璃面板上的文字阴影，提升可读性 */
+.glass-text {
+  text-shadow: 0 1px 4px rgba(0,0,0,0.15);
+}
+
+/* 紫色渐变背景（答题页 — 英语默认） */
 .bg-question-purple {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #8a9ad6 0%, #6b5b95 100%);
+}
+
+/* 语文淡绿渐变背景 */
+.bg-chinese {
+  background: linear-gradient(135deg, #8fc4a8 0%, #6da88a 100%);
+}
+
+/* 数学淡蓝渐变背景 */
+.bg-math {
+  background: linear-gradient(135deg, #7db8d4 0%, #5a9bbd 100%);
 }
 
 /* Pulse 播放按钮 */
@@ -464,3 +479,24 @@ html, body, #root {
 }
 .badge-danger  { background: rgba(239,68,68,0.15); color: #ef4444; }
 .badge-warning { background: rgba(251,191,36,0.15); color: #fbbf24; }
+
+/* ===== 键盘焦点样式 ===== */
+*:focus-visible {
+  outline: 3px solid #4DD0E1;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid #4DD0E1;
+  outline-offset: 2px;
+}
+
+/* ===== 动画降级：如果用户偏好减少动画 ===== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,94 @@
+[
+  {
+    "id": "m_g3s2u8_01",
+    "stage": "concrete",
+    "visual": "👕 👖\n有2件上衣和2条裤子",
+    "question": "一共有几种穿搭方法？",
+    "options": [
+      { "text": "2 + 2 = 4种", "correct": false },
+      { "text": "2 × 2 = 4种", "correct": true },
+      { "text": "2 × 3 = 6种", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u8_02",
+    "stage": "concrete",
+    "visual": "🍦口味：草莓、香草、巧克力\n🍦配料：花生碎、巧克力酱",
+    "question": "选一种口味和一种配料，有几种不同的搭配？",
+    "options": [
+      { "text": "3 + 2 = 5种", "correct": false },
+      { "text": "3 × 2 = 6种", "correct": true },
+      { "text": "3 × 3 = 9种", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u8_03",
+    "stage": "pictorial",
+    "visual": "路线上学路线图：\n家 → 🅰️路口 → 🅱️路口 → 学校\n从家到路口A有2条路\n从A到B有3条路",
+    "question": "从家到学校一共有几条不同的路线？",
+    "options": [
+      { "text": "2 + 3 = 5条", "correct": false },
+      { "text": "2 × 3 = 6条", "correct": true },
+      { "text": "2 × 3 + 1 = 7条", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u8_04",
+    "stage": "pictorial",
+    "visual": "衣服搭配：\n┌────┐\n│ 红 │\n├────┤\n│ 蓝 │  ×  裤子: 黑 白 蓝\n├────┤\n│ 黄 │\n└────┘",
+    "question": "3件上衣和3条裤子，一共有几种搭配？",
+    "options": [
+      { "text": "3 + 3 = 6种", "correct": false },
+      { "text": "3 × 3 = 9种", "correct": true },
+      { "text": "3 × 3 × 3 = 27种", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u8_05",
+    "stage": "abstract",
+    "visual": null,
+    "question": "有3种主食（米饭、面条、馒头）和4种菜（鱼、鸡、牛肉、豆腐）。选一种主食和一种菜，有多少种不同的搭配？",
+    "questionLabel": "这道题用什么方法？",
+    "options": [
+      { "text": "3 + 4 = 7种", "correct": false },
+      { "text": "3 × 4 = 12种", "correct": true },
+      { "text": "3 × 3 = 9种", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u8_06",
+    "stage": "abstract",
+    "visual": null,
+    "question": "用数字1、2、3可以组成多少个不同的两位数？（每个数字只能用一次）",
+    "questionLabel": "怎么做才能不重复不遗漏？",
+    "options": [
+      { "text": "先固定十位：12,13,21,23,31,32，共6个", "correct": true },
+      { "text": "1×2×3=6个", "correct": false },
+      { "text": "1+2+3=6个", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u8_07",
+    "stage": "synthesis",
+    "visual": null,
+    "question": "有4个小朋友（A、B、C、D）每两人握手一次，一共要握几次手？",
+    "questionLabel": "下面哪个问题的算法跟这道题一样？",
+    "options": [
+      { "text": "4个点之间每两点连一条线段，一共能连几条", "correct": true },
+      { "text": "4个人排成一排，有几种排法", "correct": false },
+      { "text": "4种饮料各选一杯，有几种选法", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u8_08",
+    "stage": "synthesis",
+    "visual": null,
+    "question": "从学校到少年宫有3条路，从少年宫到科技馆有2条路。小明从学校经少年宫去科技馆，有多少种不同的走法？",
+    "questionLabel": "这道题跟下面哪个问题是一类的？",
+    "options": [
+      { "text": "3件上衣搭配2条裤子，有几种穿法", "correct": true },
+      { "text": "3个朋友互相握手，握几次", "correct": false },
+      { "text": "3个数字能组成几个不同的两位数", "correct": false }
+    ]
+  }
+]

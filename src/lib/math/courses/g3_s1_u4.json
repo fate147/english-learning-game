@@ -1,0 +1,94 @@
+[
+  {
+    "id": "m_g3s1u4_01",
+    "stage": "concrete",
+    "visual": "📊 三月份卖出 356 台电视机\n📊 四月份卖出 489 台电视机",
+    "question": "两个月一共卖出了多少台电视机？",
+    "options": [
+      { "text": "356 + 489 = 845", "correct": true },
+      { "text": "489 - 356 = 133", "correct": false },
+      { "text": "356 + 400 = 756", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u4_02",
+    "stage": "concrete",
+    "visual": "📦 仓库有 602 箱牛奶\n📤 运走了 347 箱",
+    "question": "仓库还剩多少箱牛奶？",
+    "options": [
+      { "text": "602 + 347 = 949", "correct": false },
+      { "text": "602 - 347 = 255", "correct": true },
+      { "text": "602 - 300 = 302", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u4_03",
+    "stage": "pictorial",
+    "visual": "┌────────────────────────────┐\n│            ?                │\n├─────────────┬──────────────┤\n│    356      │      ?       │\n└─────────────┴──────────────┘\n一共845，已知一部分是356",
+    "question": "上图中问号部分表示什么？",
+    "options": [
+      { "text": "845 + 356 = 1201", "correct": false },
+      { "text": "845 - 356 = 489", "correct": true },
+      { "text": "845 - 489 = 356", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u4_04",
+    "stage": "pictorial",
+    "visual": "   400    60\n┌───┬───┬───┬───┬───┬───┐\n│   │   │   │   │   │   │  = 460\n└───┴───┴───┴───┴───┴───┘\n  ─────── ────\n    320     ?",
+    "question": "460 - 320 = ? 上图表示的减法中，问号是多少？",
+    "options": [
+      { "text": "460 - 320 = 140", "correct": true },
+      { "text": "460 + 320 = 780", "correct": false },
+      { "text": "320 - 140 = 180", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u4_05",
+    "stage": "abstract",
+    "visual": null,
+    "question": "新华书店上午卖出童话书268本，下午卖出327本。上午比下午少卖出多少本？",
+    "questionLabel": "这道题用什么方法计算？",
+    "options": [
+      { "text": "268 + 327 = 595", "correct": false },
+      { "text": "327 - 268 = 59", "correct": true },
+      { "text": "327 + 268 = 595", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u4_06",
+    "stage": "abstract",
+    "visual": null,
+    "question": "学校原来有918本图书，新买来一批后，现在共有1345本。新买了多少本图书？",
+    "questionLabel": "这道题的正确算式是？",
+    "options": [
+      { "text": "918 + 1345 = 2263", "correct": false },
+      { "text": "1345 - 918 = 427", "correct": true },
+      { "text": "1345 + 918 = 2263", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u4_07",
+    "stage": "synthesis",
+    "visual": null,
+    "question": "妈妈带了500元去商场，买了一件上衣268元，一条裤子177元。妈妈还剩多少钱？",
+    "questionLabel": "下面哪个故事跟这道题的算法一样？",
+    "options": [
+      { "text": "小明有100元，买文具花了35元，买书花了48元，还剩多少钱", "correct": true },
+      { "text": "小明有100元，妈妈又给了他50元，一共有多少钱", "correct": false },
+      { "text": "每箱牛奶48元，买3箱需要多少钱", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u4_08",
+    "stage": "synthesis",
+    "visual": null,
+    "question": "电影院有800个座位。上午来了385人，下午来了429人。还有多少个空座位？",
+    "questionLabel": "要解决这个问题，应该怎么做？",
+    "options": [
+      { "text": "385 + 429 = 814，814 > 800，坐不下了", "correct": false },
+      { "text": "385 + 429 = 814，800 - 814 = -14，坐不下了", "correct": false },
+      { "text": "800 - 385 = 415，415 - 429 = -14，坐不下了", "correct": true }
+    ]
+  }
+]

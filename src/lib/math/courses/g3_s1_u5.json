@@ -1,0 +1,90 @@
+[
+  {
+    "id": "m_g3s1u5_01",
+    "stage": "concrete",
+    "visual": "第一行 4个苹果，第二行是第一行的4倍",
+    "question": "第二行有4个苹果，是第一行的4倍。第一行有几个？",
+    "options": [
+      { "text": "4 x 4 = 16个", "correct": false },
+      { "text": "4 / 4 = 1个", "correct": true },
+      { "text": "4 + 4 = 8个", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u5_02",
+    "stage": "concrete",
+    "visual": "第一行有6条鱼，第二行的鱼是第一行的2倍",
+    "question": "第二行应该有多少条鱼？",
+    "options": [
+      { "text": "6 + 2 = 8", "correct": false },
+      { "text": "6 x 2 = 12", "correct": true },
+      { "text": "6 / 2 = 3", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u5_03",
+    "stage": "pictorial",
+    "visual": "第一行3个，第二行9个（是3倍）",
+    "question": "第二行有9个，是第一行的几倍？",
+    "options": [
+      { "text": "9 / 3 = 3倍", "correct": true },
+      { "text": "9 - 3 = 6倍", "correct": false },
+      { "text": "3 x 3 = 9倍", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u5_04",
+    "stage": "pictorial",
+    "visual": "第二行是第一行的3倍，第二行有15个",
+    "question": "第二行是第一行的3倍，第二行有15个，第一行有几个？",
+    "options": [
+      { "text": "15 x 3 = 45", "correct": false },
+      { "text": "15 / 3 = 5", "correct": true },
+      { "text": "15 + 3 = 18", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u5_05",
+    "stage": "abstract",
+    "question": "小明今年7岁，爸爸的年龄是小明的5倍。爸爸今年多少岁？",
+    "questionLabel": "看到是5倍，应该用什么计算？",
+    "options": [
+      { "text": "7 + 5 = 12岁", "correct": false },
+      { "text": "7 x 5 = 35岁", "correct": true },
+      { "text": "7 / 5 = 1.4岁", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u5_06",
+    "stage": "abstract",
+    "question": "学校有8个篮球，足球的个数是篮球的4倍。足球有多少个？",
+    "questionLabel": "这道题用什么方法？",
+    "options": [
+      { "text": "8 + 4 = 12个", "correct": false },
+      { "text": "8 x 4 = 32个", "correct": true },
+      { "text": "8 / 4 = 2个", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u5_07",
+    "stage": "synthesis",
+    "question": "果园有苹果树24棵，是梨树的3倍。梨树有多少棵？",
+    "questionLabel": "下面哪个故事跟这道题的算法一样？",
+    "options": [
+      { "text": "小红有30元，是小明的5倍，小明有多少元", "correct": true },
+      { "text": "小红有30元，小明有5元，小红是小明的几倍", "correct": false },
+      { "text": "小红有30元，妈妈又给了她5元，一共有多少元", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u5_08",
+    "stage": "synthesis",
+    "question": "小丽有9张邮票，小华的邮票数是小丽的3倍，小军比小华少5张。小军有多少张？",
+    "questionLabel": "这道题需要几步计算？",
+    "options": [
+      { "text": "9 x 3 = 27，27 - 5 = 22张", "correct": true },
+      { "text": "9 + 3 = 12，12 - 5 = 7张", "correct": false },
+      { "text": "9 - 3 = 6，6 + 5 = 11张", "correct": false }
+    ]
+  }
+]

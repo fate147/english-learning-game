@@ -17,6 +17,7 @@ import { getRewardTemplates, createRewardTemplate, deleteRewardTemplate, getRewa
 import { getStars, spendStars } from '../lib/stars.js'
 import { getAggregatedStats } from '../lib/stats.js'
 import { DEFAULT_REWARD_TEMPLATES } from '../config/rewards.js'
+import { SUBJECTS, getSubjectList } from '../config/subjects.js'
 
 
 const AVATARS = ['🐱', '🐶', '🐰', '🐼', '🦊', '🐸', '🐵', '🦁']
@@ -152,14 +153,36 @@ export default function ParentDashboard() {
   )
 }
 
+/* ===== 科目标签选择器 ===== */
+function SubjectTabs({ subject, onChange }) {
+  const subjects = getSubjectList()
+  return (
+    <div className="flex gap-1 mb-4">
+      {subjects.map((s) => (
+        <button
+          key={s.id}
+          onClick={() => onChange(s.id)}
+          className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all
+            ${subject === s.id
+              ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30'
+              : 'text-slate-500 hover:text-slate-300 border border-transparent'}`}
+        >
+          {s.icon} {s.name}
+        </button>
+      ))}
+    </div>
+  )
+}
+
 /* ===== 单词解锁面板 ===== */
 function UnlockPanel({ childId }) {
   const { user } = useAuth()
   const [unlocked, setUnlocked] = useState([])
   const [progress, setProgress] = useState({})
+  const subject = 'english'
   useEffect(() => {
     if (!user || !childId) return
-    Promise.all([getLearningState(user.id, childId), getWordProgress(user.id, childId)]).then(([s, wp]) => {
+    Promise.all([getLearningState(user.id, childId, subject, 3), getWordProgress(user.id, childId, subject, 3)]).then(([s, wp]) => {
       if (s.data?.unlocked_words) setUnlocked(s.data.unlocked_words)
       const map = {}
       if (wp.data) wp.data.forEach((w) => { map[w.word_id] = w })
@@ -169,16 +192,22 @@ function UnlockPanel({ childId }) {
   const toggle = async (wordId) => {
     const next = unlocked.includes(wordId) ? unlocked.filter((id) => id !== wordId) : [...unlocked, wordId]
     setUnlocked(next)
-    await upsertLearningState(user.id, childId, { unlocked_words: next })
+    await upsertLearningState(user.id, childId, { unlocked_words: next }, subject, 3)
   }
   const toggleAll = async (wordIds, allUnlocked) => {
     const next = allUnlocked ? unlocked.filter((id) => !wordIds.includes(id)) : [...new Set([...unlocked, ...wordIds])]
     setUnlocked(next)
-    await upsertLearningState(user.id, childId, { unlocked_words: next })
+    await upsertLearningState(user.id, childId, { unlocked_words: next }, subject, 3)
   }
   if (!childId) return <p className="text-slate-400 text-center py-8">请先在左侧选择一个孩子</p>
   return (
     <div>
+      <div className="flex items-center gap-2 mb-4">
+        <span className="inline-block px-3 py-1.5 rounded-lg bg-cyan-500/20 text-cyan-300 text-xs font-semibold">
+          🔤 英语
+        </span>
+        <span className="text-xs text-slate-500">单词解锁仅英语闯关/记忆需要</span>
+      </div>
       <UnitTree unlockedWords={unlocked} wordProgress={progress} onToggleWord={toggle} onToggleAll={toggleAll} />
     </div>
   )
@@ -238,21 +267,23 @@ function StatsPanel({ childId }) {
   const { user } = useAuth()
   const [stats, setStats] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [subject, setSubject] = useState('english')
   useEffect(() => {
     if (!user || !childId) return
     setLoading(true)
-    getAggregatedStats(user.id, childId).then(({ data }) => { setStats(data); setLoading(false) })
-  }, [user, childId])
+    getAggregatedStats(user.id, childId, subject, 3).then(({ data }) => { setStats(data); setLoading(false) })
+  }, [user, childId, subject])
   if (!childId) return <p className="text-slate-400 text-center py-8">请先在左侧选择一个孩子</p>
   return (
     <div>
+      <SubjectTabs subject={subject} onChange={setSubject} />
       {loading ? <LoadingSpinner /> : stats ? (
         <div className="space-y-4">
           <OverviewCards stats={stats} />
           <AccuracyChart dailyStats={stats.dailyStats} />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <ErrorRanking errorRanking={stats.errorRanking} />
-            <UnitProgress wordProgress={stats.wordProgress} />
+            <ErrorRanking errorRanking={stats.errorRanking} subject={subject} />
+            <UnitProgress wordProgress={stats.wordProgress} subject={subject} />
           </div>
         </div>
       ) : (
@@ -261,5 +292,3 @@ function StatsPanel({ childId }) {
     </div>
   )
 }
-
-

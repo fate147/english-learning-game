@@ -1,0 +1,94 @@
+[
+  {
+    "id": "m_g3s2u2_01",
+    "stage": "concrete",
+    "visual": "🍬 🍬 🍬 🍬 🍬 🍬\n6块糖平均分给3个小朋友",
+    "question": "每个小朋友分到几块糖？",
+    "options": [
+      { "text": "6 ÷ 3 = 2块", "correct": true },
+      { "text": "6 × 3 = 18块", "correct": false },
+      { "text": "6 - 3 = 3块", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u2_02",
+    "stage": "concrete",
+    "visual": "📦 📦 📦 📦 📦 📦 📦 📦\n8盒牛奶，每2盒装一袋",
+    "question": "可以装几袋？",
+    "options": [
+      { "text": "8 ÷ 2 = 4袋", "correct": true },
+      { "text": "8 × 2 = 16袋", "correct": false },
+      { "text": "8 - 2 = 6袋", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u2_03",
+    "stage": "pictorial",
+    "visual": "┌──────────────────────┐\n│         ?             │\n├──────────┬───────────┤\n│     ?    │     ?     │\n├─────┬────┼─────┬─────┤\n│  ?  │ ?  │  ?  │  ?  │\n└─────┴────┴─────┴─────┘\n60 ÷ 3 = ?",
+    "question": "60 ÷ 3 = ？上图表示把60平均分成3份，每份是多少？",
+    "options": [
+      { "text": "60 ÷ 3 = 20", "correct": true },
+      { "text": "60 ÷ 3 = 30", "correct": false },
+      { "text": "60 × 3 = 180", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u2_04",
+    "stage": "pictorial",
+    "visual": "┌────┬────┬────┬────┐\n│ 200│ 200│ 200│ 200│\n├────┼────┼────┼────┤\n│ 200│ ?  │ ?  │ ?  │\n└────┴────┴────┴────┘\n800 ÷ 4 = ?",
+    "question": "800 ÷ 4 = ？从图上可以看出每份是多少？",
+    "options": [
+      { "text": "800 ÷ 4 = 200", "correct": true },
+      { "text": "800 ÷ 4 = 20", "correct": false },
+      { "text": "800 × 4 = 3200", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u2_05",
+    "stage": "abstract",
+    "visual": null,
+    "question": "果园摘了84箱苹果，每次运走6箱，需要运几次？",
+    "questionLabel": "这道题用什么方法计算？",
+    "options": [
+      { "text": "84 + 6 = 90", "correct": false },
+      { "text": "84 ÷ 6 = 14次", "correct": true },
+      { "text": "84 × 6 = 504", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u2_06",
+    "stage": "abstract",
+    "visual": null,
+    "question": "一本故事书共96页，小明每天看8页，几天能看完？",
+    "questionLabel": "这道题的正确算式是？",
+    "options": [
+      { "text": "96 + 8 = 104天", "correct": false },
+      { "text": "96 ÷ 8 = 12天", "correct": true },
+      { "text": "96 - 8 = 88天", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u2_07",
+    "stage": "synthesis",
+    "visual": null,
+    "question": "3只猴子摘了72个桃子，平均每只猴子摘了多少个？",
+    "questionLabel": "下面哪个故事跟这道题的算法一样？",
+    "options": [
+      { "text": "4个小朋友共踢了96个键子，平均每人踢了多少个", "correct": true },
+      { "text": "小明有72元，用了3元，还剩多少钱", "correct": false },
+      { "text": "每排种3棵树，种了72排，一共种了多少", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u2_08",
+    "stage": "synthesis",
+    "visual": null,
+    "question": "妈妈买了4条毛巾共花了36元。她还买了3块香皂共花了24元。一条毛巾比一块香皂贵多少钱？",
+    "questionLabel": "解决这个问题需要先算出什么？",
+    "options": [
+      { "text": "毛巾单价：36÷4=9元，香皂单价：24÷3=8元，9-8=1元", "correct": true },
+      { "text": "36 ÷ 4 = 9元，毛巾比香皂贵", "correct": false },
+      { "text": "36 + 24 = 60元，60 ÷ 7 ≈ 8.6元", "correct": false }
+    ]
+  }
+]

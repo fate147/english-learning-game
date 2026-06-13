@@ -1,0 +1,87 @@
+{
+  "unit": 5,
+  "topic": "Do You Like Pears?",
+  "topicCn": "你喜欢梨吗？",
+  "dialogues": [
+    {
+      "id": "dial_g3s2u5_01",
+      "npc": "I have some fruit! Do you like apples?",
+      "cn": "我有一些水果！你喜欢苹果吗？",
+      "choices": [
+        { "text": "Yes, I do! Apples are yummy!", "cn": "是的！苹果很好吃！", "correct": true },
+        { "text": "I'm from China.", "cn": "我来自中国。", "correct": false },
+        { "text": "I'm eight.", "cn": "我八岁了。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u5_02",
+      "npc": "Do you like oranges?",
+      "cn": "你喜欢橙子吗？",
+      "choices": [
+        { "text": "No, I don't. I like bananas.", "cn": "不，我不喜欢。我喜欢香蕉。", "correct": true },
+        { "text": "I have a ruler.", "cn": "我有一把尺子。", "correct": false },
+        { "text": "I'm fine.", "cn": "我很好。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u5_03",
+      "npc": "Let's buy some fruit! Grapes are on sale!",
+      "cn": "我们去买水果吧！葡萄在打折！",
+      "choices": [
+        { "text": "Great! I love grapes!", "cn": "太棒了！我爱吃葡萄！", "correct": true },
+        { "text": "I can jump.", "cn": "我会跳。", "correct": false },
+        { "text": "I'm happy.", "cn": "我很开心。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u5_04",
+      "npc": "Can I have some apples? How much?",
+      "cn": "我能要一些苹果吗？多少钱？",
+      "choices": [
+        { "text": "Sure! They are 3 yuan for two.", "cn": "当然！两个三元。", "correct": true },
+        { "text": "I like dogs.", "cn": "我喜欢狗。", "correct": false },
+        { "text": "This is my bag.", "cn": "这是我的包。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u5_05",
+      "npc": "Let's make a fruit salad! We need bananas and apples.",
+      "cn": "我们来做个水果沙拉吧！我们需要香蕉和苹果。",
+      "choices": [
+        { "text": "Good idea! And some grapes too!", "cn": "好主意！再加一些葡萄！", "correct": true },
+        { "text": "I'm tired.", "cn": "我累了。", "correct": false },
+        { "text": "I have a book.", "cn": "我有一本书。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u5_06",
+      "npc": "What fruit do you like best?",
+      "cn": "你最喜欢什么水果？",
+      "choices": [
+        { "text": "My favourite fruit is watermelon!", "cn": "我最喜欢的水果是西瓜！", "correct": true },
+        { "text": "I'm six years old.", "cn": "我六岁了。", "correct": false },
+        { "text": "I like milk.", "cn": "我喜欢牛奶。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u5_07",
+      "npc": "Here's a strawberry for you! Try it!",
+      "cn": "给你一个草莓！尝尝！",
+      "choices": [
+        { "text": "Thank you! It's sweet and sour!", "cn": "谢谢！又甜又酸！", "correct": true },
+        { "text": "I like blue.", "cn": "我喜欢蓝色。", "correct": false },
+        { "text": "Goodbye!", "cn": "再见！", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u5_08",
+      "npc": "Let's share the fruit together!",
+      "cn": "我们一起分享这些水果吧！",
+      "choices": [
+        { "text": "OK! Sharing is nice!", "cn": "好的！分享很快乐！", "correct": true },
+        { "text": "No, thanks.", "cn": "不，谢谢。", "correct": false },
+        { "text": "I have a pen.", "cn": "我有一支钢笔。", "correct": false }
+      ]
+    }
+  ]
+}

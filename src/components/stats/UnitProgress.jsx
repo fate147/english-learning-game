@@ -1,6 +1,15 @@
 import { getWordsByUnit } from '../../lib/words.js'
 
-export default function UnitProgress({ wordProgress }) {
+export default function UnitProgress({ wordProgress, subject = 'english' }) {
+  if (subject !== 'english') {
+    return (
+      <div className="bg-slate-800/50 border border-slate-700/35 rounded-xl px-5 py-4">
+        <h4 className="section-title text-slate-200"><span>📚</span> 单元进度</h4>
+        <p className="text-slate-500 text-sm text-center py-6">该科目暂无单元进度</p>
+      </div>
+    )
+  }
+
   const units = [1, 2, 3, 4, 5, 6]
 
   return (

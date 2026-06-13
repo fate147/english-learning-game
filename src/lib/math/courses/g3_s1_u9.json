@@ -1,0 +1,90 @@
+[
+  {
+    "id": "m_g3s1u9_01",
+    "stage": "concrete",
+    "visual": "4个蓝色、2个红色、2个黄色图形",
+    "question": "上面一共有几个图形？",
+    "options": [
+      { "text": "4 + 2 + 2 = 8个", "correct": true },
+      { "text": "4 x 2 = 8个", "correct": false },
+      { "text": "2 + 2 = 4个", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u9_02",
+    "stage": "concrete",
+    "visual": "小明有5个苹果，小红有3个橘子",
+    "question": "小明和小红共有多少个水果？这是集合中的什么运算？",
+    "options": [
+      { "text": "5 + 3 = 8，求并集", "correct": true },
+      { "text": "5 - 3 = 2，求差集", "correct": false },
+      { "text": "5 x 3 = 15，求交集", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u9_03",
+    "stage": "pictorial",
+    "visual": "喜欢足球18人，喜欢篮球12人，两种都喜欢5人",
+    "question": "两种都喜欢的5人，在算总人数时应该怎么处理？",
+    "options": [
+      { "text": "18 + 12 - 5 = 25人", "correct": true },
+      { "text": "18 + 12 + 5 = 35人", "correct": false },
+      { "text": "18 + 12 = 30人", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u9_04",
+    "stage": "pictorial",
+    "visual": "语文10人，数学8人，总15人",
+    "question": "三(1)班有15人参加了兴趣小组，语文组10人，数学组8人。两个组都参加的有多少人？",
+    "options": [
+      { "text": "10 + 8 - 15 = 3人", "correct": true },
+      { "text": "15 - 10 = 5人", "correct": false },
+      { "text": "10 + 8 = 18人", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u9_05",
+    "stage": "abstract",
+    "question": "三(2)班有45人，会游泳25人，会骑自行车30人，两种都会15人。两种都不会的有多少人？",
+    "questionLabel": "这道题需要几步计算？",
+    "options": [
+      { "text": "25 + 30 - 15 = 40人，45 - 40 = 5人", "correct": true },
+      { "text": "45 - 25 = 20人", "correct": false },
+      { "text": "25 + 30 + 15 = 70人，70 - 45 = 25人", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u9_06",
+    "stage": "abstract",
+    "question": "学校乐队20人，合唱队15人，既参加乐队又参加合唱队6人。两队一共有多少人？",
+    "questionLabel": "为什么不能直接用20+15？",
+    "options": [
+      { "text": "因为6个人被重复算了，要减去", "correct": true },
+      { "text": "因为可以加", "correct": false },
+      { "text": "因为人太多了会算错", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u9_07",
+    "stage": "synthesis",
+    "question": "三(3)班共40人。喜欢画画18人，喜欢唱歌22人，两种都喜欢8人。两种都不喜欢的有多少人？",
+    "questionLabel": "下面哪个问题的算法跟这道题一样？",
+    "options": [
+      { "text": "全班40人，数学及格32人，语文及格35人，双科及格28人，双科不及格几人", "correct": true },
+      { "text": "小明有18颗糖，小红有22颗，一共有几颗", "correct": false },
+      { "text": "每排种8棵树，种了5排，一共种了多少", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u9_08",
+    "stage": "synthesis",
+    "question": "三(4)班每个人都参加了兴趣小组。体育组28人，美术组20人，两组都参加10人。三(4)班有多少人？",
+    "questionLabel": "这道题跟前面的题有什么区别？",
+    "options": [
+      { "text": "没有两种都不参加的人，直接28+20-10=38人", "correct": true },
+      { "text": "28 + 20 = 48人", "correct": false },
+      { "text": "28 - 10 = 18人", "correct": false }
+    ]
+  }
+]

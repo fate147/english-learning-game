@@ -1,0 +1,94 @@
+[
+  {
+    "id": "m_g3s1u6_01",
+    "stage": "concrete",
+    "visual": "🎂 🎂 🎂 🎂  🎂 🎂 🎂 🎂\n每行4块蛋糕，有2行",
+    "question": "一共有几块蛋糕？用乘法怎么表示？",
+    "options": [
+      { "text": "4 + 2 = 6", "correct": false },
+      { "text": "4 × 2 = 8", "correct": true },
+      { "text": "4 × 4 = 16", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u6_02",
+    "stage": "concrete",
+    "visual": "📦 📦 📦 📦 📦\n一箱有5盒牛奶，有7箱",
+    "question": "一共有多少盒牛奶？",
+    "options": [
+      { "text": "5 × 7 = 35盒", "correct": true },
+      { "text": "5 + 7 = 12盒", "correct": false },
+      { "text": "7 - 5 = 2盒", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u6_03",
+    "stage": "pictorial",
+    "visual": "┌───┬───┬───┬───┐\n│   │   │   │   │\n├───┼───┼───┼───┤\n│   │   │   │   │\n├───┼───┼───┼───┤\n│   │   │   │   │  3行4列\n└───┴───┴───┴───┘",
+    "question": "上面有3行4列，一共有多少个格子？",
+    "options": [
+      { "text": "3 + 4 = 7", "correct": false },
+      { "text": "3 × 4 = 12", "correct": true },
+      { "text": "3 × 3 = 9", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u6_04",
+    "stage": "pictorial",
+    "visual": "┌─────┬─────┬─────┬─────┐\n│ 200 │ 200 │ 200 │ 200 │\n├─────┼─────┼─────┼─────┤\n│ 200 │ 200 │ 200 │     │  7个200\n└─────┴─────┴─────┴─────┘",
+    "question": "200 × 7 = ?",
+    "options": [
+      { "text": "200 + 7 = 207", "correct": false },
+      { "text": "200 × 7 = 1400", "correct": true },
+      { "text": "200 × 70 = 14000", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u6_05",
+    "stage": "abstract",
+    "visual": null,
+    "question": "每箱矿泉水有24瓶，学校买了3箱。一共有多少瓶矿泉水？",
+    "questionLabel": "这道题的正确算式是？",
+    "options": [
+      { "text": "24 + 3 = 27", "correct": false },
+      { "text": "24 × 3 = 72", "correct": true },
+      { "text": "24 ÷ 3 = 8", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u6_06",
+    "stage": "abstract",
+    "visual": null,
+    "question": "一种明信片每套12元，买6套需要多少钱？",
+    "questionLabel": "这道题用乘法还是加法？",
+    "options": [
+      { "text": "12 + 6 = 18元", "correct": false },
+      { "text": "12 × 6 = 72元", "correct": true },
+      { "text": "12 - 6 = 6元", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u6_07",
+    "stage": "synthesis",
+    "visual": null,
+    "question": "小明每分钟打字45个，打了8分钟。小丽每分钟打字52个，打了6分钟。谁打的字更多？",
+    "questionLabel": "下面哪个问题的算法跟这道题类似？",
+    "options": [
+      { "text": "每箱苹果重15千克，运来4箱，另一车运来5箱，哪个车重", "correct": false },
+      { "text": "每排种8棵树，种了6排，另一块地每排种7棵种了7排，哪块地树多", "correct": true },
+      { "text": "小明跑了3圈每圈400米，小红跑了2圈每圈500米，谁跑得多", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u6_08",
+    "stage": "synthesis",
+    "visual": null,
+    "question": "电影院有8排座位，每排26个。已经卖出了150张票，还剩多少个空位？",
+    "questionLabel": "解决这个问题需要哪几步？",
+    "options": [
+      { "text": "26 × 8 = 208，208 - 150 = 58个", "correct": true },
+      { "text": "150 - 26 = 124个", "correct": false },
+      { "text": "26 × 8 = 208，208 + 150 = 358个", "correct": false }
+    ]
+  }
+]

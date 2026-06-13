@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect, useRef } from 'react'
 import { generateBlanks } from '../../engines/questionEngine.js'
 import { STRINGS } from '../../config/strings.js'
 
-export default function LetterFill({ question, onAnswer, unit }) {
+export default function LetterFill({ question, onAnswer, unit, disabled }) {
   const [blanks, setBlanks] = useState([])
   const [candidates, setCandidates] = useState({})
   const [showResult, setShowResult] = useState(false)
@@ -90,8 +90,8 @@ export default function LetterFill({ question, onAnswer, unit }) {
     setBlanks(newBlanks)
   }
 
-  // 候选区是否全部禁用（出结果后）
-  const allDisabled = showResult
+  // 候选区是否全部禁用（出结果后或外部禁用）
+  const allDisabled = showResult || disabled
 
   return (
     <div className="page-enter flex flex-col items-center gap-6">

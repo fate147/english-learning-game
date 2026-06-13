@@ -1,0 +1,87 @@
+{
+  "unit": 6,
+  "topic": "How Many?",
+  "topicCn": "有多少？",
+  "dialogues": [
+    {
+      "id": "dial_g3s2u6_01",
+      "npc": "Look at the crayons! How many?",
+      "cn": "看这些蜡笔！有多少支？",
+      "choices": [
+        { "text": "One, two, three... Eleven crayons!", "cn": "一、二、三……十一支蜡笔！", "correct": true },
+        { "text": "I like apples.", "cn": "我喜欢苹果。", "correct": false },
+        { "text": "I'm happy.", "cn": "我很开心。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u6_02",
+      "npc": "How many books do you have?",
+      "cn": "你有多少本书？",
+      "choices": [
+        { "text": "I have twelve books!", "cn": "我有十二本书！", "correct": true },
+        { "text": "I'm from China.", "cn": "我来自中国。", "correct": false },
+        { "text": "I can jump.", "cn": "我会跳。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u6_03",
+      "npc": "Let's count the stars! How many can you see?",
+      "cn": "我们来数星星！你能看到多少颗？",
+      "choices": [
+        { "text": "I see fifteen stars!", "cn": "我看到十五颗星星！", "correct": true },
+        { "text": "I like milk.", "cn": "我喜欢牛奶。", "correct": false },
+        { "text": "Goodbye!", "cn": "再见！", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u6_04",
+      "npc": "There are twenty pencils in the box! Can you count?",
+      "cn": "盒子里有二十支铅笔！你能数吗？",
+      "choices": [
+        { "text": "Sure! One, two, three... twenty!", "cn": "当然！一、二、三……二十！", "correct": true },
+        { "text": "I'm tired.", "cn": "我累了。", "correct": false },
+        { "text": "I have a ruler.", "cn": "我有一把尺子。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u6_05",
+      "npc": "How many apples do you want?",
+      "cn": "你想要几个苹果？",
+      "choices": [
+        { "text": "I want three apples, please!", "cn": "我想要三个苹果！", "correct": true },
+        { "text": "I like dogs.", "cn": "我喜欢狗。", "correct": false },
+        { "text": "I'm six.", "cn": "我六岁了。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u6_06",
+      "npc": "Let's play a maths game! Four plus five is...?",
+      "cn": "我们玩个数学游戏吧！四加五等于……？",
+      "choices": [
+        { "text": "Four plus five is nine!", "cn": "四加五等于九！", "correct": true },
+        { "text": "I'm from China.", "cn": "我来自中国。", "correct": false },
+        { "text": "I like blue.", "cn": "我喜欢蓝色。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u6_07",
+      "npc": "How many students are there in your class?",
+      "cn": "你们班有多少个学生？",
+      "choices": [
+        { "text": "There are sixteen students.", "cn": "有十六个学生。", "correct": true },
+        { "text": "I'm eight years old.", "cn": "我八岁了。", "correct": false },
+        { "text": "I like bread.", "cn": "我喜欢面包。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s2u6_08",
+      "npc": "Look at the birds! How many are there?",
+      "cn": "看那些鸟！有多少只？",
+      "choices": [
+        { "text": "Let me count... Eighteen birds!", "cn": "让我数数……十八只鸟！", "correct": true },
+        { "text": "I have a book.", "cn": "我有一本书。", "correct": false },
+        { "text": "I'm fine.", "cn": "我很好。", "correct": false }
+      ]
+    }
+  ]
+}

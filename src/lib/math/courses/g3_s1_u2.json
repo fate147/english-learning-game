@@ -1,0 +1,90 @@
+[
+  {
+    "id": "m_g3s1u2_01",
+    "stage": "concrete",
+    "visual": "小明有 8 个苹果\n小红有 3 个苹果",
+    "question": "小明和小红一共有多少个苹果？",
+    "options": [
+      { "text": "8 - 3 = 5", "correct": false },
+      { "text": "8 + 3 = 11", "correct": true },
+      { "text": "8 + 8 = 16", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u2_02",
+    "stage": "concrete",
+    "visual": "小明有 9 本书，借给小红 2 本",
+    "question": "小明借给小红2本书后，还剩几本？",
+    "options": [
+      { "text": "9 + 2 = 11", "correct": false },
+      { "text": "9 - 2 = 7", "correct": true },
+      { "text": "9 - 3 = 6", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u2_03",
+    "stage": "pictorial",
+    "visual": "比460多320的数是多少？",
+    "question": "比460多320的数是多少？",
+    "options": [
+      { "text": "460 + 320 = 780", "correct": true },
+      { "text": "460 - 320 = 140", "correct": false },
+      { "text": "460 + 460 = 920", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u2_04",
+    "stage": "pictorial",
+    "visual": "整体是780，两部分是460和320",
+    "question": "下面哪个算式正确？",
+    "options": [
+      { "text": "780 - 460 = 320", "correct": true },
+      { "text": "780 + 460 = 1240", "correct": false },
+      { "text": "460 + 780 = 1240", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u2_05",
+    "stage": "abstract",
+    "question": "某书店上午卖出科技书256本，下午卖出143本。这一天一共卖出了多少本科技书？",
+    "questionLabel": "这道题要我们算什么？",
+    "options": [
+      { "text": "256 - 143 = 113", "correct": false },
+      { "text": "256 + 143 = 399", "correct": true },
+      { "text": "256 + 256 = 512", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u2_06",
+    "stage": "abstract",
+    "question": "学校图书馆有故事书520本，科技书比故事书少180本。科技书有多少本？",
+    "questionLabel": "看到比少应该用什么计算？",
+    "options": [
+      { "text": "520 + 180 = 700", "correct": false },
+      { "text": "520 - 180 = 340", "correct": true },
+      { "text": "520 - 80 = 440", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u2_07",
+    "stage": "synthesis",
+    "question": "小红有320元，买书包花了168元。剩下的钱够买一本98元的字典吗？",
+    "questionLabel": "下面哪个故事跟这道题是一类问题？",
+    "options": [
+      { "text": "小明有500元，买玩具花了235元，还剩多少钱", "correct": true },
+      { "text": "小明有300元，妈妈又给了他200元，一共有多少钱", "correct": false },
+      { "text": "每本书28元，买3本需要多少钱", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u2_08",
+    "stage": "synthesis",
+    "question": "一台电视机2680元，一台洗衣机1950元。爸爸带了5000元，买这两样够吗？",
+    "questionLabel": "要解决这个问题，应该先算什么？",
+    "options": [
+      { "text": "2680 + 1950 = 4630，再跟5000比", "correct": true },
+      { "text": "5000 - 2680 = 2320，再跟1950比", "correct": false },
+      { "text": "2680 - 1950 = 730，再跟5000比", "correct": false }
+    ]
+  }
+]

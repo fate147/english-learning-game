@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect, useCallback } from 'react'
 import { signIn, signUp, signOut, getSession, onAuthStateChange } from '../lib/auth.js'
 
-const SESSION_CACHE_KEY = 'eng_session_cache'
+const SESSION_CACHE_KEY = 'app_session_cache'
 
 export const AuthContext = createContext(null)
 

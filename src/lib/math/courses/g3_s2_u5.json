@@ -1,0 +1,94 @@
+[
+  {
+    "id": "m_g3s2u5_01",
+    "stage": "concrete",
+    "visual": "┌────────┐\n│        │ 4cm\n│        │\n└────────┘\n    5cm",
+    "question": "上面长方形的面积是多少？",
+    "options": [
+      { "text": "5 × 4 = 20平方厘米", "correct": true },
+      { "text": "(5+4) × 2 = 18平方厘米", "correct": false },
+      { "text": "5 + 4 = 9平方厘米", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u5_02",
+    "stage": "concrete",
+    "visual": "┌──────┐\n│      │\n│      │ 边长3cm\n│      │\n└──────┘",
+    "question": "上面正方形的面积是多少？",
+    "options": [
+      { "text": "3 × 4 = 12平方厘米", "correct": false },
+      { "text": "3 × 3 = 9平方厘米", "correct": true },
+      { "text": "3 + 3 + 3 + 3 = 12平方厘米", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u5_03",
+    "stage": "pictorial",
+    "visual": "┌──┬──┬──┐\n│  │  │  │\n├──┼──┼──┤\n│  │  │  │  每小格1平方厘米\n├──┼──┼──┤\n│  │  │  │\n└──┴──┴──┘\n  3行4列",
+    "question": "上面的长方形由几个1平方厘米的小正方形组成？面积是多少？",
+    "options": [
+      { "text": "3 × 4 = 12平方厘米", "correct": true },
+      { "text": "3 + 4 = 7平方厘米", "correct": false },
+      { "text": "3 × 3 = 9平方厘米", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u5_04",
+    "stage": "pictorial",
+    "visual": "┌──────┬──────┐\n│      │      │\n│   A   │   B   │ 两个正方形\n│      │      │\n└──────┴──────┘\nA边长2cm  B边长3cm",
+    "question": "正方形A和B的面积相差多少？",
+    "options": [
+      { "text": "3×3=9，2×2=4，9-4=5平方厘米", "correct": true },
+      { "text": "3×4=12，2×4=8，12-8=4平方厘米", "correct": false },
+      { "text": "3-2=1平方厘米", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u5_05",
+    "stage": "abstract",
+    "visual": null,
+    "question": "一个长方形的长是120米，宽是80米。这个长方形的面积是多少平方米？",
+    "questionLabel": "求面积用什么公式？",
+    "options": [
+      { "text": "(120+80) × 2 = 400平方米", "correct": false },
+      { "text": "120 × 80 = 9600平方米", "correct": true },
+      { "text": "120 ÷ 80 = 1.5平方米", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u5_06",
+    "stage": "abstract",
+    "visual": null,
+    "question": "一块正方形手帕的周长是80厘米，它的面积是多少平方厘米？",
+    "questionLabel": "这道题需要先求出什么？",
+    "options": [
+      { "text": "边长 = 80÷4=20cm，面积 = 20×20=400平方厘米", "correct": true },
+      { "text": "80×80=6400平方厘米", "correct": false },
+      { "text": "80÷4=20cm，20×4=80平方厘米", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u5_07",
+    "stage": "synthesis",
+    "visual": null,
+    "question": "一个长方形花坛，长8米，宽6米。在花坛的四周围上护栏，在花坛里种花。护栏长多少米？花坛面积多大？",
+    "questionLabel": "这道题需要我们求什么？",
+    "options": [
+      { "text": "护栏长度=周长=(8+6)×2=28米，面积=8×6=48平方米", "correct": true },
+      { "text": "只求面积 8×6=48", "correct": false },
+      { "text": "只求周长 (8+6)×2=28", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u5_08",
+    "stage": "synthesis",
+    "visual": null,
+    "question": "一张长12厘米、宽8厘米的长方形纸，剪下一个最大的正方形。剩下部分的面积是多少？",
+    "questionLabel": "剪下的正方形边长是多少？",
+    "options": [
+      { "text": "边长是8cm（以宽为边长），剩下面积 12×8-8×8=96-64=32平方厘米", "correct": true },
+      { "text": "边长是12cm，剩下面积 0", "correct": false },
+      { "text": "边长是6cm，剩下面积 12×8-6×6=96-36=60平方厘米", "correct": false }
+    ]
+  }
+]

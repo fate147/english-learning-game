@@ -1,0 +1,87 @@
+{
+  "unit": 3,
+  "topic": "Look at Me!",
+  "topicCn": "看我！",
+  "dialogues": [
+    {
+      "id": "dial_g3s1u3_01",
+      "npc": "Look at me! This is my head.",
+      "cn": "看我！这是我的头。",
+      "choices": [
+        { "text": "OK! This is my head too.", "cn": "好的！这也是我的头。", "correct": true },
+        { "text": "I can see a bird.", "cn": "我看到一只鸟。", "correct": false },
+        { "text": "I'm six years old.", "cn": "我六岁了。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u3_02",
+      "npc": "Let's make a puppet! Let me make the arm.",
+      "cn": "我们做个木偶吧！我来做手臂。",
+      "choices": [
+        { "text": "Great! I'll make the leg!", "cn": "太棒了！我来做腿！", "correct": true },
+        { "text": "No, I'm scared.", "cn": "不，我很害怕。", "correct": false },
+        { "text": "Colour it blue.", "cn": "把它涂成蓝色。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u3_03",
+      "npc": "Wave your hand! Hello!",
+      "cn": "挥挥你的手！你好！",
+      "choices": [
+        { "text": "Hello! I can wave my hand!", "cn": "你好！我会挥手！", "correct": true },
+        { "text": "I like apples.", "cn": "我喜欢苹果。", "correct": false },
+        { "text": "Stamp your foot!", "cn": "跺跺你的脚！", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u3_04",
+      "npc": "Look at my nose! It's funny.",
+      "cn": "看我的鼻子！它很搞笑。",
+      "choices": [
+        { "text": "Ha ha! And this is my mouth!", "cn": "哈哈！这是我的嘴巴！", "correct": true },
+        { "text": "I have a pencil.", "cn": "我有一支铅笔。", "correct": false },
+        { "text": "Goodbye!", "cn": "再见！", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u3_05",
+      "npc": "Let's exercise! Clap your hands.",
+      "cn": "我们做运动吧！拍拍你的手。",
+      "choices": [
+        { "text": "Clap, clap, clap! I like it!", "cn": "拍、拍、拍！我喜欢！", "correct": true },
+        { "text": "I see a cat.", "cn": "我看到一只猫。", "correct": false },
+        { "text": "Open your book.", "cn": "打开你的书。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u3_06",
+      "npc": "Touch your ear. Can you hear me?",
+      "cn": "摸摸你的耳朵。你能听到我吗？",
+      "choices": [
+        { "text": "Yes! I can hear you!", "cn": "是的！我能听到你！", "correct": true },
+        { "text": "No, I'm sad.", "cn": "不，我很难过。", "correct": false },
+        { "text": "I have a book.", "cn": "我有一本书。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u3_07",
+      "npc": "Look at my foot! I can kick the ball.",
+      "cn": "看我的脚！我能踢球。",
+      "choices": [
+        { "text": "Cool! I can kick too!", "cn": "酷！我也能踢！", "correct": true },
+        { "text": "This is my bag.", "cn": "这是我的包。", "correct": false },
+        { "text": "I like bread.", "cn": "我喜欢面包。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u3_08",
+      "npc": "Let's draw a face! Two eyes and a mouth.",
+      "cn": "我们画一张脸吧！两只眼睛和一张嘴。",
+      "choices": [
+        { "text": "OK! And a big nose!", "cn": "好的！还有一个大鼻子！", "correct": true },
+        { "text": "I have a ruler.", "cn": "我有一把尺子。", "correct": false },
+        { "text": "I love dogs.", "cn": "我爱狗。", "correct": false }
+      ]
+    }
+  ]
+}

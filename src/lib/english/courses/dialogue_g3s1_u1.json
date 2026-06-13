@@ -1,0 +1,87 @@
+{
+  "unit": 1,
+  "topic": "Hello!",
+  "topicCn": "你好！",
+  "dialogues": [
+    {
+      "id": "dial_g3s1u1_01",
+      "npc": "Hello! I'm Mike. What's your name?",
+      "cn": "你好！我是迈克。你叫什么名字？",
+      "choices": [
+        { "text": "Hi, Mike! My name is Sarah.", "cn": "你好，迈克！我叫萨拉。", "correct": true },
+        { "text": "I have a ruler.", "cn": "我有一把尺子。", "correct": false },
+        { "text": "Goodbye!", "cn": "再见！", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u1_02",
+      "npc": "I have a new pencil box! Look!",
+      "cn": "我有一个新铅笔盒！看！",
+      "choices": [
+        { "text": "Wow! It's nice!", "cn": "哇！真好看！", "correct": true },
+        { "text": "I'm hungry.", "cn": "我饿了。", "correct": false },
+        { "text": "Close your book.", "cn": "合上你的书。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u1_03",
+      "npc": "Open your bag. What's in it?",
+      "cn": "打开你的书包。里面有什么？",
+      "choices": [
+        { "text": "A book, a pen and a ruler.", "cn": "一本书、一支钢笔和一把尺子。", "correct": true },
+        { "text": "I'm fine, thank you.", "cn": "我很好，谢谢。", "correct": false },
+        { "text": "Let's go to school!", "cn": "我们去上学吧！", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u1_04",
+      "npc": "Good morning, Miss White!",
+      "cn": "早上好，怀特老师！",
+      "choices": [
+        { "text": "Good morning, Mike!", "cn": "早上好，迈克！", "correct": true },
+        { "text": "Goodbye, Mike!", "cn": "再见，迈克！", "correct": false },
+        { "text": "Nice to meet you!", "cn": "很高兴认识你！", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u1_05",
+      "npc": "Let's play! I have a ball.",
+      "cn": "我们一起玩吧！我有一个球。",
+      "choices": [
+        { "text": "Great! Let's play!", "cn": "太棒了！我们一起玩！", "correct": true },
+        { "text": "I have a crayon.", "cn": "我有一支蜡笔。", "correct": false },
+        { "text": "Sit down, please.", "cn": "请坐下。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u1_06",
+      "npc": "Hello, I'm Zoom. Nice to meet you!",
+      "cn": "你好，我是祖姆。很高兴认识你！",
+      "choices": [
+        { "text": "Nice to meet you too, Zoom!", "cn": "我也很高兴认识你，祖姆！", "correct": true },
+        { "text": "I'm six years old.", "cn": "我六岁了。", "correct": false },
+        { "text": "Stand up!", "cn": "起立！", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u1_07",
+      "npc": "Show me your new book, please.",
+      "cn": "请给我看看你的新书。",
+      "choices": [
+        { "text": "OK! Here it is.", "cn": "好的！给你。", "correct": true },
+        { "text": "I like red.", "cn": "我喜欢红色。", "correct": false },
+        { "text": "Let's eat!", "cn": "我们吃东西吧！", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u1_08",
+      "npc": "It's time for class. Goodbye, Mom!",
+      "cn": "该上课了。再见，妈妈！",
+      "choices": [
+        { "text": "Goodbye! Have a nice day!", "cn": "再见！祝你度过美好的一天！", "correct": true },
+        { "text": "I'm hungry.", "cn": "我饿了。", "correct": false },
+        { "text": "This is my nose.", "cn": "这是我的鼻子。", "correct": false }
+      ]
+    }
+  ]
+}

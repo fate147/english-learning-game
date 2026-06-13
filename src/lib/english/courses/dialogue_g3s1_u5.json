@@ -1,0 +1,87 @@
+{
+  "unit": 5,
+  "topic": "Let's Eat!",
+  "topicCn": "我们吃东西吧！",
+  "dialogues": [
+    {
+      "id": "dial_g3s1u5_01",
+      "npc": "I'm hungry. Let's have some bread!",
+      "cn": "我饿了。我们吃点面包吧！",
+      "choices": [
+        { "text": "Great! I like bread!", "cn": "太棒了！我喜欢面包！", "correct": true },
+        { "text": "I'm tired.", "cn": "我累了。", "correct": false },
+        { "text": "I can jump.", "cn": "我会跳。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u5_02",
+      "npc": "Have some juice, please!",
+      "cn": "请喝点果汁！",
+      "choices": [
+        { "text": "Thank you! I like juice!", "cn": "谢谢！我喜欢果汁！", "correct": true },
+        { "text": "No, I like milk.", "cn": "不，我喜欢牛奶。", "correct": false },
+        { "text": "This is my head.", "cn": "这是我的头。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u5_03",
+      "npc": "I'd like some water. What about you?",
+      "cn": "我想要一些水。你呢？",
+      "choices": [
+        { "text": "I'd like some milk, please!", "cn": "我想要一些牛奶！", "correct": true },
+        { "text": "I have a ruler.", "cn": "我有一把尺子。", "correct": false },
+        { "text": "I like cats.", "cn": "我喜欢猫。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u5_04",
+      "npc": "Can I have an apple, please?",
+      "cn": "请问能给我一个苹果吗？",
+      "choices": [
+        { "text": "Sure! Here you are!", "cn": "当然！给你！", "correct": true },
+        { "text": "I like eggs.", "cn": "我喜欢鸡蛋。", "correct": false },
+        { "text": "Goodbye!", "cn": "再见！", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u5_05",
+      "npc": "Let's have a picnic! I have some cake.",
+      "cn": "我们去野餐吧！我有一些蛋糕。",
+      "choices": [
+        { "text": "Yummy! I love cake!", "cn": "好吃！我喜欢蛋糕！", "correct": true },
+        { "text": "I have a pen.", "cn": "我有一支钢笔。", "correct": false },
+        { "text": "Close your eyes.", "cn": "闭上眼睛。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u5_06",
+      "npc": "Do you like eggs?",
+      "cn": "你喜欢鸡蛋吗？",
+      "choices": [
+        { "text": "Yes, I do! I like eggs!", "cn": "是的！我喜欢鸡蛋！", "correct": true },
+        { "text": "I'm six years old.", "cn": "我六岁了。", "correct": false },
+        { "text": "No, thank you.", "cn": "不，谢谢。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u5_07",
+      "npc": "I like rice and chicken. Yum!",
+      "cn": "我喜欢米饭和鸡肉。好吃！",
+      "choices": [
+        { "text": "Me too! Rice is yummy!", "cn": "我也是！米饭很好吃！", "correct": true },
+        { "text": "I have a pen.", "cn": "我有一支钢笔。", "correct": false },
+        { "text": "I can see a dog.", "cn": "我看到一只狗。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u5_08",
+      "npc": "Here's some fish for you!",
+      "cn": "这是给你的鱼！",
+      "choices": [
+        { "text": "Thank you! I love fish!", "cn": "谢谢！我爱吃鱼！", "correct": true },
+        { "text": "I have a book.", "cn": "我有一本书。", "correct": false },
+        { "text": "I'm scared.", "cn": "我很害怕。", "correct": false }
+      ]
+    }
+  ]
+}

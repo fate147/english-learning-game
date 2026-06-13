@@ -2,7 +2,7 @@ import { createContext, useState, useCallback, useContext, useEffect } from 'rea
 import { AuthContext } from './AuthContext.jsx'
 import { getChildren, createChild, updateChild, deleteChild } from '../lib/child.js'
 
-const CACHE_KEY = 'eng_game_children'
+const CACHE_KEY = 'app_children'
 
 export const ChildContext = createContext(null)
 

@@ -1,0 +1,94 @@
+[
+  {
+    "id": "m_g3s1u7_01",
+    "stage": "concrete",
+    "visual": "┌──────┐\n│      │\n│      │  ┌──┐\n│      │  │  │\n└──────┘  └──┘\n 长方形   正方形",
+    "question": "长方形和正方形都有几条边？",
+    "options": [
+      { "text": "4条边", "correct": true },
+      { "text": "3条边", "correct": false },
+      { "text": "6条边", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u7_02",
+    "stage": "concrete",
+    "visual": "┌──────────┐\n│          │ 5cm\n│          │\n└──────────┘\n    8cm",
+    "question": "上面长方形的周长是多少？",
+    "options": [
+      { "text": "8 + 5 = 13cm", "correct": false },
+      { "text": "(8+5) × 2 = 26cm", "correct": true },
+      { "text": "8 × 5 = 40cm", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u7_03",
+    "stage": "pictorial",
+    "visual": "┌──────┐\n│      │\n│      │  边长6cm\n│      │\n└──────┘",
+    "question": "正方形的边长是6cm，它的周长是多少？",
+    "options": [
+      { "text": "6 + 4 = 10cm", "correct": false },
+      { "text": "6 × 4 = 24cm", "correct": true },
+      { "text": "6 × 6 = 36cm", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u7_04",
+    "stage": "pictorial",
+    "visual": "┌──────────────┐\n│              │  ?\n│              │\n└──────────────┘\n      12cm\n周长 = 36cm",
+    "question": "长方形的周长是36cm，长是12cm，宽是多少？",
+    "options": [
+      { "text": "36 ÷ 2 = 18，18 - 12 = 6cm", "correct": true },
+      { "text": "36 - 12 = 24cm", "correct": false },
+      { "text": "36 ÷ 4 = 9cm", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u7_05",
+    "stage": "abstract",
+    "visual": null,
+    "question": "一块正方形手帕的边长是25厘米，给手帕缝一圈花边，需要多长的花边？",
+    "questionLabel": "这道题在求什么？",
+    "options": [
+      { "text": "正方形手帕的面积", "correct": false },
+      { "text": "正方形手帕的周长", "correct": true },
+      { "text": "手帕的大小", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u7_06",
+    "stage": "abstract",
+    "visual": null,
+    "question": "一个长方形操场，长100米，宽60米。小明沿着操场跑了2圈，跑了多少米？",
+    "questionLabel": "先算什么，再算什么？",
+    "options": [
+      { "text": "(100+60) × 2 = 320米", "correct": false },
+      { "text": "(100+60) × 2 = 320，320 × 2 = 640米", "correct": true },
+      { "text": "100 × 60 = 6000米", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u7_07",
+    "stage": "synthesis",
+    "visual": null,
+    "question": "用一根铁丝围成一个长12厘米、宽8厘米的长方形。如果用这根铁丝围成一个正方形，正方形的边长是多少？",
+    "questionLabel": "下面哪个解法是正确的？",
+    "options": [
+      { "text": "(12+8) × 2 = 40cm，40 ÷ 4 = 10cm", "correct": true },
+      { "text": "12 + 8 = 20cm，20 ÷ 2 = 10cm", "correct": false },
+      { "text": "12 × 8 = 96cm，96 ÷ 4 = 24cm", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u7_08",
+    "stage": "synthesis",
+    "visual": null,
+    "question": "两个边长4厘米的正方形拼成一个长方形，拼成的长方形的周长是多少？",
+    "questionLabel": "这道题的关键是什么？",
+    "options": [
+      { "text": "拼起来后图形变了，周长不是简单的两个正方形周长相加", "correct": true },
+      { "text": "4 × 4 × 2 = 32cm", "correct": false },
+      { "text": "4 + 4 = 8，8 × 4 = 32cm", "correct": false }
+    ]
+  }
+]

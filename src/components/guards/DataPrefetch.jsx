@@ -5,7 +5,7 @@ import { getLearningState, getWordProgress } from '../../lib/game.js'
 import { getStars } from '../../lib/stars.js'
 import { setCachedData } from '../../lib/offline.js'
 
-const CACHE_PREFIX = 'eng_preload_'
+const CACHE_PREFIX = 'app_preload_'
 
 // 登录时一次性拉取所有数据，写 localStorage
 // 后续页面直接读缓存，不再调接口
@@ -29,21 +29,28 @@ export default function DataPrefetch({ children }) {
         return
       }
 
-      const childId = children[0].child_id
-      const [state, wp, stars] = await Promise.all([
-        getLearningState(user.id, childId).catch(() => ({ data: null })),
-        getWordProgress(user.id, childId).catch(() => ({ data: null })),
-        getStars(user.id, childId).catch(() => ({ data: null })),
-      ])
+      // 为所有孩子预加载数据
+      const allResults = await Promise.all(children.map(async (child) => {
+        const childId = child.child_id
+        const [state, wp, stars] = await Promise.all([
+          getLearningState(user.id, childId).catch(() => ({ data: null })),
+          getWordProgress(user.id, childId).catch(() => ({ data: null })),
+          getStars(user.id, childId).catch(() => ({ data: null })),
+        ])
+        return { childId, state, wp, stars }
+      }))
 
       // 缓存全部数据
       try {
         localStorage.setItem(cacheKey, JSON.stringify({
           children,
-          unlockedWords: state.data?.unlocked_words || [],
-          wordProgress: wp.data || [],
-          totalStars: stars.data?.total_earned_stars || 0,
-          availableStars: stars.data?.available_stars || 0,
+          results: allResults.map((r) => ({
+            childId: r.childId,
+            unlockedWords: r.state.data?.unlocked_words || [],
+            wordProgress: r.wp.data || [],
+            totalStars: r.stars.data?.total_earned_stars || 0,
+            availableStars: r.stars.data?.available_stars || 0,
+          })),
         }))
         localStorage.setItem(tsKey, String(Date.now()))
         // 写入离线缓存标记，OfflineGate 据此判断有可用缓存

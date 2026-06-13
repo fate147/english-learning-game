@@ -1,0 +1,87 @@
+{
+  "unit": 2,
+  "topic": "Colours",
+  "topicCn": "颜色",
+  "dialogues": [
+    {
+      "id": "dial_g3s1u2_01",
+      "npc": "I see red. What colour do you see?",
+      "cn": "我看到红色。你看到什么颜色？",
+      "choices": [
+        { "text": "I see blue!", "cn": "我看到蓝色！", "correct": true },
+        { "text": "I have a pen.", "cn": "我有一支钢笔。", "correct": false },
+        { "text": "I like cats.", "cn": "我喜欢猫。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u2_02",
+      "npc": "What colour is the banana?",
+      "cn": "香蕉是什么颜色的？",
+      "choices": [
+        { "text": "It's yellow!", "cn": "是黄色的！", "correct": true },
+        { "text": "It's a fruit.", "cn": "它是一种水果。", "correct": false },
+        { "text": "It's big.", "cn": "它很大。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u2_03",
+      "npc": "Let's paint! I need green, yellow and blue.",
+      "cn": "我们来画画吧！我需要绿色、黄色和蓝色。",
+      "choices": [
+        { "text": "OK! I have green and yellow.", "cn": "好的！我有绿色和黄色。", "correct": true },
+        { "text": "No, I'm tired.", "cn": "不，我累了。", "correct": false },
+        { "text": "Stand up, please.", "cn": "请起立。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u2_04",
+      "npc": "Look at the rainbow! Wow!",
+      "cn": "看彩虹！哇！",
+      "choices": [
+        { "text": "Wow! Red, orange, yellow, green...", "cn": "哇！红色、橙色、黄色、绿色……", "correct": true },
+        { "text": "I can jump.", "cn": "我会跳。", "correct": false },
+        { "text": "Close the door.", "cn": "关上门。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u2_05",
+      "npc": "What colour is your bag?",
+      "cn": "你的书包是什么颜色的？",
+      "choices": [
+        { "text": "My bag is blue.", "cn": "我的书包是蓝色的。", "correct": true },
+        { "text": "I have two books.", "cn": "我有两本书。", "correct": false },
+        { "text": "I'm five years old.", "cn": "我五岁了。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u2_06",
+      "npc": "Colour the flower red, please!",
+      "cn": "请把花涂成红色！",
+      "choices": [
+        { "text": "OK! Red flower. Beautiful!", "cn": "好的！红色的花。真漂亮！", "correct": true },
+        { "text": "I like dogs.", "cn": "我喜欢狗。", "correct": false },
+        { "text": "This is my ear.", "cn": "这是我的耳朵。", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u2_07",
+      "npc": "I like your white T-shirt!",
+      "cn": "我喜欢你的白T恤！",
+      "choices": [
+        { "text": "Thank you! I like white.", "cn": "谢谢！我喜欢白色。", "correct": true },
+        { "text": "I'm happy.", "cn": "我很开心。", "correct": false },
+        { "text": "Let's eat cake!", "cn": "我们吃蛋糕吧！", "correct": false }
+      ]
+    },
+    {
+      "id": "dial_g3s1u2_08",
+      "npc": "Let's mix blue and yellow! What colour now?",
+      "cn": "我们把蓝色和黄色混在一起！现在是什么颜色？",
+      "choices": [
+        { "text": "It's green!", "cn": "是绿色！", "correct": true },
+        { "text": "It's purple!", "cn": "是紫色！", "correct": false },
+        { "text": "It's orange!", "cn": "是橙色！", "correct": false }
+      ]
+    }
+  ]
+}

@@ -1,5 +1,7 @@
 import { createContext, useState, useCallback, useRef } from 'react'
 import { getQuestionSet } from '../engines/questionEngine.js'
+import { pickChineseQuestions } from '../lib/chinese/courses/index.js'
+import { pickMathQuestions } from '../lib/math/courses/index.js'
 import { generateClientSessionId } from '../lib/game.js'
 
 export const GameContext = createContext(null)
@@ -18,15 +20,24 @@ export function GameProvider({ children }) {
   // ref 同步最新值，解决 setTimeout 闭包捕获旧状态的问题
   const answersRef = useRef([])
   const maxComboRef = useRef(0)
+  const subjectRef = useRef('english')
 
   const startGame = useCallback(
-    ({ unit, wordProgressMap, unlockedWords, learnedWords }) => {
-      const qs = getQuestionSet({
-        unit,
-        wordProgressMap: wordProgressMap || {},
-        unlockedWords: unlockedWords || [],
-        learnedWords: learnedWords || [],
-      })
+    ({ subject = 'english', unit, wordProgressMap, unlockedWords, learnedWords, grade = 3 }) => {
+      subjectRef.current = subject
+      let qs
+      if (subject === 'chinese') {
+        qs = pickChineseQuestions(grade, 8)
+      } else if (subject === 'math') {
+        qs = pickMathQuestions(grade, 8)
+      } else {
+        qs = getQuestionSet({
+          unit,
+          wordProgressMap: wordProgressMap || {},
+          unlockedWords: unlockedWords || [],
+          learnedWords: learnedWords || [],
+        })
+      }
       setQuestions(qs)
       setCurrentIndex(0)
       setScore(0)
@@ -60,13 +71,17 @@ export function GameProvider({ children }) {
         ? Date.now() - startTimeRef.current
         : 0
 
+      const isEnglish = subjectRef.current === 'english'
       const answer = {
         questionIndex,
-        wordId: q.wordId,
-        word: q.word,
         correct: isCorrect,
         type: q.type,
         responseTime,
+        // 英语用 wordId，语文/数学用 questionId
+        ...(isEnglish
+          ? { wordId: q.wordId, word: q.word }
+          : { questionId: q.id }
+        ),
       }
       const newAnswers = [...answersRef.current, answer]
       answersRef.current = newAnswers

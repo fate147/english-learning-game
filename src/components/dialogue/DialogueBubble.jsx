@@ -14,6 +14,7 @@ export default function DialogueBubble({ characterId, text, cn, onTypingDone, au
   const [isTyping, setIsTyping] = useState(true)
   const [isSpeaking, setIsSpeaking] = useState(false)
   const [showCn, setShowCn] = useState(false)
+  const [imgError, setImgError] = useState(false)
   const char = CHARACTERS.find((c) => c.id === characterId) || CHARACTERS[0]
   const textRef = useRef(text)
   const spokenRef = useRef(false)
@@ -57,9 +58,9 @@ export default function DialogueBubble({ characterId, text, cn, onTypingDone, au
           src={`images/${char.image}_normal.png`}
           alt={char.name}
           className="w-full h-full object-cover"
-          onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'block' }}
+          onError={() => setImgError(true)}
         />
-        <span className="hidden text-2xl">{char.emoji}</span>
+        {imgError && <span className="text-2xl">{char.emoji}</span>}
       </div>
 
       {/* 对话气泡 */}
