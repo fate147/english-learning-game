@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { CHARACTERS } from '../../config/characters.js'
+import GameHeader from '../ui/GameHeader.jsx'
 
 export default function StartScreen({ onStart, totalEarnedStars, level, defaultChar, onBack }) {
   const [selectedChar, setSelectedChar] = useState(defaultChar || 'dragon')
@@ -7,15 +8,11 @@ export default function StartScreen({ onStart, totalEarnedStars, level, defaultC
   return (
     <div className="game-page-bg min-h-screen flex flex-col">
       {/* 头部 */}
-      <header className="relative z-10">
-        <div className="max-w-lg mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <button onClick={onBack} className="back-btn">← 返回</button>
-            <h1 className="text-lg font-black text-white drop-shadow-sm">🐉 选一个小伙伴</h1>
-            <span className="stars-display">⭐ {totalEarnedStars}</span>
-          </div>
-        </div>
-      </header>
+      <GameHeader
+        onBack={onBack}
+        title="🐉 选一个小伙伴"
+        stars={totalEarnedStars}
+      />
 
       {/* 装饰元素 */}
       <div className="deco-cloud float-cloud" style={{width:'120px',height:'36px',top:'8%',left:'5%'}} />
@@ -24,8 +21,11 @@ export default function StartScreen({ onStart, totalEarnedStars, level, defaultC
 
       {/* 主内容 */}
       <main className="flex-1 flex flex-col items-center justify-center px-6 relative z-10">
+        {/* 引导文案 */}
+        <p className="guide-text mb-6">选择一个小伙伴开始学习吧</p>
+
         {/* 角色网格 — 更大，方形展示 */}
-        <div className="grid grid-cols-2 gap-6 w-full max-w-md">
+        <div className="grid grid-cols-2 gap-6 sm:gap-8 w-full max-w-sm sm:max-w-md">
           {CHARACTERS.map((c) => {
             const isActive = selectedChar === c.id
             const imgExpr = isActive ? 'happy' : 'normal'

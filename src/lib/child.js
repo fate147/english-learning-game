@@ -1,12 +1,10 @@
 import { supabase } from './supabase.js'
+import bcrypt from 'bcryptjs'
 
-// SHA-256 hash，避免密码明文存储
-async function hashPassword(password) {
-  const encoder = new TextEncoder()
-  const data = encoder.encode(password)
-  const hashBuffer = await crypto.subtle.digest('SHA-256', data)
-  const hashArray = Array.from(new Uint8Array(hashBuffer))
-  return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('')
+const SALT_ROUNDS = 10
+
+function hashPassword(password) {
+  return bcrypt.hashSync(password, SALT_ROUNDS)
 }
 
 export async function getChildren(userId) {
@@ -39,7 +37,7 @@ export async function createChild(userId, childId, name, avatar, password) {
     available_stars: 0,
   }
   if (password) {
-    insertData.parent_password = await hashPassword(password)
+    insertData.parent_password = hashPassword(password)
   }
   const { data, error } = await supabase
     .from('child_profiles')
@@ -74,8 +72,7 @@ export async function deleteChild(userId, childId) {
 }
 
 export async function setParentPassword(userId, childId, password) {
-  const hashed = await hashPassword(password)
-  return updateChild(userId, childId, { parent_password: hashed })
+  return updateChild(userId, childId, { parent_password: hashPassword(password) })
 }
 
 export async function verifyParentPassword(userId, childId, password) {
@@ -89,15 +86,6 @@ export async function verifyParentPassword(userId, childId, password) {
   if (error) return { data: null, error }
   if (!data.parent_password) return { data: null, error: new Error('未设置家长密码') }
 
-  // 先比 hash（新版），再比明文（旧数据兼容）
-  const hashed = await hashPassword(password)
-  if (data.parent_password === hashed) {
-    return { data: true, error: null }
-  }
-  if (data.parent_password === password) {
-    // 旧版明文密码：验证通过后自动升级为 hash
-    await setParentPassword(userId, childId, password)
-    return { data: true, error: null }
-  }
-  return { data: false, error: null }
+  const ok = bcrypt.compareSync(password, data.parent_password)
+  return { data: ok, error: null }
 }

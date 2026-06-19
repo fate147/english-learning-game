@@ -11,6 +11,14 @@ export default {
         display: ['Nunito', 'Inter', 'sans-serif'],
       },
       colors: {
+        primary: {
+          DEFAULT: '#ff6b9d',
+          light: '#ff8fb4',
+          dark: '#ff4081',
+        },
+        correct: '#4ade80',
+        wrong: '#f87171',
+        warning: '#fbbf24',
         game: {
           cyan: '#4DD0E1',
           mint: '#81C784',
@@ -27,6 +35,12 @@ export default {
       },
       maxWidth: {
         content: '72rem',
+      },
+      screens: {
+        'xs': '475px',
+      },
+      animation: {
+        'fade-in': 'page-fade-in 0.35s cubic-bezier(0.4, 0, 0.2, 1) both',
       },
     },
   },

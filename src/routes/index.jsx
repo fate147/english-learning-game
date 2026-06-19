@@ -4,8 +4,6 @@ import SelectChild from './SelectChild.jsx'
 import Game from './Game.jsx'
 import WordMemory from './WordMemory.jsx'
 import Home from './Home.jsx'
-import DemoChinese from './DemoChinese.jsx'
-import DemoMath from './DemoMath.jsx'
 import DialoguePractice from './DialoguePractice.jsx'
 import ParentDashboard from './ParentDashboard.jsx'
 import ProtectedRoute from '../components/guards/ProtectedRoute.jsx'
@@ -19,8 +17,6 @@ export default function AppRoutes() {
       <Route path="/memory" element={<ProtectedRoute><WordMemory /></ProtectedRoute>} />
       <Route path="/dialogue" element={<ProtectedRoute><DialoguePractice /></ProtectedRoute>} />
       <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-      <Route path="/demo-chinese" element={<DemoChinese />} />
-      <Route path="/demo-math" element={<DemoMath />} />
       <Route path="/parent/*" element={<ProtectedRoute><ParentDashboard /></ProtectedRoute>} />
       <Route path="/" element={<Navigate to="/select-child" replace />} />
       <Route path="*" element={<Navigate to="/login" replace />} />

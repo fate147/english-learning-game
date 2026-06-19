@@ -13,7 +13,16 @@ export function generateClientSessionId() {
 
 export async function saveGameSession(session) {
   const clientSessionId = session.client_session_id || generateClientSessionId()
-  const { error } = await supabase
+  console.log('[saveGameSession] 保存:', {
+    user_id: session.user_id,
+    child_id: session.child_id,
+    subject: session.subject,
+    grade: session.grade,
+    correct: session.correct_count,
+    wrong: session.wrong_count,
+    client_session_id: clientSessionId,
+  })
+  const { data, error } = await supabase
     .from('game_sessions')
     .upsert(
       {
@@ -34,36 +43,10 @@ export async function saveGameSession(session) {
       }
     )
   if (error) {
-    console.warn('saveGameSession 失败:', error.code, error.message, error.details)
+    console.warn('[saveGameSession] 失败:', error.code, error.message, error.details)
+  } else {
+    console.log('[saveGameSession] 成功')
   }
-  return { data: null, error }
-}
-
-export async function getGameSessions(userId, childId, limit = 50, subject, grade) {
-  let query = supabase
-    .from('game_sessions')
-    .select('*')
-    .eq('user_id', userId)
-    .eq('child_id', childId)
-  if (subject) query = query.eq('subject', subject)
-  if (grade) query = query.eq('grade', grade)
-  const { data, error } = await query
-    .order('played_on', { ascending: false })
-    .limit(limit)
-  return { data, error }
-}
-
-export async function getTodaySessions(userId, childId, subject, grade) {
-  const today = new Date().toISOString().split('T')[0]
-  let query = supabase
-    .from('game_sessions')
-    .select('*')
-    .eq('user_id', userId)
-    .eq('child_id', childId)
-    .eq('played_on', today)
-  if (subject) query = query.eq('subject', subject)
-  if (grade) query = query.eq('grade', grade)
-  const { data, error } = await query
   return { data, error }
 }
 

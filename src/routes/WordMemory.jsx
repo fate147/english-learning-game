@@ -4,10 +4,40 @@ import { WORDS } from '../lib/words.js'
 import { useStars } from '../hooks/useStars.js'
 import { useAuth } from '../hooks/useAuth.js'
 import { useChild } from '../hooks/useChild.js'
+import { saveGameSession } from '../lib/game.js'
+import { enqueue, isOnline } from '../lib/offline.js'
 import LetterFill from '../components/question/LetterFill.jsx'
 import Button from '../components/ui/Button.jsx'
 import PageShell from '../components/ui/PageShell.jsx'
-import Card from '../components/ui/Card.jsx'
+
+const STEP_ORDER = ['select', 'playing', 'done']
+const STEP_LABEL = { select: '选词', playing: '练习', done: '完成' }
+
+function StepIndicator({ current }) {
+  const idx = STEP_ORDER.indexOf(current)
+  return (
+    <div className="flex items-center justify-center gap-2 mb-5">
+      {STEP_ORDER.map((s, i) => (
+        <div key={s} className="flex items-center gap-2">
+          <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition-all
+            ${i === idx
+              ? 'bg-white/25 text-white border border-white/25'
+              : i < idx
+                ? 'bg-green-500/20 text-green-300 border border-green-500/30'
+                : 'bg-white/8 text-white/30 border border-white/10'
+            }`}
+          >
+            {i < idx ? '✓' : <span className="w-4 h-4 rounded-full bg-white/15 flex items-center justify-center text-[10px]">{i + 1}</span>}
+            {STEP_LABEL[s]}
+          </div>
+          {i < STEP_ORDER.length - 1 && (
+            <div className={`w-6 h-0.5 rounded ${i < idx ? 'bg-green-500/40' : 'bg-white/15'}`} />
+          )}
+        </div>
+      ))}
+    </div>
+  )
+}
 
 export default function WordMemory() {
   const navigate = useNavigate()
@@ -19,19 +49,19 @@ export default function WordMemory() {
   const { addStars, refreshStars } = useStars()
   const navigatedRef = useRef(false)
 
-  const [step, setStep] = useState('select') // select | playing | done
+  const [step, setStep] = useState('select')
   const [selectedWords, setSelectedWords] = useState([])
   const [batchWords, setBatchWords] = useState([])
   const [score, setScore] = useState(0)
   const [cardDone, setCardDone] = useState({})
-  const [expanded, setExpanded] = useState([1, 2, 3, 4, 5, 6]) // 默认全部展开
+  const [expanded, setExpanded] = useState([1, 2, 3, 4, 5, 6])
   const [readSpeed, setReadSpeed] = useState(3000)
   const [readRounds, setReadRounds] = useState(1)
   const [readingAloud, setReadingAloud] = useState(false)
   const [readingIndex, setReadingIndex] = useState(0)
+  const [searchQuery, setSearchQuery] = useState('')
   const readTimerRef = useRef(null)
 
-  // 所有单词按单元分组
   const unitWords = useMemo(() => {
     const units = {}
     WORDS.forEach(w => {
@@ -41,13 +71,27 @@ export default function WordMemory() {
     return units
   }, [])
 
+  const filteredUnits = useMemo(() => {
+    if (!searchQuery.trim()) return unitWords
+    const q = searchQuery.toLowerCase()
+    const filtered = {}
+    Object.entries(unitWords).forEach(([unit, words]) => {
+      const match = words.filter(w =>
+        w.word.toLowerCase().includes(q) || w.meaning.includes(q)
+      )
+      if (match.length > 0) filtered[unit] = match
+    })
+    return filtered
+  }, [unitWords, searchQuery])
+
+  const completedCount = Object.keys(cardDone).length
+  const totalBatch = batchWords.length
+  const accuracy = completedCount > 0 ? Math.round((score / completedCount) * 100) : 0
+
   useEffect(() => {
-    return () => {
-      if (readTimerRef.current) clearInterval(readTimerRef.current)
-    }
+    return () => { if (readTimerRef.current) clearTimeout(readTimerRef.current) }
   }, [])
 
-  // 如果没有选孩子，跳转（useEffect 避免 render 时导航）
   useEffect(() => {
     if (!activeChild && !navigatedRef.current) {
       navigatedRef.current = true
@@ -62,12 +106,11 @@ export default function WordMemory() {
   }
 
   const toggleAll = (unit, allIds) => {
-    const currentUnitIds = allIds
-    const allSelected = currentUnitIds.every(id => selectedWords.includes(id))
+    const allSelected = allIds.every(id => selectedWords.includes(id))
     if (allSelected) {
-      setSelectedWords((prev) => prev.filter(id => !currentUnitIds.includes(id)))
+      setSelectedWords((prev) => prev.filter(id => !allIds.includes(id)))
     } else {
-      setSelectedWords((prev) => [...new Set([...prev, ...currentUnitIds])])
+      setSelectedWords((prev) => [...new Set([...prev, ...allIds])])
     }
   }
 
@@ -93,7 +136,6 @@ export default function WordMemory() {
         setReadingIndex(i)
         const audio = new Audio(`audio/${words[i].id}.mp3`)
         try { await audio.play() } catch {}
-        // 等 speed 毫秒再播下一个（最后一次不等待）
         if (r < rounds - 1 || i < words.length - 1) {
           await new Promise(resolve => {
             const timerId = setTimeout(resolve, speed)
@@ -112,13 +154,10 @@ export default function WordMemory() {
   }, [batchWords, readSpeed, readRounds, stopReadAloud])
 
   const toggleReadAloud = useCallback(async () => {
-    if (readingAloud) {
-      stopReadAloud()
-      return
-    }
+    if (readingAloud) { stopReadAloud(); return }
     if (batchWords.length === 0) return
     setReadingAloud(true)
-    readTimerRef.current = true // 标记运行中
+    readTimerRef.current = true
     await playWordSequence()
   }, [readingAloud, batchWords, playWordSequence, stopReadAloud])
 
@@ -128,21 +167,47 @@ export default function WordMemory() {
     if (isCorrect) setScore(s => s + 1)
   }, [cardDone])
 
-  // 全部完成时自动进入 done
   useEffect(() => {
-    if (step === 'playing' && batchWords.length > 0 &&
-        Object.keys(cardDone).length === batchWords.length) {
+    if (step === 'playing' && totalBatch > 0 && completedCount === totalBatch) {
       const finalScore = Object.values(cardDone).filter(Boolean).length
       const timer = setTimeout(() => {
         setStep('done')
-        if (activeChild && user && finalScore > 0) {
-          addStars(finalScore, finalScore)
-            .then(() => refreshStars())
+        if (activeChild && user) {
+          // 保存游戏记录到 Supabase
+          const sessionData = {
+            user_id: user.id,
+            child_id: activeChild.child_id,
+            subject,
+            grade,
+            client_session_id: `memory_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+            played_on: new Date().toISOString().split('T')[0],
+            character: 'default',
+            correct_count: finalScore,
+            wrong_count: batchWords.length - finalScore,
+            results: batchWords.map((w) => ({
+              wordId: w.id,
+              word: w.word,
+              correct: cardDone[w.id] === true,
+              type: 'letter_fill',
+            })),
+          }
+          if (isOnline()) {
+            saveGameSession(sessionData).then(({ error }) => {
+              if (error) enqueue(sessionData)
+            })
+          } else {
+            enqueue(sessionData)
+          }
+          // 奖励星星（addStars 返回普通对象，不是 Promise）
+          if (finalScore > 0) {
+            addStars(finalScore, finalScore)
+            refreshStars()
+          }
         }
       }, 600)
       return () => clearTimeout(timer)
     }
-  }, [cardDone, batchWords, step, activeChild, user, refreshStars])
+  }, [cardDone, totalBatch, completedCount, step, activeChild, user, score, batchWords, subject, grade])
 
   const handleRestart = () => {
     setStep('select')
@@ -150,22 +215,45 @@ export default function WordMemory() {
     setBatchWords([])
     setScore(0)
     setCardDone({})
+    setSearchQuery('')
   }
 
   if (!activeChild) return null
 
-  // Step 1: 选单词（直接展示所有单元 + 单词，类似家长解锁风格）
   if (step === 'select') {
     const totalSelected = selectedWords.length
-    const unitKeys = Object.keys(unitWords).map(Number).sort()
+    const unitKeys = Object.keys(filteredUnits).map(Number).sort()
+    const borderColors = [
+      'border-l-orange-400', 'border-l-purple-400', 'border-l-emerald-400',
+      'border-l-sky-400', 'border-l-pink-400', 'border-l-amber-400'
+    ]
 
     return (
-      <PageShell title="📝 选择要练习的单词" onBack={() => navigate('/select-child')} className="bg-question-purple">
+      <PageShell onBack={() => navigate('/select-child')} className="bg-question-purple">
         <div className="max-w-2xl mx-auto page-enter">
-          {/* 顶部统计 + 开始按钮 */}
+          <StepIndicator current="select" />
+
+          <div className="relative mb-4">
+            <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/35 pointer-events-none">🔍</span>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="搜索单词或中文..."
+              className="w-full pl-10 pr-4 py-2.5 bg-white/10 border-2 border-white/15 rounded-xl text-sm text-white placeholder-white/30
+                         focus:border-[var(--color-focus)] focus:bg-white/15 focus:outline-none transition-all"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/70 text-sm"
+              >✕</button>
+            )}
+          </div>
+
           <div className="flex items-center justify-between mb-4">
-            <span className="text-white/80 text-sm">
-              已选 <span className="font-bold text-white">{totalSelected}</span> 个单词
+            <span className="text-white/70 text-sm">
+              已选 <span className="font-bold text-white">{totalSelected}</span> 个
             </span>
             <Button
               onClick={() => {
@@ -182,78 +270,62 @@ export default function WordMemory() {
             </Button>
           </div>
 
-          {/* 单元列表 */}
           <div className="space-y-3">
             {unitKeys.map((unit) => {
-              const words = unitWords[unit]
-              const unlockedCount = words.filter((w) => selectedWords.includes(w.id)).length
-
+              const words = filteredUnits[unit]
+              const selectedCount = words.filter((w) => selectedWords.includes(w.id)).length
               const isOpen = expanded.includes(unit)
 
-              const cardColors = [
-                '!bg-orange-200', '!bg-purple-200', '!bg-emerald-200',
-                '!bg-sky-200', '!bg-pink-200', '!bg-amber-200'
-              ]
-
               return (
-                <Card key={unit} className={`overflow-hidden ${cardColors[unit - 1] || 'bg-white'}`}>
-                  {/* 单元标题 — 点击切换展开/收起 */}
+                <div key={unit} className={`bg-white/12 backdrop-blur-sm rounded-2xl border border-white/15 overflow-hidden border-l-4 ${borderColors[unit - 1] || 'border-l-white/30'}`}>
                   <div
                     onClick={() => setExpanded((prev) => prev.includes(unit) ? prev.filter(u => u !== unit) : [...prev, unit])}
-                    className="flex items-center justify-between cursor-pointer select-none border-b border-gray-100 pb-3"
+                    className="flex items-center justify-between cursor-pointer select-none px-5 py-3.5"
                   >
                     <div>
-                      <h3 className="font-bold text-gray-800">Unit {unit}</h3>
-                      <p className="text-xs text-gray-400">{unlockedCount}/{words.length}</p>
+                      <h3 className="font-bold text-white/90 text-sm">Unit {unit}</h3>
+                      <p className="text-xs text-white/50">{selectedCount}/{words.length} 已选</p>
                     </div>
                     <div className="flex items-center gap-2">
                       <button
                         onClick={(e) => { e.stopPropagation(); toggleAll(unit, words.map(w => w.id)) }}
-                        className="px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-600 hover:bg-gray-200 transition-all"
+                        className="px-3 py-1 rounded-full text-xs font-bold bg-white/15 text-white/70 hover:bg-white/25 transition-all"
                       >
-                        {words.every(w => selectedWords.includes(w.id)) ? '取消全选' : '全选'}
+                        {words.every(w => selectedWords.includes(w.id)) ? '取消' : '全选'}
                       </button>
-                      <span className={`text-gray-400 text-xs transition-transform duration-200 ${isOpen ? '' : '-rotate-90'}`}>▼</span>
+                      <span className={`text-white/40 text-xs transition-transform duration-200 ${isOpen ? '' : '-rotate-90'}`}>▼</span>
                     </div>
                   </div>
 
-                  {/* 单词网格（收起时隐藏） */}
                   {isOpen && (
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 pt-3">
-                    {words.map((w) => {
-                      const isOn = selectedWords.includes(w.id)
-                      return (
-                        <label
-                          key={w.id}
-                          onClick={() => toggleWord(w.id)}
-                          className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl border-2 cursor-pointer transition-all select-none
-                            ${isOn
-                              ? 'border-green-500/60 bg-green-500/10'
-                              : 'border-gray-200 bg-white hover:border-gray-300'
-                            }`}
-                        >
-                          <div className={`w-5 h-5 rounded-md flex items-center justify-center text-xs font-bold shrink-0 transition-all
-                            ${isOn
-                              ? 'bg-green-500 text-white'
-                              : 'border-2 border-gray-300 bg-white'
-                            }`}
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 p-4">
+                      {words.map((w) => {
+                        const isOn = selectedWords.includes(w.id)
+                        return (
+                          <label
+                            key={w.id}
+                            onClick={() => toggleWord(w.id)}
+                            className={`flex items-center gap-2 px-3 py-2 rounded-xl border-2 cursor-pointer transition-all select-none
+                              ${isOn
+                                ? 'border-green-400/60 bg-green-400/15'
+                                : 'border-white/12 bg-white/6 hover:border-white/25'
+                              }`}
                           >
-                            {isOn ? '✓' : ''}
-                          </div>
-                          <div className="min-w-0">
-                            <div className={`text-sm font-bold truncate ${isOn ? 'text-gray-800' : 'text-gray-500'}`}>
-                              {w.word}
+                            <div className={`w-4.5 h-4.5 rounded-md flex items-center justify-center text-[10px] font-bold shrink-0 transition-all
+                              ${isOn ? 'bg-green-500 text-white' : 'border-2 border-white/25 bg-white/5'}`}
+                            >
+                              {isOn ? '✓' : ''}
                             </div>
-                            <div className={`text-xs truncate ${isOn ? 'text-gray-500' : 'text-gray-400'}`}>
-                              {w.meaning}
+                            <div className="min-w-0">
+                              <div className={`text-sm font-bold truncate ${isOn ? 'text-white' : 'text-white/70'}`}>{w.word}</div>
+                              <div className={`text-[10px] truncate ${isOn ? 'text-white/60' : 'text-white/40'}`}>{w.meaning}</div>
                             </div>
-                          </div>
-                        </label>
-                      )
-                    })}
-                  </div>
+                          </label>
+                        )
+                      })}
+                    </div>
                   )}
-                </Card>
+                </div>
               )
             })}
           </div>
@@ -262,140 +334,178 @@ export default function WordMemory() {
     )
   }
 
-  // Step 3: 填空练习（顶部播报 + 卡片网格 — 旧版风格）
   if (step === 'playing') {
     return (
-      <PageShell onBack={() => { stopReadAloud(); setStep('select') }} className="bg-question-purple">
+      <PageShell onBack={() => { stopReadAloud(); setStep('select'); setScore(0); setCardDone({}); setBatchWords([]) }} className="bg-question-purple">
         <div className="page-enter">
-          {/* 进度 + 得分 */}
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-white/70 text-xs">
-              {Object.keys(cardDone).length} / {batchWords.length} 完成
-            </span>
-            <span className="font-bold text-yellow-400 text-sm">⭐ {score}</span>
-          </div>
+          <StepIndicator current="playing" />
 
-          {/* 播报设置 */}
-          <div className="mb-4 flex items-center gap-4 bg-white/10 backdrop-blur rounded-2xl px-5 py-3">
-          <div className="flex items-center gap-2">
-            <span className="text-white/60 text-xs">间隔</span>
-            <div className="flex gap-1">
-              {[1000, 2000, 3000].map(speed => (
-                <button key={speed}
-                  onClick={() => setReadSpeed(speed)}
-                  className={`px-3 py-1 rounded-lg text-sm font-bold transition-all
-                    ${readSpeed === speed
-                      ? 'bg-white/30 text-white'
-                      : 'text-white/50 hover:text-white/80'}`}
-                >
-                  {speed / 1000}s
-                </button>
-              ))}
+          <div className="flex items-center justify-between mb-3 glass-card !py-2.5 !px-4">
+            <div className="flex items-center gap-4">
+              <span className="text-white/60 text-xs">
+                <span className="text-white font-bold">{completedCount}</span>/{totalBatch}
+              </span>
+              {completedCount > 0 && (
+                <span className={`text-xs font-bold ${accuracy >= 80 ? 'text-green-400' : accuracy >= 50 ? 'text-amber-400' : 'text-red-400'}`}>
+                  {accuracy}%
+                </span>
+              )}
             </div>
+            <span className="font-bold text-amber-400 text-sm">⭐ {score}</span>
           </div>
 
-          <div className="flex items-center gap-2">
-            <span className="text-white/60 text-xs">次数</span>
-            <div className="flex gap-1">
-              {[1, 2, 3].map(n => (
-                <button key={n}
-                  onClick={() => setReadRounds(n)}
-                  className={`px-3 py-1 rounded-lg text-sm font-bold transition-all
-                    ${readRounds === n
-                      ? 'bg-white/30 text-white'
-                      : 'text-white/50 hover:text-white/80'}`}
-                >
-                  {n}次
-                </button>
-              ))}
+          <div className="h-1.5 bg-white/10 rounded-full overflow-hidden mb-4">
+            <div
+              className="h-full bg-gradient-to-r from-green-400 to-emerald-400 rounded-full transition-all duration-300"
+              style={{ width: `${totalBatch > 0 ? (completedCount / totalBatch) * 100 : 0}%` }}
+            />
+          </div>
+
+          <div className="mb-4 flex items-center gap-3 bg-white/15 backdrop-blur rounded-2xl px-4 py-2.5">
+            <div className="flex items-center gap-1.5">
+              <span className="text-white/60 text-[10px]">间隔</span>
+              <div className="flex gap-0.5">
+                {[1000, 2000, 3000].map(speed => (
+                  <button key={speed} onClick={() => setReadSpeed(speed)}
+                    className={`px-2 py-0.5 rounded-lg text-xs font-bold transition-all
+                      ${readSpeed === speed ? 'bg-white/30 text-white' : 'text-white/60 hover:text-white'}`}
+                  >{speed / 1000}s</button>
+                ))}
+              </div>
             </div>
+            <div className="flex items-center gap-1.5">
+              <span className="text-white/60 text-[10px]">次数</span>
+              <div className="flex gap-0.5">
+                {[1, 2, 3].map(n => (
+                  <button key={n} onClick={() => setReadRounds(n)}
+                    className={`px-2 py-0.5 rounded-lg text-xs font-bold transition-all
+                      ${readRounds === n ? 'bg-white/30 text-white' : 'text-white/60 hover:text-white'}`}
+                  >{n}次</button>
+                ))}
+              </div>
+            </div>
+            <button onClick={toggleReadAloud}
+              className="ml-auto px-4 py-1.5 rounded-xl text-xs font-bold bg-white/20 text-white hover:bg-white/30 active:bg-white/40 transition-all"
+            >{readingAloud ? '⏹ 停止' : '🔊 朗读'}</button>
           </div>
 
-          <button onClick={toggleReadAloud}
-            className="ml-auto px-5 py-2 rounded-xl text-sm font-bold
-              bg-white/20 text-white hover:bg-white/30 active:bg-white/40 transition-all"
-          >
-            {readingAloud ? '⏹ 停止' : '🔊 朗读全部'}
-          </button>
+          {readingAloud && (
+            <div className="h-1 bg-white/15 rounded-full overflow-hidden mb-3">
+              <div className="h-full bg-green-400 rounded-full transition-all duration-300"
+                style={{ width: `${totalBatch > 0 ? (readingIndex / totalBatch) * 100 : 0}%` }} />
+            </div>
+          )}
+
+          <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-3">
+            {batchWords.map((word, idx) => {
+              const question = { wordId: word.id, word: word.word, meaning: word.meaning, type: 'letter_fill', stage: 0 }
+              const done = cardDone[word.id] !== undefined
+              const isCorrect = cardDone[word.id]
+              const isReading = readingAloud && readingIndex === idx
+
+              return (
+                <div key={word.id}
+                  className={`bg-white/12 backdrop-blur-md rounded-2xl p-4 transition-all duration-300 border-2 ${
+                    done
+                      ? isCorrect
+                        ? 'border-green-400/50 bg-green-500/8'
+                        : 'border-red-400/50 bg-red-500/8'
+                      : 'border-transparent'
+                  } ${isReading ? 'ring-2 ring-green-400/50' : ''}`}
+                >
+                  <div className="flex items-center gap-3 mb-2">
+                    <img
+                      src={`images/words/${word.id}.webp`}
+                      alt={word.word}
+                      className="w-14 h-14 rounded-xl object-cover bg-white/15 flex-shrink-0"
+                      onError={(e) => { e.target.src = 'images/words/apple.webp' }}
+                    />
+                    <div className="flex-1 min-w-0">
+                      <div className="text-base font-bold text-white/90">{word.meaning}</div>
+                    </div>
+                    {done && (
+                      <span className="text-lg">{isCorrect ? '✅' : '❌'}</span>
+                    )}
+                  </div>
+                  {!done ? (
+                    <LetterFill
+                      question={question}
+                      onAnswer={(isCorrect) => handleCardAnswer(word.id, isCorrect)}
+                    />
+                  ) : (
+                    <div className="text-center py-2">
+                      <span className={`inline-block px-4 py-1 rounded-full text-xs font-bold
+                        ${isCorrect ? 'bg-green-500/20 text-green-300' : 'bg-red-500/20 text-red-300'}`}>
+                        {isCorrect ? '✅ 正确' : '❌ 错误'}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      </PageShell>
+    )
+  }
+
+  const wrongWords = batchWords.filter(w => cardDone[w.id] === false)
+
+  return (
+    <PageShell title="练习完成" className="bg-question-purple">
+      <div className="max-w-md mx-auto page-enter">
+        <StepIndicator current="done" />
+
+        <div className="text-center mb-6">
+          <div className="text-6xl mb-3">{accuracy === 100 ? '🎉' : accuracy >= 80 ? '👏' : '💪'}</div>
+          <h2 className="text-2xl font-black text-white" style={{textShadow: '0 2px 8px rgba(0,0,0,0.3)'}}>
+            {accuracy === 100 ? '全对！太厉害了！' : accuracy >= 80 ? '做得不错！' : '继续加油！'}
+          </h2>
         </div>
 
-        {/* 播报进度条 */}
-        {readingAloud && (
-          <div className="max-w-4xl mx-auto mb-3">
-            <div className="h-1 bg-white/20 rounded-full overflow-hidden">
-              <div className="h-full bg-green-400 rounded-full transition-all duration-300"
-                style={{ width: `${batchWords.length > 0 ? (readingIndex / batchWords.length) * 100 : 0}%` }} />
+        <div className="grid grid-cols-3 gap-3 mb-5">
+          <div className="glass-card !p-3 text-center">
+            <div className="text-2xl font-black text-green-400">{score}</div>
+            <div className="text-[10px] text-white/50 font-bold">✅ 答对</div>
+          </div>
+          <div className="glass-card !p-3 text-center">
+            <div className="text-2xl font-black text-red-400">{batchWords.length - score}</div>
+            <div className="text-[10px] text-white/50 font-bold">❌ 答错</div>
+          </div>
+          <div className="glass-card !p-3 text-center">
+            <div className="text-2xl font-black text-amber-400">⭐ {score}</div>
+            <div className="text-[10px] text-white/50 font-bold">获得</div>
+          </div>
+        </div>
+
+        {wrongWords.length > 0 && (
+          <div className="glass-card !p-4 mb-5">
+            <h3 className="text-sm font-bold text-white/70 mb-3">📝 错词回顾</h3>
+            <div className="space-y-2">
+              {wrongWords.map(w => (
+                <div key={w.id} className="flex items-center gap-3 bg-white/8 rounded-xl px-3 py-2">
+                  <img
+                    src={`images/words/${w.id}.webp`}
+                    alt={w.word}
+                    className="w-10 h-10 rounded-lg object-cover bg-white/15 flex-shrink-0"
+                    onError={(e) => { e.target.src = 'images/words/apple.webp' }}
+                  />
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm font-bold text-white/90">{w.word}</div>
+                    <div className="text-[10px] text-white/50">{w.meaning}</div>
+                  </div>
+                  <span className="text-[10px] text-red-400/70">需复习</span>
+                </div>
+              ))}
             </div>
           </div>
         )}
 
-        {/* 单词卡片网格 */}
-        <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4">
-          {batchWords.map((word, idx) => {
-            const question = { wordId: word.id, word: word.word, meaning: word.meaning, type: 'letter_fill', stage: 0 }
-            const done = cardDone[word.id] !== undefined
-            const isReading = readingAloud && readingIndex === idx
-
-            return (
-              <div
-                key={word.id}
-                className={`bg-white/15 backdrop-blur-md rounded-2xl p-4 transition-all duration-300 ${
-                  done ? 'border-2 border-green-300 opacity-80' : 'border-2 border-transparent'
-                } ${isReading ? 'ring-2 ring-green-400' : ''}`}
-              >
-                {/* 顶部：图片 + 单词信息 + 播放 */}
-                <div className="flex items-center gap-3 mb-3">
-                  <img
-                    src={`images/words/${word.id}.webp`}
-                    alt={word.word}
-                    className="w-[72px] h-[72px] rounded-xl object-cover bg-white/20 flex-shrink-0"
-                    onError={(e) => { e.target.src = 'images/words/apple.webp' }}
-                  />
-                  <div className="flex-1 min-w-0">
-                    <div className="text-lg font-bold text-white/90">{word.word}</div>
-                    <div className="text-sm text-white/60">{word.meaning}</div>
-                  </div>
-
-                </div>
-
-                {/* 字母填空区 */}
-                {!done ? (
-                  <LetterFill
-                    question={question}
-                    onAnswer={(isCorrect) => handleCardAnswer(word.id, isCorrect)}
-                  />
-                ) : (
-                  <div className="text-center py-3">
-                    <span className="inline-block px-4 py-1.5 rounded-full text-sm font-bold
-                      bg-green-500/20 text-green-300">
-                      ✅ 完成
-                    </span>
-                  </div>
-                )}
-              </div>
-            )
-          })}
-        </div>
-      </div>
-    </PageShell>
-  )
-  }
-
-  // Done
-  return (
-    <PageShell title="练习完成">
-      <Card className="max-w-xs mx-auto flex flex-col items-center py-8 text-center page-enter">
-        <div className="text-6xl mb-4 character-celebrate">🎉</div>
-        <h2 className="text-2xl font-bold text-white mb-6">练习完成！</h2>
-        <Card className="w-full mb-6">
-          <div className="text-4xl font-bold text-green-500">{score}/{batchWords.length}</div>
-          <div className="text-sm text-gray-500 mt-1">正确</div>
-        </Card>
-        <div className="flex gap-3 w-full">
+        <div className="flex gap-3">
           <Button variant="secondary" onClick={() => navigate('/select-child')} className="flex-1">返回</Button>
           <Button onClick={handleRestart} className="flex-1">再来一次</Button>
         </div>
-      </Card>
+      </div>
     </PageShell>
   )
 }

@@ -1,12 +1,10 @@
 import { useState, useCallback, useRef } from 'react'
 import { speakText } from './tts.js'
 
-/**
- * 选项面板组件
- *
- * 显示 3-4 个候选回复按钮（英中双语），点击后播放语音 + 反馈正确/错误
- * 语音播完才进入下一轮
- */
+function vibrate(pattern) {
+  try { navigator.vibrate?.(pattern) } catch {}
+}
+
 export default function ChoicePanel({ choices, onComplete, disabled }) {
   const [selectedIndex, setSelectedIndex] = useState(null)
   const [showResult, setShowResult] = useState(false)
@@ -19,11 +17,10 @@ export default function ChoicePanel({ choices, onComplete, disabled }) {
     setShowResult(true)
 
     const isCorrect = choices[index].correct
+    if (!isCorrect) vibrate([80, 40, 80])
 
-    // 播放语音，等待读完
     await speakText(choices[index].text)
 
-    // 语音播完后 500ms 再进入下一轮（让视觉反馈停留一下）
     setTimeout(() => {
       setSelectedIndex(null)
       setShowResult(false)
@@ -33,24 +30,25 @@ export default function ChoicePanel({ choices, onComplete, disabled }) {
   }, [disabled, selectedIndex, choices, onComplete])
 
   const getButtonStyle = (index) => {
-    const base = 'w-full px-5 py-3.5 rounded-2xl font-bold text-left transition-all duration-300 border-2 shadow-md '
+    const base = 'w-full px-5 py-4 rounded-2xl font-bold text-left transition-all duration-300 border-2 shadow-md '
     if (selectedIndex === null) {
-      return base + 'bg-white/40 backdrop-blur-sm border-white/30 text-white drop-shadow-sm hover:bg-white/55 hover:border-white/50 active:scale-[0.97]'
+      return base + 'bg-white/20 backdrop-blur-sm border-white/15 text-white hover:bg-white/30 hover:border-white/25 active:scale-[0.97]'
     }
     if (index === selectedIndex) {
       if (choices[index].correct) {
-        return base + 'bg-green-500/50 border-green-400 text-white scale-[1.02]'
+        return base + 'bg-green-500/40 border-green-400 text-white scale-[1.02] option-correct'
       }
-      return base + 'bg-red-500/50 border-red-400 text-white'
+      return base + 'bg-red-500/40 border-red-400 text-white option-wrong'
     }
     if (choices[index].correct && selectedIndex !== null && !choices[selectedIndex].correct) {
-      return base + 'bg-green-500/40 border-green-400/60 text-white'
+      return base + 'bg-green-500/25 border-green-400/50 text-white option-reveal-correct'
     }
-    return base + 'bg-white/10 border-white/10 text-white/40'
+    return base + 'bg-white/8 border-white/8 text-white/30'
   }
 
   return (
     <div className="w-full max-w-lg mx-auto space-y-3">
+      <div className="text-center text-white/45 text-xs font-bold mb-1">选择回复</div>
       {choices.map((choice, index) => (
         <button
           key={index}
@@ -58,15 +56,23 @@ export default function ChoicePanel({ choices, onComplete, disabled }) {
           disabled={selectedIndex !== null}
           className={getButtonStyle(index)}
         >
-          <div className="flex items-center justify-between">
-            <span className="text-base leading-snug font-bold">{choice.text}</span>
+          <div className="flex items-start gap-3">
+            {/* 回复序号 */}
+            <span className="w-6 h-6 rounded-full bg-white/15 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
+              {String.fromCharCode(65 + index)}
+            </span>
+            <div className="flex-1 min-w-0">
+              <div className="text-base leading-snug font-bold">
+                "{choice.text}"
+              </div>
+              {choice.cn && (
+                <div className="text-xs mt-1 text-white/55">{choice.cn}</div>
+              )}
+            </div>
             {showResult && index === selectedIndex && (
-              <span className="ml-2 text-lg">{choice.correct ? '✅' : '❌'}</span>
+              <span className="text-lg shrink-0">{choice.correct ? '✅' : '❌'}</span>
             )}
           </div>
-          {choice.cn && (
-            <div className="text-xs mt-1 text-white/80">{choice.cn}</div>
-          )}
         </button>
       ))}
     </div>

@@ -25,8 +25,6 @@ export function calcScore(correctCount, maxCombo, isPerfectRound, isFirstToday, 
     bonuses.push({ reason: 'combo', combo: maxCombo, extra: 1 })
   }
 
-
-
   // 一局全对
   if (isPerfectRound) {
     totalAdd += 3
@@ -51,7 +49,3 @@ export function calcScore(correctCount, maxCombo, isPerfectRound, isFirstToday, 
   return { totalAdd, availableAdd, bonuses }
 }
 
-// 等级 = floor(总星星 / 10) + 1
-export function calcLevel(totalEarnedStars) {
-  return Math.floor(totalEarnedStars / 10) + 1
-}

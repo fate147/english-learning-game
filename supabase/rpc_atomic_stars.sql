@@ -13,6 +13,10 @@ as $func$
 declare
   result jsonb;
 begin
+  if auth.uid() != p_user_id then
+    raise exception 'permission denied';
+  end if;
+
   update public.child_profiles
   set
     total_earned_stars = total_earned_stars + p_total_add,
@@ -38,6 +42,10 @@ declare
   current_available integer;
   result jsonb;
 begin
+  if auth.uid() != p_user_id then
+    raise exception 'permission denied';
+  end if;
+
   select available_stars into current_available
   from public.child_profiles
   where user_id = p_user_id and child_id = p_child_id

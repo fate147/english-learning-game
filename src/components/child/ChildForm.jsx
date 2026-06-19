@@ -32,32 +32,32 @@ export default function ChildForm({ onSubmit, onCancel }) {
       <AvatarPicker selected={avatar} onSelect={setAvatar} />
 
       <div>
-        <label className="block text-sm font-medium text-gray-600 mb-1">孩子名字</label>
+        <label className="block text-sm font-medium text-white/60 mb-1.5">孩子名字</label>
         <input
           type="text"
           value={name}
           onChange={(e) => { setName(e.target.value); setError('') }}
           placeholder="输入名字"
           maxLength={20}
-          className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-center text-lg
-                     focus:border-[var(--theme-color)] focus:outline-none transition-colors"
+          className="w-full px-4 py-3 bg-white/12 border-2 border-white/20 rounded-xl text-center text-lg text-white placeholder-white/30
+                     focus:border-[var(--theme-color)] focus:bg-white/18 focus:outline-none transition-all"
           autoFocus
         />
       </div>
 
-
-
-      {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+      {error && <p className="text-red-300 text-sm text-center">{error}</p>}
 
       <div className="flex gap-3">
         {onCancel && (
-          <Button type="button" variant="secondary" onClick={onCancel} className="flex-1">
+          <button type="button" onClick={onCancel}
+            className="flex-1 py-3 rounded-xl font-bold bg-white/12 border-2 border-white/20 text-white/70 hover:bg-white/18 transition-all btn-ripple">
             取消
-          </Button>
+          </button>
         )}
-        <Button type="submit" disabled={loading || !name.trim()} className="flex-1">
+        <button type="submit" disabled={loading || !name.trim()}
+          className="flex-1 py-3 rounded-xl font-bold bg-gradient-to-r from-[var(--theme-color)] to-[var(--theme-color-light)] text-white hover:brightness-110 shadow-lg transition-all btn-ripple disabled:opacity-50">
           {loading ? '创建中...' : '添加孩子'}
-        </Button>
+        </button>
       </div>
     </form>
   )

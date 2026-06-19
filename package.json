@@ -7,11 +7,11 @@
     "dev": "vite",
     "build": "vite build && touch docs/.nojekyll",
     "preview": "vite preview",
-    "deploy": "gh-pages -d docs",
-    "test": "vitest"
+    "deploy": "gh-pages -d docs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.106.2",
+    "bcryptjs": "^3.0.3",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-router-dom": "^6.30.4"
@@ -29,7 +29,6 @@
     "globals": "^17.6.0",
     "postcss": "^8.5.15",
     "tailwindcss": "^3.4.19",
-    "vite": "^8.0.12",
-    "vitest": "^4.1.7"
+    "vite": "^8.0.12"
   }
 }

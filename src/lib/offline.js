@@ -98,6 +98,10 @@ export function startSync(saveFn) {
     if (queue.length === 0) return
 
     for (const item of queue) {
+      if (item.retries >= 5) {
+        console.warn(`离线队列项 ${item.id} 已达最大重试次数，跳过`)
+        continue
+      }
       try {
         const { error } = await saveFn(item.payload)
         if (!error) {

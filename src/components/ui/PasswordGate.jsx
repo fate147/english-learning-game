@@ -98,12 +98,12 @@ export default function PasswordGate({ isOpen, onClose, onSuccess }) {
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 overlay-in">
-      <div className="bg-slate-800 rounded-2xl shadow-xl w-full max-w-sm mx-4 p-6 scale-in border border-slate-700">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm overlay-in">
+      <div className="glass-card rounded-2xl shadow-xl w-full max-w-sm mx-4 p-6 scale-in">
         <div className="text-center mb-6">
           <div className="text-4xl mb-2">{mode === 'forgot' ? '🔑' : '🔒'}</div>
-          <h2 className="text-xl font-bold text-slate-100">家长管理</h2>
-          <p className="text-sm text-slate-400 mt-1">
+          <h2 className="text-xl font-bold text-white">家长管理</h2>
+          <p className="text-sm text-white/60 mt-1">
             {mode === 'setup' ? '首次使用，请设置家长密码' : mode === 'forgot' ? '已通过邮箱验证，请设置新密码' : '请输入家长密码'}
           </p>
         </div>
@@ -115,8 +115,8 @@ export default function PasswordGate({ isOpen, onClose, onSuccess }) {
             onChange={(e) => { setPassword(e.target.value); setError('') }}
             placeholder={mode === 'verify' ? '输入家长密码' : '新密码（至少4位）'}
             autoFocus
-            className="w-full px-4 py-3 border-2 border-slate-600 rounded-xl text-center text-lg text-slate-100 bg-slate-700
-                       focus:border-[var(--theme-color)] focus:outline-none transition-colors placeholder-slate-400"
+            className="w-full px-4 py-3 bg-white/12 border-2 border-white/20 rounded-xl text-center text-lg text-white placeholder-white/30
+                       focus:border-[var(--theme-color)] focus:bg-white/18 focus:outline-none transition-all"
           />
           {mode !== 'verify' && (
             <input
@@ -124,17 +124,17 @@ export default function PasswordGate({ isOpen, onClose, onSuccess }) {
               value={confirmPw}
               onChange={(e) => { setConfirmPw(e.target.value); setError('') }}
               placeholder="再次输入密码"
-              className="w-full px-4 py-3 border-2 border-slate-600 rounded-xl text-center text-lg text-slate-100 bg-slate-700
-                         focus:border-[var(--theme-color)] focus:outline-none transition-colors placeholder-slate-400"
+              className="w-full px-4 py-3 bg-white/12 border-2 border-white/20 rounded-xl text-center text-lg text-white placeholder-white/30
+                         focus:border-[var(--theme-color)] focus:bg-white/18 focus:outline-none transition-all"
             />
           )}
-          {error && <p className="text-red-400 text-sm text-center">{error}</p>}
+          {error && <p className="text-red-300 text-sm text-center">{error}</p>}
           <div className="flex gap-3 mt-2">
             <button type="button" onClick={onClose}
-              className="flex-1 py-3 rounded-xl border-2 border-slate-600 text-slate-300 font-bold hover:bg-slate-700 transition-colors"
+              className="flex-1 py-3 rounded-xl border-2 border-white/20 text-white/60 font-bold hover:bg-white/10 transition-colors btn-ripple"
             >取消</button>
             <button type="submit" disabled={loading}
-              className="flex-1 py-3 rounded-xl bg-[var(--theme-color)] text-white font-bold hover:brightness-110 disabled:opacity-50 transition-all"
+              className="flex-1 py-3 rounded-xl bg-gradient-to-r from-[var(--theme-color)] to-[var(--theme-color-light)] text-white font-bold hover:brightness-110 disabled:opacity-50 transition-all btn-ripple shadow-lg"
             >{loading ? '处理中...' : mode === 'verify' ? '确认' : '设置密码'}</button>
           </div>
 
@@ -144,7 +144,7 @@ export default function PasswordGate({ isOpen, onClose, onSuccess }) {
               <button
                 type="button"
                 onClick={() => { setMode('forgot'); setPassword(''); setConfirmPw(''); setError('') }}
-                className="text-sm text-slate-400 hover:text-[var(--theme-color)] transition-colors"
+                className="text-sm text-white/40 hover:text-white/65 transition-colors"
               >
                 忘记密码？通过邮箱重置
               </button>

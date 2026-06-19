@@ -54,7 +54,7 @@ export default function LetterFill({ question, onAnswer, unit, disabled }) {
     setCandidates(newCandidates)
 
     const newBlanks = blanks.map((b, i) =>
-      i === firstEmpty ? { ...b, filled: letter } : b
+      i === firstEmpty ? { ...b, filled: letter, _justFilled: true } : b
     )
     setBlanks(newBlanks)
 
@@ -66,6 +66,9 @@ export default function LetterFill({ question, onAnswer, unit, disabled }) {
       )
       setShowResult(true)
       setResultCorrect(allCorrect)
+      if (!allCorrect) {
+        try { navigator.vibrate?.([80, 40, 80]) } catch {}
+      }
 
       const delay = allCorrect ? 1200 : 3000
       timerRef.current = setTimeout(() => {
@@ -94,18 +97,18 @@ export default function LetterFill({ question, onAnswer, unit, disabled }) {
   const allDisabled = showResult || disabled
 
   return (
-    <div className="page-enter flex flex-col items-center gap-6">
+    <div className="page-enter flex flex-col items-center gap-6 sm:gap-8">
       <audio ref={audioRef} preload="none">
         <source src={`audio/${question.wordId}.mp3`} type="audio/mpeg" />
       </audio>
 
       {/* 题目提示 + 语音按钮 */}
       <div className="q-card-glass w-full max-w-sm">
-        <div className="text-xs font-bold tracking-wider text-white/60 uppercase mb-2">
+        <div className="text-xs font-bold tracking-wider text-white/70 uppercase mb-3">
           ✏️ {STRINGS.letterFill.hint}
         </div>
         <div className="flex items-center justify-center gap-3">
-          <span className="text-lg font-extrabold text-white">&ldquo;{question.meaning}&rdquo;</span>
+          <span className="text-lg font-extrabold text-white" style={{textShadow: '0 1px 4px rgba(0,0,0,0.2)'}}>&ldquo;{question.meaning}&rdquo;</span>
           <button
             onClick={playAudio}
             className="w-9 h-9 rounded-full bg-white/20 text-white text-sm font-bold
@@ -153,6 +156,8 @@ export default function LetterFill({ question, onAnswer, unit, disabled }) {
                 w-[52px] h-[58px] rounded-xl text-center leading-[58px]
                 text-[28px] font-bold transition-all duration-200 select-none
                 ${slotStyle}
+                ${isFilled && blank?._justFilled && !showResult ? 'letter-fly-in' : ''}
+                ${showResult && isBlank ? (blank?.filled?.toLowerCase() === blank?.correctLetter?.toLowerCase() ? 'result-perfect-flash' : '') : ''}
               `}
             >
               {isBlank

@@ -232,12 +232,4 @@ export function getWordById(id) {
   return WORDS.find((w) => w.id === id) || null
 }
 
-// 多学科扩展接口（架构预留）
-export function getWordsBySubject(subject, grade, unit) {
-  if (subject !== 'english') return []
-  return getWordsByUnit(unit)
-}
 
-export function getUnitCount() {
-  return 6
-}

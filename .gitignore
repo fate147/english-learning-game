@@ -10,6 +10,7 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+docs/
 *.local
 
 # Editor directories and files
@@ -23,3 +24,18 @@ dist-ssr
 *.sln
 *.sw?
 NUL
+
+# Build coverage
+coverage/
+
+# Vite cache
+.vite/
+
+# Code intelligence
+.codegraph/
+
+# Agent memory files
+memory/
+
+# Environment variables
+.env

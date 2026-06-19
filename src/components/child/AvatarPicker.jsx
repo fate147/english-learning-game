@@ -1,4 +1,4 @@
-const AVATARS = ['🐱', '🐶', '🐰', '🐼', '🦊', '🐸', '🐵', '🦁']
+import { AVATARS } from '../../config/avatars.js'
 
 export default function AvatarPicker({ selected, onSelect }) {
   return (

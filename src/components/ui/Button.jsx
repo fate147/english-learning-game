@@ -7,14 +7,14 @@ export default function Button({
   className = '',
   ...props
 }) {
-  const base = 'rounded-xl font-bold transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed'
+  const base = 'rounded-xl font-bold transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed btn-ripple'
 
   const variants = {
-    primary: 'bg-[var(--theme-color)] text-white hover:brightness-110 shadow-md',
-    secondary: 'bg-white text-[var(--theme-color-dark)] border-2 border-[var(--theme-color)] hover:bg-[var(--theme-bg)]',
+    primary: 'bg-gradient-to-r from-[var(--theme-color)] to-[var(--theme-color-light)] text-white hover:brightness-110 shadow-lg',
+    secondary: 'bg-white/20 border-2 border-white/40 text-white hover:bg-white/30',
     'secondary-dark': 'bg-slate-700 text-slate-300 border-2 border-slate-600 hover:bg-slate-600',
-    ghost: 'bg-transparent text-gray-600 hover:bg-gray-100',
-    danger: 'bg-red-500 text-white hover:bg-red-600',
+    ghost: 'bg-transparent text-white/60 hover:bg-white/10 hover:text-white',
+    danger: 'bg-red-500/80 text-white hover:bg-red-500',
   }
 
   const sizes = {

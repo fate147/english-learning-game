@@ -2,12 +2,15 @@ import { useState, useCallback, useEffect, useRef } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useChild } from '../hooks/useChild.js'
 import { useStars } from '../hooks/useStars.js'
-import { getLearningState, saveGameSession } from '../lib/game.js'
+import { saveGameSession } from '../lib/game.js'
 import { enqueue, isOnline } from '../lib/offline.js'
+import { calcScore } from '../engines/scoring.js'
 import { CHARACTERS } from '../config/characters.js'
 import { pickRandomRounds } from '../lib/english/courses/index.js'
 import DialogueBubble from '../components/dialogue/DialogueBubble.jsx'
 import ChoicePanel from '../components/dialogue/ChoicePanel.jsx'
+import GameHeader from '../components/ui/GameHeader.jsx'
+import ProgressDots from '../components/ui/ProgressDots.jsx'
 
 const ROUNDS_PER_SESSION = 8
 
@@ -15,29 +18,26 @@ export default function DialoguePractice() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const { activeChild } = useChild()
-  const { totalEarned, addStars, refreshStars } = useStars()
+  const { addStars, refreshStars } = useStars()
   const navigatedRef = useRef(false)
 
   const character = searchParams.get('char') || 'dragon'
   const subject = searchParams.get('subject') || 'english'
   const grade = parseInt(searchParams.get('grade')) || 3
+  const charConfig = CHARACTERS.find(c => c.id === character) || CHARACTERS[0]
 
-  // gameKey 递增时重新开始对话
   const [gameKey, setGameKey] = useState(0)
-
-  // 阶段
-  const [phase, setPhase] = useState('loading') // loading | playing | result
-  const [lines, setLines] = useState([])       // 展平的 8 轮对话
+  const [phase, setPhase] = useState('loading')
+  const [lines, setLines] = useState([])
   const [roundIndex, setRoundIndex] = useState(0)
   const [score, setScore] = useState(0)
+  const [combo, setCombo] = useState(0)
+  const [maxCombo, setMaxCombo] = useState(0)
   const [results, setResults] = useState([])
   const [typingDone, setTypingDone] = useState(false)
   const [isFinishing, setIsFinishing] = useState(false)
-
-  // 重播 key，触发 DialogueBubble 重新朗读
   const [replayKey, setReplayKey] = useState(0)
 
-  // 如果没有选孩子，跳转
   useEffect(() => {
     if (!activeChild && !navigatedRef.current) {
       navigatedRef.current = true
@@ -45,39 +45,38 @@ export default function DialoguePractice() {
     }
   }, [activeChild, navigate])
 
-  // gameKey 变化时启动新对话
   useEffect(() => {
     if (!activeChild) return
-
-    // 新管道：从 courses/ 加载全部单元
     const allUnitIds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     const picked = pickRandomRounds(allUnitIds, ROUNDS_PER_SESSION)
-    // 打乱选项顺序
     const lines = picked.map((d) => ({
       ...d,
       choices: [...d.choices].sort(() => Math.random() - 0.5),
     }))
-
     setLines(lines)
     setRoundIndex(0)
     setScore(0)
+    setCombo(0)
+    setMaxCombo(0)
     setResults([])
     setTypingDone(false)
     setPhase('playing')
   }, [activeChild, gameKey])
 
-  // 打字完成回调
-  const handleTypingDone = useCallback(() => {
-    setTypingDone(true)
-  }, [])
+  const handleTypingDone = useCallback(() => setTypingDone(true), [])
 
-  // 答完一轮
   const handleRoundComplete = useCallback((isCorrect) => {
     setResults((prev) => [...prev, { round: roundIndex + 1, correct: isCorrect }])
     if (isCorrect) {
       setScore((s) => s + 1)
+      setCombo((c) => {
+        const newCombo = c + 1
+        setMaxCombo((m) => Math.max(m, newCombo))
+        return newCombo
+      })
+    } else {
+      setCombo(0)
     }
-
     if (roundIndex + 1 >= lines.length) {
       setIsFinishing(true)
     } else {
@@ -86,28 +85,25 @@ export default function DialoguePractice() {
     }
   }, [roundIndex, lines])
 
-  // 全部完成后进入结算
   useEffect(() => {
     if (isFinishing) {
-      const timer = setTimeout(() => {
-        setPhase('result')
-        setIsFinishing(false)
-      }, 800)
+      const timer = setTimeout(() => { setPhase('result'); setIsFinishing(false) }, 800)
       return () => clearTimeout(timer)
     }
   }, [isFinishing])
 
-  // 保存记录 + 星星
   const handleFinish = useCallback(async () => {
     if (!activeChild) return
-
     const totalRounds = lines.length
     const correctCount = results.filter((r) => r.correct).length
     const wrongCount = totalRounds - correctCount
+    const isPerfect = correctCount === totalRounds && totalRounds > 0
 
     const sessionData = {
       user_id: activeChild.user_id,
       child_id: activeChild.child_id,
+      subject,
+      grade,
       client_session_id: `dialogue_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
       played_on: new Date().toISOString().split('T')[0],
       character,
@@ -120,19 +116,35 @@ export default function DialoguePractice() {
         type: 'dialogue',
       })),
     }
-
     if (isOnline()) {
       const { error } = await saveGameSession(sessionData)
       if (error) enqueue(sessionData)
-    } else {
-      enqueue(sessionData)
-    }
+    } else { enqueue(sessionData) }
 
-    if (correctCount > 0) {
-      addStars(correctCount, correctCount)
-      refreshStars()
+    // 计算奖励（复用 scoring.js，与主游戏一致）
+    const todayKey = 'dialogue_last_date_' + activeChild.child_id
+    const lastDate = localStorage.getItem(todayKey)
+    const today = new Date().toISOString().split('T')[0]
+    const isFirstToday = lastDate !== today
+    if (isFirstToday) localStorage.setItem(todayKey, today)
+
+    const streakKey = 'dialogue_streak_' + activeChild.child_id
+    let streakDays = parseInt(localStorage.getItem(streakKey) || '0')
+    if (isFirstToday) {
+      const yesterday = new Date()
+      yesterday.setDate(yesterday.getDate() - 1)
+      const yesterdayStr = yesterday.toISOString().split('T')[0]
+      streakDays = lastDate === yesterdayStr ? streakDays + 1 : 1
+      localStorage.setItem(streakKey, String(streakDays))
     }
-  }, [activeChild, results, lines, character, addStars, refreshStars])
+    const isStreak7Days = streakDays >= 7
+
+    const { totalAdd, availableAdd } = calcScore(correctCount, maxCombo, isPerfect, isFirstToday, isStreak7Days)
+    if (totalAdd > 0) {
+      addStars(totalAdd, availableAdd)
+      setTimeout(() => refreshStars(), 500)
+    }
+  }, [activeChild, results, lines, character, subject, grade, maxCombo, addStars, refreshStars])
 
   const handlePlayAgain = useCallback(() => {
     handleFinish()
@@ -145,53 +157,65 @@ export default function DialoguePractice() {
     navigate('/select-child')
   }, [handleFinish, navigate])
 
-  // 重播当前句子
-  const handleReplay = useCallback(() => {
-    setReplayKey((k) => k + 1)
-  }, [])
+  const handleReplay = useCallback(() => setReplayKey((k) => k + 1), [])
 
   if (!activeChild) return null
 
-  // === 加载中（初始化对话）===
+  // ===== 加载中 =====
   if (phase === 'loading') {
     return (
-      <div className="bg-question-purple min-h-screen flex items-center justify-center">
-        <p className="text-white/60 text-lg">加载对话中...</p>
+      <div className="bg-question-purple min-h-screen flex flex-col items-center justify-center gap-4">
+        <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-white/20 bg-white/10 dialogue-avatar-frame dialogue-speaking">
+          <img
+            src={`images/${charConfig.image}_happy.png`}
+            alt={charConfig.name}
+            className="w-full h-full object-cover"
+            onError={(e) => { e.target.style.display = 'none'; e.target.parentElement.textContent = charConfig.emoji }}
+          />
+        </div>
+        <div className="text-center">
+          <p className="text-white font-bold text-lg">准备对话中...</p>
+          <p className="text-white/50 text-sm mt-1">{charConfig.name} 在等你</p>
+        </div>
+        <div className="flex gap-1.5 mt-2">
+          {[0, 1, 2].map(i => (
+            <div key={i} className="w-2 h-2 rounded-full bg-white/40 animate-bounce" style={{animationDelay: `${i * 150}ms`}} />
+          ))}
+        </div>
       </div>
     )
   }
 
-  // === 对话中 ===
+  // ===== 对话中 =====
   if (phase === 'playing') {
     const currentLine = lines[roundIndex]
+    const accuracy = results.length > 0 ? Math.round((score / results.length) * 100) : 100
 
     return (
       <div className="bg-question-purple min-h-screen flex flex-col">
-        <header className="relative z-10">
-          <div className="max-w-lg mx-auto px-4 py-4">
-            <div className="flex items-center justify-between header-light">
-              <button onClick={() => navigate('/select-child')} className="back-btn">← 返回</button>
-              <h1>💬 对话练习</h1>
-              <span className="stars-display">⭐ {score}</span>
-            </div>
-          </div>
-        </header>
+        <GameHeader
+          onBack={() => navigate('/select-child')}
+          title="💬 对话练习"
+          stars={score}
+        />
 
-        <div className="relative z-10 flex justify-center px-4 mb-4">
-          <div className="progress-dots">
-            {Array.from({ length: lines.length }, (_, i) => {
-              let dotClass = 'progress-dot'
-              if (i === roundIndex) dotClass += ' active'
-              else if (i < roundIndex) {
-                const res = results.find((r) => r.round === i + 1)
-                dotClass += res?.correct ? ' correct' : ' wrong'
-              }
-              return <span key={i} className={dotClass} />
-            })}
-          </div>
-        </div>
+        <ProgressDots
+          total={lines.length}
+          current={roundIndex}
+          answers={results.map((r) => ({ correct: r.correct }))}
+        />
 
-        <main className="flex-1 flex flex-col justify-center px-4 pb-8 relative z-10 space-y-6">
+        {/* 实时准确率 */}
+        {results.length > 0 && (
+          <div className="flex justify-center mb-2">
+            <span className={`text-xs font-bold px-3 py-0.5 rounded-full
+              ${accuracy >= 80 ? 'bg-green-500/20 text-green-300' : 'bg-amber-500/20 text-amber-300'}`}>
+              {accuracy}% 正确率
+            </span>
+          </div>
+        )}
+
+        <main className="flex-1 flex flex-col justify-center px-4 pb-8 relative z-10 space-y-5">
           {currentLine && (
             <div>
               <DialogueBubble
@@ -202,12 +226,11 @@ export default function DialoguePractice() {
                 onTypingDone={handleTypingDone}
                 autoSpeak={true}
               />
-              {/* 重播按钮 — typing 结束后显示 */}
               {typingDone && (
                 <div className="flex justify-center mt-2">
                   <button
                     onClick={handleReplay}
-                    className="px-4 py-1.5 rounded-full bg-white/10 text-white/60 hover:text-white hover:bg-white/20 text-xs font-semibold transition-all"
+                    className="px-4 py-1.5 rounded-full bg-white/15 text-white/60 hover:text-white hover:bg-white/25 text-xs font-semibold transition-all"
                   >
                     🔁 重播
                   </button>
@@ -228,52 +251,70 @@ export default function DialoguePractice() {
     )
   }
 
-  // === 结算 ===
+  // ===== 结算 =====
   const correctCount = results.filter((r) => r.correct).length
+  const total = lines.length
+  const accuracy = total > 0 ? Math.round((correctCount / total) * 100) : 0
 
   return (
-    <div className="bg-question-purple min-h-screen flex flex-col">
-      <main className="flex-1 flex flex-col items-center justify-center px-6">
-        <div className="max-w-sm w-full space-y-6 text-center">
-          <div className="text-7xl mb-2 character-celebrate">
+    <div className="bg-question-purple min-h-screen flex flex-col relative overflow-hidden">
+      <div className="confetti-container">
+        {Array.from({ length: 12 }, (_, i) => (
+          <div key={i} className="confetti-piece"
+            style={{
+              left: `${(i / 12) * 100}%`,
+              background: ['#ff6b9d', '#fbbf24', '#4ade80', '#4d96ff', '#c084fc', '#fb923c'][i % 6],
+              animationDuration: `${2 + Math.random() * 1.5}s`,
+              animationDelay: `${i * 0.15}s`,
+            }}
+          />
+        ))}
+      </div>
+
+      <main className="flex-1 flex flex-col items-center justify-center px-6 relative z-10">
+        <div className="max-w-sm w-full space-y-5 text-center">
+          <div className="page-enter">
             <img
-              src={`images/${CHARACTERS.find(c => c.id === character)?.image || character}_happy.png`}
+              src={`images/${charConfig.image}_happy.png`}
               alt=""
-              className="w-28 h-28 mx-auto object-contain"
+              className="w-28 h-28 mx-auto object-contain result-bounce"
               onError={(e) => { e.target.style.display = 'none'; e.target.parentElement.textContent = '🎉' }}
             />
           </div>
 
-          <h2 className="text-2xl font-black text-white drop-shadow-sm">对话完成！</h2>
+          <h2 className="text-2xl font-black text-white page-enter" style={{textShadow: '0 2px 12px rgba(0,0,0,0.3)'}}>
+            {accuracy === 100 ? '太棒了！全对！' : accuracy >= 75 ? '做得不错！' : '对话完成！'}
+          </h2>
 
-          <div className="glass-card p-6 space-y-4">
-            <div className="text-5xl font-black text-yellow-300">
-              {correctCount} / {lines.length}
+          <p className="guide-text max-w-xs page-enter" style={{animationDelay: '0.1s'}}>
+            {accuracy === 100
+              ? '每道题都答对了，你真厉害！'
+              : `答对了 ${correctCount} 道题，继续加油！`
+            }
+          </p>
+
+          {/* 数据卡片 */}
+          <div className="flex gap-3 page-enter" style={{animationDelay: '0.15s'}}>
+            <div className="flex-1 glass-card !p-3 text-center">
+              <div className="text-2xl font-black text-green-400">{correctCount}</div>
+              <div className="text-[10px] text-white/50 font-bold">✅ 答对</div>
             </div>
-            <p className="text-white/70 text-sm">答对</p>
-
-            <div className="flex justify-center gap-6 text-sm">
-              <div className="text-center">
-                <div className="text-green-400 font-bold text-xl">{correctCount}</div>
-                <div className="text-white/50 text-xs">✅ 正确</div>
-              </div>
-              <div className="text-center">
-                <div className="text-red-400 font-bold text-xl">{lines.length - correctCount}</div>
-                <div className="text-white/50 text-xs">❌ 错误</div>
-              </div>
-              <div className="text-center">
-                <div className="text-yellow-400 font-bold text-xl">{correctCount}</div>
-                <div className="text-white/50 text-xs">⭐ 星星</div>
-              </div>
+            <div className="flex-1 glass-card !p-3 text-center">
+              <div className="text-2xl font-black text-red-400">{total - correctCount}</div>
+              <div className="text-[10px] text-white/50 font-bold">❌ 答错</div>
+            </div>
+            <div className="flex-1 glass-card !p-3 text-center">
+              <div className="text-2xl font-black text-amber-400">⭐ {correctCount}</div>
+              <div className="text-[10px] text-white/50 font-bold">获得</div>
             </div>
           </div>
 
-          <div className="flex gap-4">
+          <div className="flex gap-3 page-enter" style={{animationDelay: '0.2s'}}>
             <button onClick={handlePlayAgain} className="btn-game-primary flex-1">
               🔄 再来一次
             </button>
             <button onClick={handleGoHome} className="btn-game-secondary flex-1">
-              🏠 返回首页
+              🏠 回首页
             </button>
           </div>
         </div>

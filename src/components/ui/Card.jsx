@@ -2,13 +2,13 @@
  * 统一卡片组件
  *
  * variant:
- *   'default'  → 白色圆卡（游戏端）
- *   'dark'     → 深色卡片 + 边框（家长端）
+ *   'glass'       → 毛玻璃卡片（游戏端，默认）
+ *   'dark'        → 深色卡片 + 边框（家长端）
  *   'translucent' → 半透明深色卡片（家长端装饰用）
  */
 export default function Card({
   children,
-  variant = 'default',
+  variant = 'glass',
   padding = 'md',
   className = '',
 }) {
@@ -19,7 +19,7 @@ export default function Card({
   }
 
   const variants = {
-    default: 'bg-white rounded-2xl shadow-lg',
+    glass: 'glass-card',
     dark: 'bg-slate-800 rounded-2xl border border-slate-700',
     translucent: 'bg-slate-800/50 backdrop-blur rounded-2xl border border-slate-700',
   }

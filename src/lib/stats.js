@@ -1,6 +1,7 @@
 import { supabase } from './supabase.js'
 
 export async function getAggregatedStats(userId, childId, subject, grade) {
+  console.log('[getAggregatedStats] 查询:', { userId, childId, subject, grade })
   // 获取所有游戏记录
   let query = supabase
     .from('game_sessions')
@@ -13,6 +14,8 @@ export async function getAggregatedStats(userId, childId, subject, grade) {
     .order('played_on', { ascending: false })
 
   if (sessionsError) return { data: null, error: sessionsError }
+
+  console.log('[getAggregatedStats] 查到', sessions?.length || 0, '条记录')
 
   // 获取 word_progress
   let wpQuery = supabase
@@ -61,18 +64,24 @@ export async function getAggregatedStats(userId, childId, subject, grade) {
 
   // 错误单词排名
   const errorMap = {}
+  const errorTextMap = {}
   if (sessions) {
     sessions.forEach((s) => {
-      if (s.results) {
-        const results =
-          typeof s.results === 'string' ? JSON.parse(s.results) : s.results
-        results.forEach((r) => {
-          const errKey = r.wordId || r.questionId
-          if (r && !r.correct && errKey) {
-            errorMap[errKey] = (errorMap[errKey] || 0) + 1
+      if (!s.results) return
+      let results
+      try {
+        results = typeof s.results === 'string' ? JSON.parse(s.results) : s.results
+      } catch { return }
+      if (!Array.isArray(results)) return
+      results.forEach((r) => {
+        const errKey = r.wordId || r.questionId
+        if (r && !r.correct && errKey) {
+          errorMap[errKey] = (errorMap[errKey] || 0) + 1
+          if (r.questionText && !errorTextMap[errKey]) {
+            errorTextMap[errKey] = r.questionText
           }
-        })
-      }
+        }
+      })
     })
   }
 
@@ -101,7 +110,8 @@ export async function getAggregatedStats(userId, childId, subject, grade) {
       dailyStats,
       errorRanking: Object.entries(errorMap)
         .sort((a, b) => b[1] - a[1])
-        .slice(0, 10),
+        .slice(0, 10)
+        .map(([key, count]) => [key, count, errorTextMap[key] || null]),
       wordProgress: wordLevels,
     },
     error: null,

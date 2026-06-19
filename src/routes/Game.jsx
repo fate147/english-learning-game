@@ -10,6 +10,8 @@ import { getLearningState, getWordProgress, saveGameSession } from '../lib/game.
 import { calcScore } from '../engines/scoring.js'
 import { enqueue, isOnline } from '../lib/offline.js'
 
+import GameHeader from '../components/ui/GameHeader.jsx'
+import ProgressDots from '../components/ui/ProgressDots.jsx'
 import StartScreen from '../components/game/StartScreen.jsx'
 import ResultScreen from '../components/game/ResultScreen.jsx'
 import ImageChoice from '../components/question/ImageChoice.jsx'
@@ -25,7 +27,7 @@ export default function Game() {
   const subject = searchParams.get('subject') || 'english'
   const grade = parseInt(searchParams.get('grade')) || 3
   const { activeChild } = useChild()
-  const { results, gameState, startGame, submitAnswer, nextQuestion, resetGame, currentQuestion, currentIndex, score, combo } = useGameSession()
+  const { results, gameState, startGame, submitAnswer, nextQuestion, resetGame, currentQuestion, currentIndex, score, combo, answers } = useGameSession()
   const { totalEarned, level, addStars, refreshStars } = useStars()
 
   const [character, setCharacter] = useState('dragon')
@@ -35,7 +37,9 @@ export default function Game() {
   const [isLoading, setIsLoading] = useState(false)
   const [dialogue, setDialogue] = useState('')
   const [charExpression, setCharExpression] = useState('neutral')
+  const [noWordsMsg, setNoWordsMsg] = useState('')
   const navigatedRef = useRef(false)
+  const prevComboRef = useRef(0)
 
   // 如果没有选孩子，跳转（useEffect 避免 render 时导航）
   useEffect(() => {
@@ -44,6 +48,16 @@ export default function Game() {
       navigate('/select-child', { replace: true })
     }
   }, [activeChild, navigate])
+
+  // 卸载时清理游戏状态，防止路由残留
+  useEffect(() => {
+    return () => resetGame()
+  }, [resetGame])
+
+  // 追踪上一次 combo 值，用于断连提示
+  useEffect(() => {
+    prevComboRef.current = combo
+  }, [combo])
 
   if (!activeChild) return null
 
@@ -79,10 +93,6 @@ export default function Game() {
         }
       }
     }
-    // 如果家长未解锁任何词，默认用单元1
-    if (unlockedIds.length === 0) {
-      unlockedIds = getWordsByUnit(1).map((w) => w.id)
-    }
     // 加载单词进度（从 Supabase），用于分级复习
     let wordProgressMap = {}
     let learnedWords = []
@@ -101,6 +111,12 @@ export default function Game() {
       }
     }
     // 找到第一个有解锁词的单元
+    if (unlockedIds.length === 0) {
+      setNoWordsMsg('请先在家长面板解锁单词')
+      setIsLoading(false)
+      return
+    }
+    setNoWordsMsg('')
     const firstUnit = WORDS.find((w) => unlockedIds.includes(w.id))?.unit || 1
 
     startGame({
@@ -121,13 +137,15 @@ export default function Game() {
     const { newCombo } = submitAnswer(currentIndex, isCorrect) || {}
 
     const isLetterFill = currentQuestion?.type === 'letter_fill'
+    const isChineseOrMath = currentQuestion?.type === 'chinese_reading' || currentQuestion?.type === 'math_choice'
 
     if (isLetterFill) {
-      // 字母填空已内部处理反馈和延迟，直接前进
+      nextQuestion()
+      setIsProcessing(false)
+    } else if (isChineseOrMath) {
       nextQuestion()
       setIsProcessing(false)
     } else {
-      // 听音选图：用 FeedbackOverlay，onComplete 触发下一步
       setLastCorrect(isCorrect)
       setShowFeedback(true)
       setDialogue(getRandomDialogue(character, isCorrect))
@@ -137,6 +155,7 @@ export default function Game() {
 
   const handleFinish = useCallback(async () => {
     // 保存游戏记录
+    console.log('[handleFinish] results:', results ? '有数据' : 'null')
     if (!activeChild || !results) return
 
     const sessionData = {
@@ -193,8 +212,8 @@ export default function Game() {
       isStreak7Days
     )
     if (totalAdd > 0) {
-      addStars(totalAdd, availableAdd) // 不 await，后台同步
-      refreshStars()
+      addStars(totalAdd, availableAdd) // 乐观更新本地
+      setTimeout(() => refreshStars(), 500) // 延迟刷新，等 RPC 完成
     }
   }, [activeChild, results, addStars, refreshStars, character])
 
@@ -224,8 +243,13 @@ export default function Game() {
           totalEarnedStars={totalEarned}
           level={level}
           defaultChar={character}
-          onBack={() => { resetGame(); navigate('/select-child') }}
+          onBack={() => { resetGame(); navigate('/select-child'); setNoWordsMsg('') }}
         />
+        {noWordsMsg && (
+          <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 bg-white/15 backdrop-blur-md border border-white/20 rounded-2xl px-6 py-3 text-white text-sm font-medium shadow-lg">
+            ⚠️ {noWordsMsg}
+          </div>
+        )}
         {isLoading && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
             <div className="bg-white/20 backdrop-blur-md rounded-3xl p-8 flex flex-col items-center gap-4 border border-white/20">
@@ -252,31 +276,32 @@ export default function Game() {
   // 游戏中
   const currentUnit = WORDS.find(w => w.id === currentQuestion?.wordId)?.unit || 1
 
+  // 科目标签
+  const SUBJECT_LABEL = { english: '🔤 英语', chinese: '🀄 语文', math: '🔢 数学' }
+
   return (
     <div className={`${subject === 'chinese' ? 'bg-chinese' : subject === 'math' ? 'bg-math' : 'bg-question-purple'} min-h-screen flex flex-col`}>
       {/* 顶部栏 */}
-      <header className="relative z-10">
-        <div className="max-w-lg mx-auto px-4 py-4">
-          <div className="flex items-center justify-between header-light">
-            <button onClick={() => navigate('/select-child')} className="back-btn">
-              ← 返回
-            </button>
-            <h1>🐉 {CHARACTERS.find(c => c.id === character)?.name || '小伙伴'}</h1>
-            <span className="stars-display">⭐ {score}</span>
-          </div>
+      <GameHeader
+        onBack={() => { resetGame(); navigate('/select-child') }}
+        stars={score}
+      >
+        <span className="subject-badge">{SUBJECT_LABEL[subject]}</span>
+        <div className="flex items-center gap-2">
+          <img
+            src={`images/${CHARACTERS.find(c => c.id === character)?.image || 'dragon'}_normal.png`}
+            alt={CHARACTERS.find(c => c.id === character)?.name || '小伙伴'}
+            className="w-8 h-8 rounded-full object-contain"
+            onError={(e) => { e.target.style.display = 'none' }}
+          />
+          <h1 className="text-base">
+            {CHARACTERS.find(c => c.id === character)?.name || '小伙伴'}
+          </h1>
         </div>
-      </header>
+      </GameHeader>
 
       {/* 进度点 */}
-      <div className="relative z-10 flex justify-center px-4 mb-2">
-        <div className="progress-dots">
-          {Array.from({ length: GAME_QUESTIONS_PER_ROUND }, (_, i) => {
-            let dotClass = 'progress-dot'
-            if (i === currentIndex) dotClass += ' active'
-            return <span key={i} className={dotClass} />
-          })}
-        </div>
-      </div>
+      <ProgressDots total={GAME_QUESTIONS_PER_ROUND} current={currentIndex} answers={answers} />
 
       {/* 主内容 */}
       <main className="flex-1 flex flex-col justify-center px-4 pb-8 relative z-10">
@@ -313,7 +338,7 @@ export default function Game() {
       </main>
 
       {/* 连击提示 */}
-      <ComboIndicator combo={combo} />
+      <ComboIndicator combo={combo} prevCombo={prevComboRef.current} />
 
       {/* 反馈气泡 */}
       {showFeedback && (

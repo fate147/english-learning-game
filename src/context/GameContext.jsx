@@ -77,10 +77,9 @@ export function GameProvider({ children }) {
         correct: isCorrect,
         type: q.type,
         responseTime,
-        // 英语用 wordId，语文/数学用 questionId
         ...(isEnglish
           ? { wordId: q.wordId, word: q.word }
-          : { questionId: q.id }
+          : { questionId: q.id, questionText: q.question || q.questionLabel || q.id }
         ),
       }
       const newAnswers = [...answersRef.current, answer]
