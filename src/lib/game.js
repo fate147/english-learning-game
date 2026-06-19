@@ -13,15 +13,6 @@ export function generateClientSessionId() {
 
 export async function saveGameSession(session) {
   const clientSessionId = session.client_session_id || generateClientSessionId()
-  console.log('[saveGameSession] 保存:', {
-    user_id: session.user_id,
-    child_id: session.child_id,
-    subject: session.subject,
-    grade: session.grade,
-    correct: session.correct_count,
-    wrong: session.wrong_count,
-    client_session_id: clientSessionId,
-  })
   const { data, error } = await supabase
     .from('game_sessions')
     .upsert(
@@ -43,9 +34,7 @@ export async function saveGameSession(session) {
       }
     )
   if (error) {
-    console.warn('[saveGameSession] 失败:', error.code, error.message, error.details)
-  } else {
-    console.log('[saveGameSession] 成功')
+    console.warn('saveGameSession 失败:', error.code, error.message, error.details)
   }
   return { data, error }
 }

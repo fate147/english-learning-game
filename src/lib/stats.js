@@ -1,7 +1,6 @@
 import { supabase } from './supabase.js'
 
 export async function getAggregatedStats(userId, childId, subject, grade) {
-  console.log('[getAggregatedStats] 查询:', { userId, childId, subject, grade })
   // 获取所有游戏记录
   let query = supabase
     .from('game_sessions')
@@ -14,8 +13,6 @@ export async function getAggregatedStats(userId, childId, subject, grade) {
     .order('played_on', { ascending: false })
 
   if (sessionsError) return { data: null, error: sessionsError }
-
-  console.log('[getAggregatedStats] 查到', sessions?.length || 0, '条记录')
 
   // 获取 word_progress
   let wpQuery = supabase

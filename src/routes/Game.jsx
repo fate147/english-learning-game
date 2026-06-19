@@ -155,7 +155,6 @@ export default function Game() {
 
   const handleFinish = useCallback(async () => {
     // 保存游戏记录
-    console.log('[handleFinish] results:', results ? '有数据' : 'null')
     if (!activeChild || !results) return
 
     const sessionData = {
