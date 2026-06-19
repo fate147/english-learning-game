@@ -68,6 +68,18 @@ React 19 / Vite 8 / Tailwind CSS 3 / React Router 6 / Supabase / ESLint
 -- 见 supabase/fix_add_grade_column.sql
 ```
 
+## 首次部署检查清单
+
+- [ ] 创建 Supabase 项目，执行 `supabase/full_schema.sql` 建表
+- [ ] 执行 `supabase/fix_add_grade_column.sql` 添加 subject/grade 列
+- [ ] 执行 `supabase/fix_rls_policies.sql` 配置 RLS 策略
+- [ ] 执行 `supabase/rpc_atomic_stars.sql` 创建原子星星 RPC
+- [ ] 复制 `.env.example` 为 `.env`，填入 Supabase URL 和 Anon Key
+- [ ] `npm install` 安装依赖
+- [ ] `npm run dev` 本地验证
+- [ ] GitHub 仓库 Settings → Pages → Source 选 `gh-pages` 分支
+- [ ] `npm run build && npm run deploy` 部署线上
+
 ## 部署到 GitHub Pages
 
 ```bash

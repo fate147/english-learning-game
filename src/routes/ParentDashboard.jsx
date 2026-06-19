@@ -300,19 +300,30 @@ function StatsPanel({ childId }) {
   const { user } = useAuth()
   const [stats, setStats] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
   const [subject, setSubject] = useState('english')
   const grade = 3
-  useEffect(() => {
+
+  const fetchStats = () => {
     if (!user || !childId) return
     setLoading(true)
-    getAggregatedStats(user.id, childId, subject, grade).then(({ data, error }) => {
-      setStats(data)
+    setError(null)
+    getAggregatedStats(user.id, childId, subject, grade).then(({ data, error: err }) => {
+      if (err) {
+        setError(err.message || '加载统计数据失败')
+        setStats(null)
+      } else {
+        setStats(data)
+      }
       setLoading(false)
     }).catch((err) => {
-      console.error('stats fetch error:', err)
+      setError(err.message || '网络错误，请检查连接')
       setLoading(false)
     })
-  }, [user, childId, subject, grade])
+  }
+
+  useEffect(() => { fetchStats() }, [user, childId, subject, grade])
+
   if (!childId) return <p className="text-white/40 text-center py-8">请先选择一个孩子</p>
 
   const emptyStats = stats ? stats : { totalSessions: 0, totalCorrect: 0, totalWrong: 0, totalAnswered: 0, accuracy: 0, totalEarnedStars: 0, dailyStats: {}, errorRanking: [], wordProgress: {} }
@@ -331,6 +342,15 @@ function StatsPanel({ childId }) {
             <Skeleton variant="card" className="h-40" />
             <Skeleton variant="card" className="h-40" />
           </div>
+        </div>
+      ) : error ? (
+        <div className="text-center py-12">
+          <div className="text-4xl mb-4">⚠️</div>
+          <p className="text-white/60 text-sm mb-4">{error}</p>
+          <button onClick={fetchStats}
+            className="px-5 py-2 rounded-xl bg-white/15 text-white text-sm font-bold hover:bg-white/25 transition-all">
+            重试
+          </button>
         </div>
       ) : (
         <div className="space-y-4">

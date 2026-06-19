@@ -1,25 +1,30 @@
+import { lazy, Suspense } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
-import Login from './Login.jsx'
-import SelectChild from './SelectChild.jsx'
-import Game from './Game.jsx'
-import WordMemory from './WordMemory.jsx'
-import Home from './Home.jsx'
-import DialoguePractice from './DialoguePractice.jsx'
-import ParentDashboard from './ParentDashboard.jsx'
 import ProtectedRoute from '../components/guards/ProtectedRoute.jsx'
+import LoadingSpinner from '../components/ui/LoadingSpinner.jsx'
+
+const Login = lazy(() => import('./Login.jsx'))
+const SelectChild = lazy(() => import('./SelectChild.jsx'))
+const Game = lazy(() => import('./Game.jsx'))
+const WordMemory = lazy(() => import('./WordMemory.jsx'))
+const Home = lazy(() => import('./Home.jsx'))
+const DialoguePractice = lazy(() => import('./DialoguePractice.jsx'))
+const ParentDashboard = lazy(() => import('./ParentDashboard.jsx'))
 
 export default function AppRoutes() {
   return (
-    <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/select-child" element={<ProtectedRoute><SelectChild /></ProtectedRoute>} />
-      <Route path="/game" element={<ProtectedRoute><Game /></ProtectedRoute>} />
-      <Route path="/memory" element={<ProtectedRoute><WordMemory /></ProtectedRoute>} />
-      <Route path="/dialogue" element={<ProtectedRoute><DialoguePractice /></ProtectedRoute>} />
-      <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-      <Route path="/parent/*" element={<ProtectedRoute><ParentDashboard /></ProtectedRoute>} />
-      <Route path="/" element={<Navigate to="/select-child" replace />} />
-      <Route path="*" element={<Navigate to="/login" replace />} />
-    </Routes>
+    <Suspense fallback={<LoadingSpinner />}>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/select-child" element={<ProtectedRoute><SelectChild /></ProtectedRoute>} />
+        <Route path="/game" element={<ProtectedRoute><Game /></ProtectedRoute>} />
+        <Route path="/memory" element={<ProtectedRoute><WordMemory /></ProtectedRoute>} />
+        <Route path="/dialogue" element={<ProtectedRoute><DialoguePractice /></ProtectedRoute>} />
+        <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+        <Route path="/parent/*" element={<ProtectedRoute><ParentDashboard /></ProtectedRoute>} />
+        <Route path="/" element={<Navigate to="/select-child" replace />} />
+        <Route path="*" element={<Navigate to="/login" replace />} />
+      </Routes>
+    </Suspense>
   )
 }
