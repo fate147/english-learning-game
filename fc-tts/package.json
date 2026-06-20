@@ -1,0 +1,7 @@
+{
+  "name": "english-learning-game-tts",
+  "version": "1.0.0",
+  "description": "阿里云函数计算 TTS 代理 — 为 english-learning-game 提供语音合成",
+  "main": "index.js",
+  "engines": { "node": ">=18" }
+}
