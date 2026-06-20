@@ -94,7 +94,7 @@ export default function ResultScreen({ results, onPlayAgain, onGoHome }) {
       <div className="deco-cloud float-cloud" style={{width:'70px',height:'24px',top:'14%',right:'12%',animationDelay:'1s'}} />
 
       {/* 主内容 */}
-      <main className="flex-1 flex flex-col items-center justify-center gap-5 sm:gap-6 px-4 relative z-10">
+      <main className="flex-1 flex flex-col items-center justify-center gap-5 sm:gap-6 px-4 relative z-10" aria-live="polite">
 
         {/* 表情 + 标题 */}
         <div className="text-center page-enter">

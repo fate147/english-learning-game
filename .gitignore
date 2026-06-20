@@ -39,3 +39,11 @@ memory/
 
 # Environment variables
 .env
+.env.*
+!.env.example
+
+# Vercel
+.vercel/
+
+# Temp ZIP artifacts
+*.zip

@@ -32,7 +32,141 @@
   --theme-gradient: var(--gradient-primary);
 }
 
-/* ===== 家长端深色主题 ===== */
+/* ===== 深色模式 ===== */
+html.dark {
+  color-scheme: dark;
+}
+html.dark :root {
+  --color-primary: #ff8fb4;
+  --color-primary-light: #ffb3d0;
+  --color-primary-dark: #ff6b9d;
+  --color-primary-bg: #1a1025;
+
+  --gradient-primary: linear-gradient(135deg, #2d1a3a 0%, #1a1a2e 100%);
+  --gradient-purple: linear-gradient(135deg, #1e1530 0%, #2a1a2e 100%);
+  --gradient-chinese: linear-gradient(135deg, #0f2018 0%, #12252a 100%);
+  --gradient-math: linear-gradient(135deg, #2a1f15 0%, #2a2018 100%);
+
+  --color-focus: #ff8fb4;
+
+  --theme-color: var(--color-primary);
+  --theme-color-light: var(--color-primary-light);
+}
+
+html.dark .game-page-bg {
+  background: var(--gradient-primary);
+}
+
+html.dark .glass-card {
+  background: rgba(0,0,0,0.35);
+  border-color: rgba(255,255,255,0.12);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+html.dark .glass-card:hover {
+  background: rgba(0,0,0,0.45);
+}
+
+html.dark .glass-option {
+  background: rgba(0,0,0,0.3);
+  border-color: rgba(255,255,255,0.15);
+}
+
+html.dark .q-card-glass {
+  background: rgba(0,0,0,0.4);
+  border-color: rgba(255,255,255,0.15);
+}
+
+html.dark .btn-game-secondary {
+  background: rgba(0,0,0,0.3);
+  border-color: rgba(255,255,255,0.15);
+}
+
+html.dark .result-item {
+  background: rgba(0,0,0,0.3);
+}
+
+html.dark .stars-earned-box {
+  background: rgba(0,0,0,0.3);
+}
+
+html.dark .guide-text {
+  color: rgba(255,255,255,0.6);
+}
+
+html.dark .subject-badge {
+  background: rgba(0,0,0,0.3);
+  border-color: rgba(255,255,255,0.15);
+}
+
+html.dark .deco-cloud {
+  background: rgba(0,0,0,0.2);
+}
+
+html.dark .progress-dot {
+  background: rgba(255,255,255,0.15);
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* ===== 无障碍 ===== */
+
+/* 跳转到主内容链接 */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  padding: 8px 16px;
+  background: var(--color-primary);
+  color: white;
+  font-weight: bold;
+  border-radius: 0 0 8px 8px;
+  transition: top 0.2s;
+}
+.skip-link:focus {
+  top: 0;
+}
+
+/* 焦点可见性 */
+*:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* 尊重减弱动效偏好 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .glass-card:hover {
+    transform: none;
+  }
+  .glass-option:hover {
+    transform: none;
+  }
+}
+
+/* 仅屏幕阅读器可见 */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
 .theme-dark {
   --parent-bg: #0a0e1a;
   --parent-card: #1e293b;

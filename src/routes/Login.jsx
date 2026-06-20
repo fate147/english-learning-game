@@ -91,10 +91,11 @@ export default function Login() {
           <Card className="page-enter" style={{animationDelay: '0.1s'}}>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="relative">
-                <label className="block text-sm font-medium text-white/60 mb-1.5">邮箱</label>
+                <label htmlFor="login-email" className="block text-sm font-medium text-white/60 mb-1.5">邮箱</label>
                 <div className="relative">
                   <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/35 text-base pointer-events-none">📧</span>
                   <input
+                    id="login-email"
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -107,10 +108,11 @@ export default function Login() {
               </div>
 
               <div className="relative">
-                <label className="block text-sm font-medium text-white/60 mb-1.5">密码</label>
+                <label htmlFor="login-password" className="block text-sm font-medium text-white/60 mb-1.5">密码</label>
                 <div className="relative">
                   <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/35 text-base pointer-events-none">🔒</span>
                   <input
+                    id="login-password"
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -122,7 +124,7 @@ export default function Login() {
               </div>
 
               {error && (
-                <div className="flex items-center gap-2 text-red-300 text-sm text-center justify-center bg-red-500/10 rounded-lg py-2 px-3">
+                <div className="flex items-center gap-2 text-red-300 text-sm text-center justify-center bg-red-500/10 rounded-lg py-2 px-3" role="alert">
                   <span>⚠️</span>
                   <span>{error}</span>
                 </div>

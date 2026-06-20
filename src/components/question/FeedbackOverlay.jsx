@@ -107,6 +107,9 @@ export default function FeedbackOverlay({ isCorrect, word, onComplete, character
     <div
       className={`fixed inset-0 z-40 flex items-center justify-center pointer-events-none
         ${closing ? 'feedback-pop-out' : 'feedback-pop-in'}`}
+      role="status"
+      aria-live="assertive"
+      aria-label={isCorrect ? '回答正确' : '回答错误'}
     >
       <div
         className={`

@@ -53,7 +53,7 @@ export default function ImageChoice({ question, onAnswer, unit, disabled }) {
         <source src={`audio/${question.wordId}.mp3`} type="audio/mpeg" />
       </audio>
 
-      <button onClick={playAudio} disabled={disabled} className="play-btn-pulse" type="button">
+      <button onClick={playAudio} disabled={disabled} className="play-btn-pulse" type="button" aria-label="播放发音">
         🔊
       </button>
 

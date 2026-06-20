@@ -113,7 +113,7 @@ export default function LetterFill({ question, onAnswer, unit, disabled }) {
             onClick={playAudio}
             className="w-9 h-9 rounded-full bg-white/20 text-white text-sm font-bold
                        hover:bg-white/30 transition-all flex items-center justify-center"
-            title="听发音"
+            aria-label="播放发音"
             disabled={allDisabled}
           >
             🔊

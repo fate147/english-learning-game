@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useChild } from '../hooks/useChild.js'
 import { useStars } from '../hooks/useStars.js'
+import { useTheme } from '../context/ThemeContext.jsx'
 import PageShell from '../components/ui/PageShell.jsx'
 import { getSubjectList, DEFAULT_GRADE, getGradeList } from '../config/subjects.js'
 import { AVATARS } from '../config/avatars.js'
@@ -29,6 +30,7 @@ export default function Home() {
   const navigate = useNavigate()
   const { activeChild } = useChild()
   const { totalEarned, level } = useStars()
+  const { theme, toggleTheme } = useTheme()
   const subjects = getSubjectList()
   const [selectedGrade, setSelectedGrade] = useState(DEFAULT_GRADE)
 
@@ -65,12 +67,21 @@ export default function Home() {
               </div>
               <p className="text-xs text-white/50 mt-0.5">⭐ {totalEarned} 颗星</p>
             </div>
-            <button
-              onClick={() => navigate('/select-child')}
-              className="px-3 py-1.5 rounded-lg text-xs font-bold text-white/50 hover:text-white/80 hover:bg-white/10 transition-all"
-            >
-              切换
-            </button>
+            <div className="flex items-center gap-1.5">
+              <button
+                onClick={toggleTheme}
+                className="px-2.5 py-1.5 rounded-lg text-xs font-bold text-white/50 hover:text-white/80 hover:bg-white/10 transition-all"
+                aria-label={theme === 'dark' ? '切换到亮色模式' : '切换到暗色模式'}
+              >
+                {theme === 'dark' ? '☀️' : '🌙'}
+              </button>
+              <button
+                onClick={() => navigate('/select-child')}
+                className="px-3 py-1.5 rounded-lg text-xs font-bold text-white/50 hover:text-white/80 hover:bg-white/10 transition-all"
+              >
+                切换
+              </button>
+            </div>
           </div>
 
           {/* 年级选择 — 药丸样式 */}

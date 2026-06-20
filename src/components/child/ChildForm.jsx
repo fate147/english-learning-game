@@ -32,8 +32,9 @@ export default function ChildForm({ onSubmit, onCancel }) {
       <AvatarPicker selected={avatar} onSelect={setAvatar} />
 
       <div>
-        <label className="block text-sm font-medium text-white/60 mb-1.5">孩子名字</label>
+        <label htmlFor="child-name" className="block text-sm font-medium text-white/60 mb-1.5">孩子名字</label>
         <input
+          id="child-name"
           type="text"
           value={name}
           onChange={(e) => { setName(e.target.value); setError('') }}

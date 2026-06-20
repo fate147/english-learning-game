@@ -7,7 +7,7 @@
  */
 export default function ProgressDots({ total, current = -1, answers = [] }) {
   return (
-    <div className="relative z-10 flex justify-center px-4 mb-2">
+    <div className="relative z-10 flex justify-center px-4 mb-2" role="progressbar" aria-valuenow={current + 1} aria-valuemin={1} aria-valuemax={total} aria-label={`第 ${current + 1} 题，共 ${total} 题`}>
       <div className="progress-dots">
         {Array.from({ length: total }, (_, i) => {
           let dotClass = 'progress-dot'
@@ -17,7 +17,7 @@ export default function ProgressDots({ total, current = -1, answers = [] }) {
           } else if (i === current) {
             dotClass += ' active'
           }
-          return <span key={i} className={dotClass} />
+          return <span key={i} className={dotClass} aria-hidden="true" />
         })}
       </div>
     </div>

@@ -246,6 +246,7 @@ export default function WordMemory() {
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery('')}
+                aria-label="清除搜索"
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/70 text-sm"
               >✕</button>
             )}
@@ -278,24 +279,29 @@ export default function WordMemory() {
 
               return (
                 <div key={unit} className={`bg-white/12 backdrop-blur-sm rounded-2xl border border-white/15 overflow-hidden border-l-4 ${borderColors[unit - 1] || 'border-l-white/30'}`}>
-                  <div
+                  <button
+                    type="button"
                     onClick={() => setExpanded((prev) => prev.includes(unit) ? prev.filter(u => u !== unit) : [...prev, unit])}
-                    className="flex items-center justify-between cursor-pointer select-none px-5 py-3.5"
+                    className="w-full flex items-center justify-between cursor-pointer select-none px-5 py-3.5 text-left"
+                    aria-expanded={isOpen}
                   >
                     <div>
                       <h3 className="font-bold text-white/90 text-sm">Unit {unit}</h3>
                       <p className="text-xs text-white/50">{selectedCount}/{words.length} 已选</p>
                     </div>
                     <div className="flex items-center gap-2">
-                      <button
+                      <span
+                        role="button"
+                        tabIndex={0}
                         onClick={(e) => { e.stopPropagation(); toggleAll(unit, words.map(w => w.id)) }}
+                        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); toggleAll(unit, words.map(w => w.id)) } }}
                         className="px-3 py-1 rounded-full text-xs font-bold bg-white/15 text-white/70 hover:bg-white/25 transition-all"
                       >
                         {words.every(w => selectedWords.includes(w.id)) ? '取消' : '全选'}
-                      </button>
-                      <span className={`text-white/40 text-xs transition-transform duration-200 ${isOpen ? '' : '-rotate-90'}`}>▼</span>
+                      </span>
+                      <span className={`text-white/40 text-xs transition-transform duration-200 ${isOpen ? '' : '-rotate-90'}`} aria-hidden="true">▼</span>
                     </div>
-                  </div>
+                  </button>
 
                   {isOpen && (
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 p-4">

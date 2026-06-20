@@ -37,7 +37,7 @@ React 19 / Vite 8 / Tailwind CSS 3 / React Router 6 / Supabase / Vercel Edge Fun
 
 ## 语音（TTS）
 
-英语对话/朗读统一走 **阿里云 TTS**（`en-US-JennyNeural` 美式英语女声），国内网络直连，华为/小米/iPhone 全设备音质一致。
+英语对话/朗读统一走 **阿里云 TTS**（`aitong` 爱童音色），国内网络直连，华为/小米/iPhone 全设备音质一致。
 
 - **生产架构**：前端 → 阿里云函数计算（TTS 代理）→ 阿里云语音合成
 - **前端入口**：`src/components/dialogue/tts.js`——云端优先，网络失败降级到浏览器 Web Speech API
@@ -91,37 +91,37 @@ React 19 / Vite 8 / Tailwind CSS 3 / React Router 6 / Supabase / Vercel Edge Fun
 - [ ] 复制 `.env.example` 为 `.env`，填入 Supabase URL 和 Anon Key
 - [ ] `npm run dev` 本地验证（含对话云端语音）
 
-**部署到 Vercel（推荐）**
+## 部署
 
-- [ ] 把仓库推到 GitHub
-- [ ] https://vercel.com 导入仓库，Preset 选 Vite，环境变量填两个 `VITE_SUPABASE_*`
-- [ ] Deploy，确认 `/api/tts` 正常返回音频
-
-**或部署到 GitHub Pages（语音仅本地降级）**
-
-- [ ] `npm run build && npm run deploy`
-- [ ] GitHub 仓库 Settings → Pages → Source 选 `gh-pages` 分支
-
-## 部署到 Vercel（推荐）
-
-前端与 TTS 接口部署在同一个 Vercel 项目（同源），对话语音自动走云端神经声，无需额外配置。
-
-1. 把仓库推到 GitHub
-2. 在 https://vercel.com 导入该仓库
-3. Framework Preset 选 **Vite**，Build Command 保持 `npm run build`，Output Directory 为 `dist`
-4. 环境变量填 `VITE_SUPABASE_URL` 和 `VITE_SUPABASE_ANON_KEY`（TTS 无需任何变量）
-5. Deploy —— Vercel 会自动识别 `api/tts.js` 作为 Edge Function，前端通过同源 `/api/tts` 调用
-
-> 路由使用 HashRouter，刷新任意页面都不会 404，无需 SPA rewrite。
-
-## 部署到 GitHub Pages
+### GitHub Pages（前端页面）
 
 ```bash
-npm run build     # 构建到 docs/
-npm run deploy    # 部署到 gh-pages 分支
+npm run build              # 构建到 dist/
+VITE_VERCEL_TTS_URL=... npm run build   # 指定 TTS 代理地址构建（见下方说明）
+npm run deploy             # 部署到 gh-pages 分支
 ```
 
-GitHub 仓库 Settings → Pages → Source 选 `master` 分支。
+GitHub 仓库 Settings → Pages → Source 选 `gh-pages` 分支。
+
+### 阿里云函数计算（TTS 代理）
+
+TTS 语音合成需要部署一个阿里云函数计算服务作为代理：
+
+1. 打开 https://fc.console.aliyun.com/ ，区域选 **上海**
+2. 创建服务 → 创建函数（Node.js 18，上传 `fc-tts/index.js` 的 ZIP 包）
+3. 创建 HTTP 触发器（匿名认证，POST + OPTIONS）
+4. 配置环境变量：`ALIBABA_AK`、`ALIBABA_SK`、`ALIBABA_APPKEY`、`ALIBABA_TTS_VOICE`、`ALIBABA_REGION`
+
+部署完成后会获得一个 FC URL，构建前端时传入：
+
+```bash
+VITE_VERCEL_TTS_URL=https://your-fc-url.cn-shanghai.fcapp.run npm run build
+npm run deploy
+```
+
+> 详细部署步骤见 [`fc-tts/README.md`](fc-tts/README.md)
+
+> 路由使用 HashRouter，刷新任意页面都不会 404，无需额外配置。
 
 ## 路线图
 

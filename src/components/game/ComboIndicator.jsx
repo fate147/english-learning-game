@@ -59,7 +59,7 @@ export default function ComboIndicator({ combo, prevCombo }) {
   // 连击断掉提示
   if (broken) {
     return (
-      <div className="fixed top-1/3 left-1/2 -translate-x-1/2 z-30 pointer-events-none">
+      <div className="fixed top-1/3 left-1/2 -translate-x-1/2 z-30 pointer-events-none" role="status" aria-live="polite" aria-label="连击中断">
         <div className="combo-break pop-out">
           <span className="text-lg">😅</span>
           <span className="font-bold">可惜了！</span>
@@ -72,7 +72,7 @@ export default function ComboIndicator({ combo, prevCombo }) {
   const message = getMessage(displayCombo)
 
   return (
-    <div className="fixed top-1/3 left-1/2 -translate-x-1/2 z-30 pointer-events-none">
+    <div className="fixed top-1/3 left-1/2 -translate-x-1/2 z-30 pointer-events-none" role="status" aria-live="polite" aria-label={`${displayCombo}连击`}>
       <div
         className={`combo-pop combo-glow flex items-center gap-2 bg-gradient-to-r ${tier.gradient} text-white
                      px-6 py-3 rounded-2xl shadow-xl font-black whitespace-nowrap`}
