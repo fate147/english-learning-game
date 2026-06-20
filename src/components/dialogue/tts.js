@@ -49,7 +49,7 @@ export async function speakText(text) {
   return new Promise((resolve) => {
     const utterance = new SpeechSynthesisUtterance(text)
     utterance.lang = 'en-US'
-    utterance.rate = 0.85
+    utterance.rate = 1.0
     utterance.pitch = 1.0
     utterance.volume = 1.0
 
