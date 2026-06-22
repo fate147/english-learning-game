@@ -19,6 +19,7 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     let cancelled = false
     let subscription = null
+    setLoading(true)
 
     // 有缓存就不调 Supabase（避免速率限制）
     const cached = localStorage.getItem(SESSION_CACHE_KEY)
@@ -26,7 +27,7 @@ export function AuthProvider({ children }) {
       try { setUser(JSON.parse(cached)) } catch {}
     }
 
-    // 后台静默检查 session
+    // 后台检查 session
     getSession()
       .then(({ data }) => {
         if (!cancelled) {
@@ -41,6 +42,9 @@ export function AuthProvider({ children }) {
         }
       })
       .catch(() => {})
+      .finally(() => {
+        if (!cancelled) setLoading(false)
+      })
 
     const { data: authData } = onAuthStateChange((_event, session) => {
       if (!cancelled) {

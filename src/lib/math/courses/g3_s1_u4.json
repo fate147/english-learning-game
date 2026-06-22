@@ -87,7 +87,7 @@
     "questionLabel": "要解决这个问题，应该怎么做？",
     "options": [
       { "text": "385 + 429 = 814，814 > 800，坐不下了", "correct": false },
-      { "text": "385 + 429 = 814，800 - 814 = -14，坐不下了", "correct": false },
+      { "text": "800 ÷ 385 ≈ 2，坐满了还有多的", "correct": false },
       { "text": "800 - 385 = 415，415 - 429 = -14，坐不下了", "correct": true }
     ]
   }

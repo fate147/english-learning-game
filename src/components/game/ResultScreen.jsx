@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { calcScore } from '../../engines/scoring.js'
+import Button from '../ui/Button.jsx'
 
 function AnimatedNumber({ value, duration = 800, delay = 0 }) {
   const [display, setDisplay] = useState(0)
@@ -155,12 +156,12 @@ export default function ResultScreen({ results, onPlayAgain, onGoHome }) {
 
         {/* 按钮 */}
         <div className="flex gap-3 w-full max-w-xs fade-slide-enter" style={{animationDelay: '0.35s'}}>
-          <button onClick={onGoHome} className="btn-game-secondary">
+          <Button variant="glass" size="xl" onClick={onGoHome}>
             🏠 回首页
-          </button>
-          <button onClick={onPlayAgain} className="btn-game-primary result-play-pulse">
+          </Button>
+          <Button variant="game" size="xl" onClick={onPlayAgain} className="result-play-pulse">
             🔄 再来一次
-          </button>
+          </Button>
         </div>
       </main>
     </div>

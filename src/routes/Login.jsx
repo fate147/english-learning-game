@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth.js'
 import { translateError } from '../lib/errors.js'
-import { STRINGS } from '../config/strings.js'
 import PageShell from '../components/ui/PageShell.jsx'
+import Button from '../components/ui/Button.jsx'
 import Card from '../components/ui/Card.jsx'
 
 export default function Login() {
@@ -130,14 +130,12 @@ export default function Login() {
                 </div>
               )}
 
-              <button
+              <Button
                 type="submit"
                 disabled={submitting}
-                className={`w-full py-3.5 rounded-xl font-black text-lg transition-all duration-200 btn-ripple disabled:opacity-50
-                  ${isRegister
-                    ? 'bg-white/12 border-2 border-white/25 text-white hover:bg-white/18'
-                    : 'bg-gradient-to-r from-[var(--theme-color)] to-[var(--theme-color-light)] text-white hover:brightness-110 shadow-lg hover:shadow-xl hover:-translate-y-0.5'
-                  }`}
+                variant={isRegister ? 'ghost' : 'primary'}
+                size="lg"
+                className="w-full"
               >
                 {submitting ? (
                   <span className="flex items-center justify-center gap-2">
@@ -145,7 +143,7 @@ export default function Login() {
                     处理中...
                   </span>
                 ) : isRegister ? '✨ 注册' : '🚀 开始学习'}
-              </button>
+              </Button>
 
               <div className="text-center pt-1">
                 <button

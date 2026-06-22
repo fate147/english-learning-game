@@ -4,10 +4,11 @@ import { WORDS } from '../lib/words.js'
 import { useStars } from '../hooks/useStars.js'
 import { useAuth } from '../hooks/useAuth.js'
 import { useChild } from '../hooks/useChild.js'
-import { saveGameSession } from '../lib/game.js'
+import { saveGameSession, getLocalDateString } from '../lib/game.js'
 import { enqueue, isOnline } from '../lib/offline.js'
 import LetterFill from '../components/question/LetterFill.jsx'
 import Button from '../components/ui/Button.jsx'
+import EmptyState from '../components/ui/EmptyState.jsx'
 import PageShell from '../components/ui/PageShell.jsx'
 
 const STEP_ORDER = ['select', 'playing', 'done']
@@ -180,7 +181,7 @@ export default function WordMemory() {
             subject,
             grade,
             client_session_id: `memory_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
-            played_on: new Date().toISOString().split('T')[0],
+            played_on: getLocalDateString(),
             character: 'default',
             correct_count: finalScore,
             wrong_count: batchWords.length - finalScore,
@@ -198,10 +199,11 @@ export default function WordMemory() {
           } else {
             enqueue(sessionData)
           }
-          // 奖励星星（addStars 返回普通对象，不是 Promise）
+          // 奖励星星
           if (finalScore > 0) {
-            addStars(finalScore, finalScore)
-            refreshStars()
+            addStars(finalScore, finalScore).then(({ error }) => {
+              if (!error) refreshStars()
+            })
           }
         }
       }, 600)
@@ -272,36 +274,37 @@ export default function WordMemory() {
           </div>
 
           <div className="space-y-3">
-            {unitKeys.map((unit) => {
+            {unitKeys.length === 0 ? (
+              <EmptyState icon="🔍" text="没有找到匹配的单词" subtext="试试其他关键词" />
+            ) : unitKeys.map((unit) => {
               const words = filteredUnits[unit]
               const selectedCount = words.filter((w) => selectedWords.includes(w.id)).length
               const isOpen = expanded.includes(unit)
 
               return (
                 <div key={unit} className={`bg-white/12 backdrop-blur-sm rounded-2xl border border-white/15 overflow-hidden border-l-4 ${borderColors[unit - 1] || 'border-l-white/30'}`}>
-                  <button
-                    type="button"
-                    onClick={() => setExpanded((prev) => prev.includes(unit) ? prev.filter(u => u !== unit) : [...prev, unit])}
-                    className="w-full flex items-center justify-between cursor-pointer select-none px-5 py-3.5 text-left"
-                    aria-expanded={isOpen}
-                  >
-                    <div>
-                      <h3 className="font-bold text-white/90 text-sm">Unit {unit}</h3>
-                      <p className="text-xs text-white/50">{selectedCount}/{words.length} 已选</p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span
-                        role="button"
-                        tabIndex={0}
-                        onClick={(e) => { e.stopPropagation(); toggleAll(unit, words.map(w => w.id)) }}
-                        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); toggleAll(unit, words.map(w => w.id)) } }}
-                        className="px-3 py-1 rounded-full text-xs font-bold bg-white/15 text-white/70 hover:bg-white/25 transition-all"
-                      >
-                        {words.every(w => selectedWords.includes(w.id)) ? '取消' : '全选'}
-                      </span>
+                  <div className="flex items-center justify-between px-5 py-3.5">
+                    <button
+                      type="button"
+                      onClick={() => setExpanded((prev) => prev.includes(unit) ? prev.filter(u => u !== unit) : [...prev, unit])}
+                      className="flex items-center gap-2 text-left cursor-pointer select-none"
+                      aria-expanded={isOpen}
+                    >
                       <span className={`text-white/40 text-xs transition-transform duration-200 ${isOpen ? '' : '-rotate-90'}`} aria-hidden="true">▼</span>
-                    </div>
-                  </button>
+                      <div>
+                        <h3 className="font-bold text-white/90 text-sm">Unit {unit}</h3>
+                        <p className="text-xs text-white/50">{selectedCount}/{words.length} 已选</p>
+                      </div>
+                    </button>
+                    <Button
+                      variant="pill"
+                      size="sm"
+                      onClick={() => toggleAll(unit, words.map(w => w.id))}
+                      className={words.every(w => selectedWords.includes(w.id)) ? 'bg-white/25 text-white' : 'bg-white/15 text-white/70 hover:bg-white/25'}
+                    >
+                      {words.every(w => selectedWords.includes(w.id)) ? '取消' : '全选'}
+                    </Button>
+                  </div>
 
                   {isOpen && (
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 p-4">
@@ -317,7 +320,7 @@ export default function WordMemory() {
                                 : 'border-white/12 bg-white/6 hover:border-white/25'
                               }`}
                           >
-                            <div className={`w-4.5 h-4.5 rounded-md flex items-center justify-center text-[10px] font-bold shrink-0 transition-all
+                            <div className={`w-[18px] h-[18px] rounded-md flex items-center justify-center text-[11px] font-bold shrink-0 transition-all
                               ${isOn ? 'bg-green-500 text-white' : 'border-2 border-white/25 bg-white/5'}`}
                             >
                               {isOn ? '✓' : ''}

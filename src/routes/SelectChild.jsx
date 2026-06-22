@@ -6,6 +6,7 @@ import ChildCard from '../components/child/ChildCard.jsx'
 import ChildForm from '../components/child/ChildForm.jsx'
 import Modal from '../components/ui/Modal.jsx'
 import LoadingSpinner from '../components/ui/LoadingSpinner.jsx'
+import Button from '../components/ui/Button.jsx'
 import PageShell from '../components/ui/PageShell.jsx'
 
 export default function SelectChild() {
@@ -81,30 +82,26 @@ export default function SelectChild() {
           )}
 
           {/* 添加孩子 — 主操作 */}
-          <button
+          <Button
+            variant="secondary"
+            size="lg"
             onClick={() => setShowAddForm(true)}
-            className="w-full py-3.5 rounded-xl border-2 border-dashed border-white/25 text-white/65
-                       font-bold text-sm hover:border-white/40 hover:text-white/85 hover:bg-white/5
-                       transition-all duration-200 btn-ripple mb-4"
+            className="w-full border-dashed mb-4 !text-white/65 hover:!text-white/85"
           >
             + 添加孩子
-          </button>
+          </Button>
 
           {/* 辅助操作 — 视觉分离 */}
           <div className="flex items-center justify-center gap-6 pt-1">
-            <button onClick={handleParentAccess}
-              className="flex items-center gap-1.5 text-xs text-white/45 hover:text-white/75 transition-colors"
-            >
+            <Button variant="ghost" size="sm" onClick={handleParentAccess}>
               <span>👨‍👩‍👧</span>
               <span>家长管理</span>
-            </button>
+            </Button>
             <span className="text-white/15">|</span>
-            <button onClick={handleLogout}
-              className="flex items-center gap-1.5 text-xs text-white/45 hover:text-red-300/75 transition-colors"
-            >
+            <Button variant="ghost" size="sm" onClick={handleLogout} className="hover:!text-red-300">
               <span>🚪</span>
               <span>退出登录</span>
-            </button>
+            </Button>
           </div>
         </div>
       </div>

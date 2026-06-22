@@ -1,5 +1,15 @@
 import { supabase } from './supabase.js'
 
+// 获取本地日期 YYYY-MM-DD（解决 UTC 日期与本地日期不一致的问题）
+// offsetDays：偏移天数，如 -1 为昨天
+export function getLocalDateString(offsetDays = 0) {
+  const d = new Date()
+  const offset = d.getTimezoneOffset()
+  const local = new Date(d.getTime() - offset * 60000)
+  if (offsetDays) local.setDate(local.getDate() + offsetDays)
+  return local.toISOString().split('T')[0]
+}
+
 // 生成唯一 clientSessionId
 export function generateClientSessionId() {
   return crypto.randomUUID
@@ -61,26 +71,6 @@ export async function getWordProgress(userId, childId, subject = 'english', grad
     .eq('child_id', childId)
     .eq('subject', subject)
     .eq('grade', grade)
-  return { data, error }
-}
-
-export async function upsertWordProgress(userId, childId, wordId, updates, subject = 'english', grade = 3) {
-  const { data, error } = await supabase
-    .from('word_progress')
-    .upsert(
-      {
-        user_id: userId,
-        child_id: childId,
-        subject,
-        grade,
-        word_id: wordId,
-        ...updates,
-        updated_at: new Date().toISOString(),
-      },
-      { onConflict: 'user_id, child_id, subject, grade, word_id' }
-    )
-    .select()
-    .single()
   return { data, error }
 }
 

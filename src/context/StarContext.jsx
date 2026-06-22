@@ -65,27 +65,29 @@ export function StarProvider({ children }) {
 
   const addStars = useCallback(
     (totalAdd, availAdd) => {
-      if (!user || !activeChild) return { data: null, error: new Error('未选择孩子') }
+      if (!user || !activeChild) {
+        return Promise.resolve({ data: null, error: new Error('未选择孩子') })
+      }
 
       // 先乐观更新本地状态（界面立即响应）
       setTotalEarned(prev => prev + totalAdd)
       setAvailable(prev => prev + availAdd)
 
-      // 后台同步到 Supabase
-      addEarnedStars(user.id, activeChild.child_id, totalAdd, availAdd).then(({ error }) => {
-        if (error) {
-          // 失败进离线重试队列
-          enqueue({
-            type: 'add_stars',
-            userId: user.id,
-            childId: activeChild.child_id,
-            totalAdd,
-            availAdd,
-          })
-        }
-      })
-
-      return { data: null, error: null }
+      // 同步到 Supabase，返回 Promise 供调用方链式刷新
+      return addEarnedStars(user.id, activeChild.child_id, totalAdd, availAdd)
+        .then(({ error }) => {
+          if (error) {
+            // 失败进离线重试队列
+            enqueue({
+              type: 'add_stars',
+              userId: user.id,
+              childId: activeChild.child_id,
+              totalAdd,
+              availAdd,
+            })
+          }
+          return { error }
+        })
     },
     [user, activeChild]
   )

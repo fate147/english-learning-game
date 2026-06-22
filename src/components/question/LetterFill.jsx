@@ -1,6 +1,5 @@
 import { useState, useMemo, useEffect, useRef } from 'react'
 import { generateBlanks } from '../../engines/questionEngine.js'
-import { STRINGS } from '../../config/strings.js'
 
 export default function LetterFill({ question, onAnswer, unit, disabled }) {
   const [blanks, setBlanks] = useState([])
@@ -105,7 +104,7 @@ export default function LetterFill({ question, onAnswer, unit, disabled }) {
       {/* 题目提示 + 语音按钮 */}
       <div className="q-card-glass w-full max-w-sm">
         <div className="text-xs font-bold tracking-wider text-white/70 uppercase mb-3">
-          ✏️ {STRINGS.letterFill.hint}
+          ✏️ 根据发音和释义，填入正确的字母
         </div>
         <div className="flex items-center justify-center gap-3">
           <span className="text-lg font-extrabold text-white" style={{textShadow: '0 1px 4px rgba(0,0,0,0.2)'}}>&ldquo;{question.meaning}&rdquo;</span>
@@ -148,10 +147,14 @@ export default function LetterFill({ question, onAnswer, unit, disabled }) {
             slotStyle = 'border-2 border-dashed border-white/40 empty-slot-purple'
           }
 
+          const isClickable = isBlank && (isFilled || !showResult)
           return (
-            <div
+            <button
               key={i}
+              type="button"
               onClick={() => isBlank && handleBlankClick(blankIndices.indexOf(i))}
+              disabled={!isClickable}
+              aria-label={isBlank ? (isFilled ? `已填入 ${blank.filled}，点击移除` : `第 ${i + 1} 个字母空位`) : letter}
               className={`
                 w-[52px] h-[58px] rounded-xl text-center leading-[58px]
                 text-[28px] font-bold transition-all duration-200 select-none
@@ -168,7 +171,7 @@ export default function LetterFill({ question, onAnswer, unit, disabled }) {
                     : ''
                 : letter
               }
-            </div>
+            </button>
           )
         })}
       </div>

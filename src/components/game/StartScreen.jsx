@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { CHARACTERS } from '../../config/characters.js'
 import GameHeader from '../ui/GameHeader.jsx'
+import Button from '../ui/Button.jsx'
 
 export default function StartScreen({ onStart, totalEarnedStars, level, defaultChar, onBack }) {
   const [selectedChar, setSelectedChar] = useState(defaultChar || 'dragon')
@@ -51,12 +52,14 @@ export default function StartScreen({ onStart, totalEarnedStars, level, defaultC
 
         {/* 按钮 — 开始游戏 */}
         <div className="w-full max-w-md mt-8">
-          <button
+          <Button
+            variant="game"
+            size="xl"
             onClick={() => onStart(selectedChar)}
-            className="btn-game-primary w-full"
+            className="w-full"
           >
             🎮 开始游戏
-          </button>
+          </Button>
         </div>
       </main>
     </div>

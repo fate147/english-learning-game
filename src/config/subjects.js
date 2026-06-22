@@ -32,7 +32,7 @@ export const SUBJECTS = {
 }
 
 // 默认科目
-export const DEFAULT_SUBJECT = 'english'
+const DEFAULT_SUBJECT = 'english'
 // 默认年级（三年级）
 export const DEFAULT_GRADE = 3
 

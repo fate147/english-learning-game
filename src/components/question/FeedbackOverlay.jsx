@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from 'react'
-import { STRINGS } from '../../config/strings.js'
 import CharacterPortrait from '../game/CharacterPortrait.jsx'
 
 let audioCtx = null
@@ -89,7 +88,7 @@ export default function FeedbackOverlay({ isCorrect, word, onComplete, character
 
     setVisible(true)
     setClosing(false)
-    const delay = isCorrect ? 1400 : 2800
+    const delay = isCorrect ? 1400 : 1800
     const timer = setTimeout(() => {
       setClosing(true)
       setTimeout(() => {

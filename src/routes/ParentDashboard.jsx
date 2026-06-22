@@ -4,6 +4,8 @@ import { useAuth } from '../hooks/useAuth.js'
 import { useChild } from '../hooks/useChild.js'
 
 import Skeleton from '../components/ui/Skeleton.jsx'
+import Button from '../components/ui/Button.jsx'
+import EmptyState from '../components/ui/EmptyState.jsx'
 import PageShell from '../components/ui/PageShell.jsx'
 
 import UnitTree from '../components/parent/UnitTree.jsx'
@@ -17,7 +19,7 @@ import { getRewardTemplates, createRewardTemplate, deleteRewardTemplate, getRewa
 import { getStars, spendStars } from '../lib/stars.js'
 import { getAggregatedStats } from '../lib/stats.js'
 import { DEFAULT_REWARD_TEMPLATES } from '../config/rewards.js'
-import { SUBJECTS, getSubjectList } from '../config/subjects.js'
+import { SUBJECTS, getSubjectList, getGradeList } from '../config/subjects.js'
 
 import { AVATARS } from '../config/avatars.js'
 
@@ -123,18 +125,16 @@ export default function ParentDashboard() {
               { key: 'unlock', icon: '🔓', label: '单词解锁' },
               { key: 'rewards', icon: '🎁', label: '学习奖励' },
             ].map((t) => (
-              <button
+              <Button
                 key={t.key}
+                variant="pill"
+                size="sm"
                 onClick={() => setTab(t.key)}
-                className={`flex-1 flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200
-                  ${tab === t.key
-                    ? 'bg-white/10 text-white shadow-sm'
-                    : 'text-white/40 hover:text-white/70 hover:bg-white/[0.04]'
-                  }`}
+                className={`flex-1 rounded-lg ${tab === t.key ? 'bg-white/10 text-white shadow-sm' : 'text-white/40 hover:text-white/70 hover:bg-white/[0.04]'}`}
               >
                 <span>{t.icon}</span>
                 <span>{t.label}</span>
-              </button>
+              </Button>
             ))}
           </div>
 
@@ -143,6 +143,14 @@ export default function ParentDashboard() {
             {tab === 'unlock' && <UnlockPanel key={currentChildId} childId={currentChildId} />}
             {tab === 'rewards' && <RewardsPanel key={currentChildId} childId={currentChildId} />}
             {tab === 'stats' && <StatsPanel key={currentChildId} childId={currentChildId} />}
+          </div>
+
+          {/* ===== TTS 语音信息 ===== */}
+          <div className="mt-6 p-3 rounded-xl bg-white/[0.02] border border-white/5">
+            <div className="flex items-center gap-2 text-xs text-white/35">
+              <span>🔊</span>
+              <span>对话朗读使用阿里云 TTS（爱童音色），每月免费额度 100 万字符，无需担心费用</span>
+            </div>
           </div>
         </div>
       </div>
@@ -154,18 +162,12 @@ export default function ParentDashboard() {
             <h3 className="text-lg font-bold text-white mb-2">{confirmDialog.title}</h3>
             <p className="text-sm text-white/50 mb-6">{confirmDialog.message}</p>
             <div className="flex gap-3 justify-end">
-              <button
-                onClick={() => setConfirmDialog(null)}
-                className="px-4 py-2 rounded-xl text-sm font-medium text-white/50 hover:text-white/80 hover:bg-white/10 transition-all"
-              >
+              <Button variant="ghost" onClick={() => setConfirmDialog(null)}>
                 取消
-              </button>
-              <button
-                onClick={() => { confirmDialog.onConfirm(); setConfirmDialog(null) }}
-                className="px-4 py-2 rounded-xl text-sm font-bold bg-red-500/80 text-white hover:bg-red-500 transition-all"
-              >
+              </Button>
+              <Button variant="danger" onClick={() => { confirmDialog.onConfirm(); setConfirmDialog(null) }}>
                 确认删除
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -180,17 +182,16 @@ function SubjectTabs({ subject, onChange }) {
   return (
     <div className="flex gap-1 p-1 bg-white/[0.04] rounded-xl mb-4">
       {subjects.map((s) => (
-        <button
+        <Button
           key={s.id}
+          variant="pill"
+          size="sm"
           onClick={() => onChange(s.id)}
-          className={`flex-1 flex items-center justify-center gap-1 px-3 py-2 rounded-lg text-xs font-semibold transition-all duration-200
-            ${subject === s.id
-              ? 'bg-white/10 text-white shadow-sm'
-              : 'text-white/40 hover:text-white/70 hover:bg-white/[0.04]'}`}
+          className={`flex-1 rounded-lg ${subject === s.id ? 'bg-white/10 text-white shadow-sm' : 'text-white/40 hover:text-white/70 hover:bg-white/[0.04]'}`}
         >
           <span>{s.icon}</span>
           <span>{s.name}</span>
-        </button>
+        </Button>
       ))}
     </div>
   )
@@ -232,7 +233,7 @@ function UnlockPanel({ childId }) {
     try { localStorage.setItem(subject + '_g3_learning_state_' + childId, JSON.stringify({ unlockedWords: next })) } catch {}
     await upsertLearningState(user.id, childId, { unlocked_words: next }, subject, 3)
   }
-  if (!childId) return <p className="text-white/40 text-center py-8">请先选择一个孩子</p>
+  if (!childId) return <EmptyState icon="👶" text="请先选择一个孩子" />
   return (
     <div>
       <div className="flex items-center gap-2 mb-4">
@@ -271,16 +272,21 @@ function RewardsPanel({ childId }) {
   const redeem = async (tmpl) => {
     const { error } = await spendStars(user.id, childId, tmpl.cost)
     if (error) return alert(error.message)
+    // 先写数据库，成功后再乐观更新 UI
+    const { error: recordError } = await addRewardRecord(user.id, childId, tmpl.id, tmpl.name, tmpl.cost)
+    if (recordError) {
+      alert('记录兑换失败，请重试')
+      return
+    }
     setStars((s) => s - tmpl.cost)
     setRecords((prev) => [{ id: Date.now().toString(), name: tmpl.name, cost: tmpl.cost, created_at: new Date().toISOString() }, ...prev])
-    addRewardRecord(user.id, childId, tmpl.id, tmpl.name, tmpl.cost)
   }
   const handleDeleteTemplate = async (templateId) => {
     const { error } = await deleteRewardTemplate(user.id, childId, templateId)
     if (error) return alert(error.message)
     setTemplates((prev) => prev.filter((t) => t.id !== templateId))
   }
-  if (!childId) return <p className="text-white/40 text-center py-8">请先选择一个孩子</p>
+  if (!childId) return <EmptyState icon="👶" text="请先选择一个孩子" />
   return (
     <div className="space-y-5">
       <RewardRecord
@@ -295,6 +301,31 @@ function RewardsPanel({ childId }) {
   )
 }
 
+/* ===== 年级选择器 ===== */
+const GRADE_LABEL = {
+  1: '一年级', 2: '二年级', 3: '三年级',
+  4: '四年级', 5: '五年级', 6: '六年级',
+}
+
+function GradeTabs({ grade, onChange }) {
+  const grades = getGradeList('chinese')
+  return (
+    <div className="flex gap-1 p-1 bg-white/[0.04] rounded-xl mb-2">
+      {grades.map((g) => (
+        <Button
+          key={g}
+          variant="pill"
+          size="sm"
+          onClick={() => onChange(g)}
+          className={`flex-1 rounded-lg ${grade === g ? 'bg-white/10 text-white shadow-sm' : 'text-white/40 hover:text-white/70 hover:bg-white/[0.04]'}`}
+        >
+          {GRADE_LABEL[g] || g}
+        </Button>
+      ))}
+    </div>
+  )
+}
+
 /* ===== 统计面板 ===== */
 function StatsPanel({ childId }) {
   const { user } = useAuth()
@@ -302,7 +333,7 @@ function StatsPanel({ childId }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [subject, setSubject] = useState('english')
-  const grade = 3
+  const [grade, setGrade] = useState(3)
 
   const fetchStats = () => {
     if (!user || !childId) return
@@ -324,12 +355,13 @@ function StatsPanel({ childId }) {
 
   useEffect(() => { fetchStats() }, [user, childId, subject, grade])
 
-  if (!childId) return <p className="text-white/40 text-center py-8">请先选择一个孩子</p>
+  if (!childId) return <EmptyState icon="👶" text="请先选择一个孩子" />
 
   const emptyStats = stats ? stats : { totalSessions: 0, totalCorrect: 0, totalWrong: 0, totalAnswered: 0, accuracy: 0, totalEarnedStars: 0, dailyStats: {}, errorRanking: [], wordProgress: {} }
   return (
     <div>
       <SubjectTabs subject={subject} onChange={setSubject} />
+      <GradeTabs grade={grade} onChange={setGrade} />
       {loading ? (
         <div className="space-y-4">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">

@@ -1,7 +1,6 @@
 import { useState, useMemo, useEffect, useRef } from 'react'
 import { getWordById, getWordsByUnit } from '../../lib/words.js'
 import { generateChoices } from '../../engines/questionEngine.js'
-import { STRINGS } from '../../config/strings.js'
 
 function vibrate(pattern) {
   try { navigator.vibrate?.(pattern) } catch {}
@@ -59,7 +58,7 @@ export default function ImageChoice({ question, onAnswer, unit, disabled }) {
 
       <div className="q-card-glass w-full max-w-4xl">
         <div className="text-xs font-bold tracking-wider text-white/70 uppercase mb-2">
-          🎧 {STRINGS.imageChoice.hint}
+          🎧 听录音，选择正确的图片
         </div>
         <div className="text-lg font-extrabold text-white" style={{textShadow: '0 1px 4px rgba(0,0,0,0.2)'}}>
           哪个是 <strong className="text-[#fef3c7]">"{question.meaning}"</strong> ？

@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect, useRef } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useChild } from '../hooks/useChild.js'
 import { useStars } from '../hooks/useStars.js'
-import { saveGameSession } from '../lib/game.js'
+import { saveGameSession, getLocalDateString } from '../lib/game.js'
 import { enqueue, isOnline } from '../lib/offline.js'
 import { calcScore } from '../engines/scoring.js'
 import { CHARACTERS } from '../config/characters.js'
@@ -10,6 +10,7 @@ import { pickRandomRounds } from '../lib/english/courses/index.js'
 import DialogueBubble from '../components/dialogue/DialogueBubble.jsx'
 import ChoicePanel from '../components/dialogue/ChoicePanel.jsx'
 import GameHeader from '../components/ui/GameHeader.jsx'
+import Button from '../components/ui/Button.jsx'
 import ProgressDots from '../components/ui/ProgressDots.jsx'
 
 const ROUNDS_PER_SESSION = 8
@@ -47,7 +48,8 @@ export default function DialoguePractice() {
 
   useEffect(() => {
     if (!activeChild) return
-    const allUnitIds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    // 暂时只出下学期（7-12），后续调回 1-12
+    const allUnitIds = [7, 8, 9, 10, 11, 12]
     const picked = pickRandomRounds(allUnitIds, ROUNDS_PER_SESSION)
     const lines = picked.map((d) => ({
       ...d,
@@ -105,7 +107,7 @@ export default function DialoguePractice() {
       subject,
       grade,
       client_session_id: `dialogue_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
-      played_on: new Date().toISOString().split('T')[0],
+      played_on: getLocalDateString(),
       character,
       correct_count: correctCount,
       wrong_count: wrongCount,
@@ -124,16 +126,14 @@ export default function DialoguePractice() {
     // 计算奖励（复用 scoring.js，与主游戏一致）
     const todayKey = 'dialogue_last_date_' + activeChild.child_id
     const lastDate = localStorage.getItem(todayKey)
-    const today = new Date().toISOString().split('T')[0]
+    const today = getLocalDateString()
     const isFirstToday = lastDate !== today
     if (isFirstToday) localStorage.setItem(todayKey, today)
 
     const streakKey = 'dialogue_streak_' + activeChild.child_id
     let streakDays = parseInt(localStorage.getItem(streakKey) || '0')
     if (isFirstToday) {
-      const yesterday = new Date()
-      yesterday.setDate(yesterday.getDate() - 1)
-      const yesterdayStr = yesterday.toISOString().split('T')[0]
+      const yesterdayStr = getLocalDateString(-1)
       streakDays = lastDate === yesterdayStr ? streakDays + 1 : 1
       localStorage.setItem(streakKey, String(streakDays))
     }
@@ -141,19 +141,20 @@ export default function DialoguePractice() {
 
     const { totalAdd, availableAdd } = calcScore(correctCount, maxCombo, isPerfect, isFirstToday, isStreak7Days)
     if (totalAdd > 0) {
-      addStars(totalAdd, availableAdd)
-      setTimeout(() => refreshStars(), 500)
+      addStars(totalAdd, availableAdd).then(({ error }) => {
+        if (!error) refreshStars()
+      })
     }
   }, [activeChild, results, lines, character, subject, grade, maxCombo, addStars, refreshStars])
 
-  const handlePlayAgain = useCallback(() => {
-    handleFinish()
+  const handlePlayAgain = useCallback(async () => {
+    await handleFinish()
     setGameKey((k) => k + 1)
     setPhase('loading')
   }, [handleFinish])
 
-  const handleGoHome = useCallback(() => {
-    handleFinish()
+  const handleGoHome = useCallback(async () => {
+    await handleFinish()
     navigate('/select-child')
   }, [handleFinish, navigate])
 
@@ -310,12 +311,12 @@ export default function DialoguePractice() {
           </div>
 
           <div className="flex gap-3 page-enter" style={{animationDelay: '0.2s'}}>
-            <button onClick={handlePlayAgain} className="btn-game-primary flex-1">
+            <Button variant="game" size="xl" onClick={handlePlayAgain} className="flex-1">
               🔄 再来一次
-            </button>
-            <button onClick={handleGoHome} className="btn-game-secondary flex-1">
+            </Button>
+            <Button variant="glass" size="xl" onClick={handleGoHome} className="flex-1">
               🏠 回首页
-            </button>
+            </Button>
           </div>
         </div>
       </main>

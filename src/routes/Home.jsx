@@ -4,6 +4,7 @@ import { useChild } from '../hooks/useChild.js'
 import { useStars } from '../hooks/useStars.js'
 import { useTheme } from '../context/ThemeContext.jsx'
 import PageShell from '../components/ui/PageShell.jsx'
+import Button from '../components/ui/Button.jsx'
 import { getSubjectList, DEFAULT_GRADE, getGradeList } from '../config/subjects.js'
 import { AVATARS } from '../config/avatars.js'
 
@@ -68,36 +69,31 @@ export default function Home() {
               <p className="text-xs text-white/50 mt-0.5">⭐ {totalEarned} 颗星</p>
             </div>
             <div className="flex items-center gap-1.5">
-              <button
+              <Button
+                variant="ghost"
+                size="sm"
                 onClick={toggleTheme}
-                className="px-2.5 py-1.5 rounded-lg text-xs font-bold text-white/50 hover:text-white/80 hover:bg-white/10 transition-all"
                 aria-label={theme === 'dark' ? '切换到亮色模式' : '切换到暗色模式'}
               >
                 {theme === 'dark' ? '☀️' : '🌙'}
-              </button>
-              <button
-                onClick={() => navigate('/select-child')}
-                className="px-3 py-1.5 rounded-lg text-xs font-bold text-white/50 hover:text-white/80 hover:bg-white/10 transition-all"
-              >
+              </Button>
+              <Button variant="ghost" size="sm" onClick={() => navigate('/select-child')}>
                 切换
-              </button>
+              </Button>
             </div>
           </div>
 
           {/* 年级选择 — 药丸样式 */}
           <div className="flex justify-center gap-1.5 mb-6">
             {getGradeList('chinese').map((g) => (
-              <button
+              <Button
                 key={g}
+                variant="pill"
                 onClick={() => setSelectedGrade(g)}
-                className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-200 btn-ripple
-                  ${selectedGrade === g
-                    ? 'bg-white/22 text-white shadow-md border border-white/25'
-                    : 'text-white/45 hover:text-white/70 hover:bg-white/8'
-                  }`}
+                className={selectedGrade === g ? 'bg-white/22 text-white shadow-md border border-white/25' : 'text-white/45 hover:text-white/70 hover:bg-white/8'}
               >
                 {GRADE_LABEL[g]}
-              </button>
+              </Button>
             ))}
           </div>
 

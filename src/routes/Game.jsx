@@ -6,7 +6,7 @@ import { useStars } from '../hooks/useStars.js'
 import { WORDS, getWordsByUnit, getWordById } from '../lib/words.js'
 import { CHARACTERS, getRandomDialogue } from '../config/characters.js'
 import { GAME_QUESTIONS_PER_ROUND } from '../config/index.js'
-import { getLearningState, getWordProgress, saveGameSession } from '../lib/game.js'
+import { getLearningState, getWordProgress, saveGameSession, getLocalDateString } from '../lib/game.js'
 import { calcScore } from '../engines/scoring.js'
 import { enqueue, isOnline } from '../lib/offline.js'
 
@@ -163,7 +163,7 @@ export default function Game() {
       subject,
       grade,
       client_session_id: results.sessionId,
-      played_on: new Date().toISOString().split('T')[0],
+      played_on: getLocalDateString(),
       character: character || 'dino',
       correct_count: results.correctCount,
       wrong_count: results.wrongCount,
@@ -182,7 +182,7 @@ export default function Game() {
     // 判断每日首次
     const todayKey = subject + '_g' + grade + '_game_last_date_' + activeChild.child_id
     const lastDate = localStorage.getItem(todayKey)
-    const today = new Date().toISOString().split('T')[0]
+    const today = getLocalDateString()
     const isFirstToday = lastDate !== today
 
     // 判断连续7天（简化版：检查 localStorage 中最近7天都有记录）
@@ -190,9 +190,7 @@ export default function Game() {
     let streakDays = parseInt(localStorage.getItem(streakKey) || '0')
     if (isFirstToday) {
       // 检查昨天有没有玩
-      const yesterday = new Date()
-      yesterday.setDate(yesterday.getDate() - 1)
-      const yesterdayStr = yesterday.toISOString().split('T')[0]
+      const yesterdayStr = getLocalDateString(-1)
       if (lastDate === yesterdayStr) {
         streakDays += 1
       } else {
@@ -211,18 +209,19 @@ export default function Game() {
       isStreak7Days
     )
     if (totalAdd > 0) {
-      addStars(totalAdd, availableAdd) // 乐观更新本地
-      setTimeout(() => refreshStars(), 500) // 延迟刷新，等 RPC 完成
+      addStars(totalAdd, availableAdd).then(({ error }) => {
+        if (!error) refreshStars() // RPC 成功后才刷新，消除竞态
+      })
     }
   }, [activeChild, results, addStars, refreshStars, character])
 
-  const handlePlayAgain = useCallback(() => {
-    handleFinish() // 不 await，后台保存
+  const handlePlayAgain = useCallback(async () => {
+    await handleFinish() // 等待保存完成
     handleStart(character)
   }, [handleFinish, handleStart, character])
 
-  const handleGoHome = useCallback(() => {
-    handleFinish() // 不 await，后台保存
+  const handleGoHome = useCallback(async () => {
+    await handleFinish() // 等待保存完成
     resetGame()
     navigate('/select-child')
   }, [handleFinish, resetGame, navigate])
@@ -279,7 +278,7 @@ export default function Game() {
   const SUBJECT_LABEL = { english: '🔤 英语', chinese: '🀄 语文', math: '🔢 数学' }
 
   return (
-    <div className={`${subject === 'chinese' ? 'bg-chinese' : subject === 'math' ? 'bg-math' : 'bg-question-purple'} min-h-screen flex flex-col`}>
+    <div className={`${subject === 'chinese' ? 'bg-chinese' : subject === 'math' ? 'bg-math' : 'bg-question-purple'} min-h-screen flex flex-col`} style={{transition: 'background 0.5s ease'}}>
       {/* 顶部栏 */}
       <GameHeader
         onBack={() => { resetGame(); navigate('/select-child') }}

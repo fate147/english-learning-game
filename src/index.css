@@ -76,11 +76,6 @@ html.dark .q-card-glass {
   border-color: rgba(255,255,255,0.15);
 }
 
-html.dark .btn-game-secondary {
-  background: rgba(0,0,0,0.3);
-  border-color: rgba(255,255,255,0.15);
-}
-
 html.dark .result-item {
   background: rgba(0,0,0,0.3);
 }
@@ -295,16 +290,19 @@ html, body, #root {
 /* 紫色渐变背景（答题页 — 英语默认） */
 .bg-question-purple {
   background: var(--gradient-purple);
+  transition: background 0.5s ease;
 }
 
 /* 语文淡绿渐变背景 */
 .bg-chinese {
   background: var(--gradient-chinese);
+  transition: background 0.5s ease;
 }
 
 /* 数学淡蓝渐变背景 */
 .bg-math {
   background: var(--gradient-math);
+  transition: background 0.5s ease;
 }
 
 /* Pulse 播放按钮 */
@@ -385,53 +383,6 @@ html, body, #root {
   text-shadow: 0 1px 6px rgba(0,0,0,0.3);
 }
 
-/* 白底主角按钮 */
-.btn-game-primary {
-  flex: 1;
-  padding: 16px;
-  border-radius: 20px;
-  font-family: 'Nunito', 'Inter', system-ui, sans-serif;
-  font-weight: 900;
-  font-size: 18px;
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  background: var(--gradient-primary);
-  color: white;
-  box-shadow: 0 8px 24px rgba(255,107,157,0.4);
-  text-shadow: 0 1px 4px rgba(0,0,0,0.25);
-}
-.btn-game-primary:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 12px 32px rgba(255,107,157,0.5);
-}
-.btn-game-primary:active {
-  transform: scale(0.95);
-}
-
-/* 半透明次要按钮 */
-.btn-game-secondary {
-  flex: 1;
-  padding: 16px;
-  border-radius: 20px;
-  font-family: 'Nunito', 'Inter', system-ui, sans-serif;
-  font-weight: 900;
-  font-size: 18px;
-  border: 2px solid rgba(255,255,255,0.30);
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  background: rgba(255,255,255,0.18);
-  backdrop-filter: blur(8px);
-  color: white;
-  text-shadow: 0 1px 4px rgba(0,0,0,0.25);
-}
-.btn-game-secondary:hover {
-  background: rgba(255,255,255,0.25);
-  transform: translateY(-4px);
-}
-.btn-game-secondary:active {
-  transform: scale(0.95);
-}
 
 /* 结果页彩纸 */
 .confetti-container {
@@ -487,36 +438,6 @@ html, body, #root {
   background: rgba(255,255,255,0.10);
   border-radius: 14px;
   border: 1px solid rgba(255,255,255,0.10);
-}
-.stars-earned-box .label {
-  font-size: 12px;
-  color: rgba(255,255,255,0.65);
-}
-.result-item {
-  background: rgba(255,255,255,0.12);
-  border-radius: 14px;
-  padding: 12px;
-  text-align: center;
-}
-.result-item .num {
-  font-size: 24px;
-  font-weight: 900;
-}
-.result-item .num.green { color: var(--color-correct); }
-.result-item .num.red { color: var(--color-wrong); }
-.result-item .num.amber { color: var(--color-warning); }
-.result-item .label {
-  font-size: 11px;
-  color: rgba(255,255,255,0.65);
-  font-weight: 700;
-}
-
-/* 星星获得 */
-.stars-earned-box {
-  text-align: center;
-  padding: 12px 24px;
-  background: rgba(255,255,255,0.12);
-  border-radius: 14px;
 }
 .stars-earned-box .label {
   font-size: 12px;
@@ -731,18 +652,6 @@ html, body, #root {
 .badge-danger  { background: rgba(239,68,68,0.15); color: #ef4444; }
 .badge-warning { background: rgba(251,191,36,0.15); color: #fbbf24; }
 
-/* ===== 键盘焦点样式 ===== */
-*:focus-visible {
-  outline: 3px solid var(--color-focus);
-  outline-offset: 2px;
-  border-radius: 4px;
-}
-button:focus-visible,
-a:focus-visible {
-  outline: 3px solid var(--color-focus);
-  outline-offset: 2px;
-}
-
 /* ===== 全局动效体系 ===== */
 /* 统一缓动曲线 */
 :root {
@@ -752,18 +661,6 @@ a:focus-visible {
   --duration-fast: 150ms;
   --duration-normal: 250ms;
   --duration-slow: 400ms;
-}
-
-/* 统一按钮状态 */
-.btn-game-primary,
-.btn-game-secondary {
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-}
-.btn-game-primary:active,
-.btn-game-secondary:active {
-  transform: scale(0.96);
-  transition-duration: var(--duration-fast);
 }
 
 /* 页面入场 */
@@ -891,15 +788,6 @@ html {
   .game-page-bg main {
     padding-top: 4px;
     padding-bottom: 4px;
-  }
-}
-
-/* ===== 动画降级：如果用户偏好减少动画 ===== */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
   }
 }
 

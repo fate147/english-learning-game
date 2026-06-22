@@ -26,17 +26,19 @@ const COURSES = {
 }
 
 // 获取指定年级的所有题目，打乱后返回 count 道
-export function pickChineseQuestions(grade = 3, count = 8) {
+// 默认只出下学期（semester 2），后面可通过第二个参数调回
+export function pickChineseQuestions(grade = 3, count = 8, semester = 2) {
   const semesters = COURSES[grade]
   if (!semesters) return []
   const all = []
-  Object.values(semesters).forEach((units) => {
-    units.forEach((unit) => {
+  const target = semesters[semester]
+  if (target) {
+    target.forEach((unit) => {
       unit.forEach((q) => {
         all.push({ ...q, type: 'chinese_reading' })
       })
     })
-  })
+  }
   // Fisher-Yates 洗牌
   for (let i = all.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))

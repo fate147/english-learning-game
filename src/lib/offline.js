@@ -10,15 +10,6 @@ export function isOnline() {
 
 // ---- 缓存读写 ----
 
-export function getCachedData() {
-  try {
-    const raw = localStorage.getItem(CACHE_KEY)
-    return raw ? JSON.parse(raw) : null
-  } catch {
-    return null
-  }
-}
-
 export function setCachedData(data) {
   try {
     localStorage.setItem(CACHE_KEY, JSON.stringify(data))
@@ -27,11 +18,6 @@ export function setCachedData(data) {
   }
 }
 
-export function clearCache() {
-  try {
-    localStorage.removeItem(CACHE_KEY)
-  } catch {}
-}
 
 // ---- 离线队列 ----
 
@@ -79,13 +65,7 @@ export function incrementRetry(id) {
   } catch {}
 }
 
-export function hasDirtyData() {
-  return localStorage.getItem(DIRTY_KEY) === 'true'
-}
 
-export function getQueueLength() {
-  return getQueue().length
-}
 
 // ---- 30s 轮询重传 ----
 let syncInterval = null
@@ -116,9 +96,3 @@ export function startSync(saveFn) {
   }, 30000)
 }
 
-export function stopSync() {
-  if (syncInterval) {
-    clearInterval(syncInterval)
-    syncInterval = null
-  }
-}
