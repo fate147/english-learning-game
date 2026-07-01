@@ -3,14 +3,16 @@
  * 优先使用阿里云 TTS（统一音质，所有设备一致），
  * 网络失败时降级到 Web Speech API 本地语音。
  *
- * 生产环境配置 VITE_VERCEL_TTS_URL 指向阿里云 FC 地址。
- * 开发环境走同源 /api/tts（由 Vite 中间件代理到阿里云 TTS）。
+ * 优化：老设备响应慢的问题
  */
 
 // 缓存已获取的音频，避免重复请求
 const audioCache = new Map()
 
-// ====== 云端 Edge TTS ======
+// 预创建 Audio 对象复用，减少内存分配
+let sharedAudio = null
+
+// ====== 云端 TTS ======
 
 async function speakCloud(text) {
   // 命中缓存直接播放
@@ -18,30 +20,49 @@ async function speakCloud(text) {
     return playBlob(audioCache.get(text))
   }
 
-  // 解析 TTS 地址：VITE_VERCEL_TTS_URL → 阿里云 FC 地址
-  // 不配置时开发环境走同源 /api/tts（Vite 中间件代理）
   const url = import.meta.env.VITE_VERCEL_TTS_URL || '/api/tts'
 
-  const resp = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ text }),
-  })
+  // 添加超时：3秒内没响应就降级到本地
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), 3000)
 
-  if (!resp.ok) throw new Error(`TTS ${resp.status}`)
+  try {
+    const resp = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text }),
+      signal: controller.signal,
+    })
 
-  const blob = await resp.blob()
-  audioCache.set(text, blob)
-  return playBlob(blob)
+    clearTimeout(timeout)
+
+    if (!resp.ok) throw new Error(`TTS ${resp.status}`)
+
+    const blob = await resp.blob()
+    audioCache.set(text, blob)
+    return playBlob(blob)
+  } catch (e) {
+    clearTimeout(timeout)
+    throw e
+  }
 }
 
 function playBlob(blob) {
   return new Promise((resolve) => {
     const url = URL.createObjectURL(blob)
-    const audio = new Audio(url)
-    audio.onended = () => { URL.revokeObjectURL(url); resolve(true) }
-    audio.onerror = () => { URL.revokeObjectURL(url); resolve(false) }
-    audio.play().catch(() => resolve(false))
+
+    // 复用 Audio 对象，老设备更快
+    if (!sharedAudio) {
+      sharedAudio = new Audio()
+    }
+
+    sharedAudio.src = url
+    sharedAudio.onended = () => { URL.revokeObjectURL(url); resolve(true) }
+    sharedAudio.onerror = () => { URL.revokeObjectURL(url); resolve(false) }
+
+    // 老设备可能需要预加载
+    sharedAudio.load()
+    sharedAudio.play().catch(() => resolve(false))
   })
 }
 
@@ -59,7 +80,8 @@ function waitVoices() {
       window.speechSynthesis.onvoiceschanged = null
       resolve()
     }
-    setTimeout(() => { voicesReady = true; resolve() }, 1500)
+    // 老设备语音加载可能更慢，给更多时间
+    setTimeout(() => { voicesReady = true; resolve() }, 2000)
   })
 }
 
@@ -96,13 +118,14 @@ async function speakLocal(text) {
   })
 }
 
-// ====== 统一入口：云端优先，失败降级本地 ======
+// ====== 统一入口 ======
 
 export async function speakText(text) {
   if (!text) return false
   try {
     return await speakCloud(text)
   } catch {
+    // 云端失败（超时或网络错误），降级本地
     return speakLocal(text)
   }
 }

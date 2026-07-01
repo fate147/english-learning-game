@@ -47,3 +47,4 @@ memory/
 
 # Temp ZIP artifacts
 *.zip
+.vercel
