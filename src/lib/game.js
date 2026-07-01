@@ -1,4 +1,5 @@
 import { supabase } from './supabase.js'
+import { gameLastDateKey, streakKey, learningStateKey } from './cache.js'
 
 // 获取本地日期 YYYY-MM-DD（解决 UTC 日期与本地日期不一致的问题）
 // offsetDays：偏移天数，如 -1 为昨天
@@ -91,4 +92,139 @@ export async function upsertLearningState(userId, childId, updates, subject = 'e
     .select()
     .single()
   return { data, error }
+}
+
+/**
+ * 更新单词进度 — 每局游戏结束后调用
+ * 对每个英语单词的答题结果，累加 correct_count / wrong_count
+ */
+export async function updateWordProgress(userId, childId, subject, grade, results) {
+  if (!results || !Array.isArray(results) || results.length === 0) return { data: null, error: null }
+  if (subject !== 'english') return { data: null, error: null }
+
+  // 按 wordId 聚合 correct/wrong 计数
+  const counts = {}
+  for (const r of results) {
+    if (!r.wordId) continue
+    if (!counts[r.wordId]) counts[r.wordId] = { correct: 0, wrong: 0 }
+    if (r.correct) counts[r.wordId].correct += 1
+    else counts[r.wordId].wrong += 1
+  }
+
+  const errors = []
+  for (const [wordId, c] of Object.entries(counts)) {
+    // 获取当前进度
+    const { data: existing } = await supabase
+      .from('word_progress')
+      .select('correct_count, wrong_count, level, word_id')
+      .eq('user_id', userId)
+      .eq('child_id', childId)
+      .eq('subject', subject)
+      .eq('grade', grade)
+      .eq('word_id', wordId)
+      .maybeSingle()
+
+    const oldCorrect = existing?.correct_count || 0
+    const oldWrong = existing?.wrong_count || 0
+    const newCorrect = oldCorrect + c.correct
+    const newWrong = oldWrong + c.wrong
+    // level = 答对次数/5，最高3级
+    const newLevel = Math.min(Math.floor(newCorrect / 5), 3)
+    // 复习时间：level提升时延后 (level * 24) 小时
+    const nextReview = newLevel > (existing?.level || 0)
+      ? new Date(Date.now() + newLevel * 24 * 60 * 60 * 1000).toISOString()
+      : existing?.next_review
+
+    const { error } = await supabase
+      .from('word_progress')
+      .upsert({
+        user_id: userId,
+        child_id: childId,
+        subject,
+        grade,
+        word_id: wordId,
+        correct_count: newCorrect,
+        wrong_count: newWrong,
+        level: newLevel,
+        next_review: nextReview,
+        updated_at: new Date().toISOString(),
+      }, { onConflict: 'user_id, child_id, subject, grade, word_id' })
+
+    if (error) errors.push(error)
+  }
+
+  return { data: null, error: errors.length > 0 ? errors[0] : null }
+}
+
+/**
+ * 构建游戏会话数据对象（闯关模式）
+ * @param {Object} params
+ * @returns {Object} sessionData
+ */
+export function buildGameSessionData({ activeChild, subject, grade, results, character }) {
+  return {
+    user_id: activeChild.user_id,
+    child_id: activeChild.child_id,
+    subject,
+    grade,
+    client_session_id: results.sessionId,
+    played_on: getLocalDateString(),
+    character: character || 'dino',
+    correct_count: results.correctCount,
+    wrong_count: results.wrongCount,
+    results: results.answers,
+  }
+}
+
+/**
+ * 计算并保存连续天数（localStorage）
+ * @param {Object} params
+ * @returns {{ isFirstToday: boolean, isStreak7Days: boolean, streakDays: number }}
+ */
+export function calcAndSaveStreak({ subject, grade, childId }) {
+  const todayKey = gameLastDateKey(subject, grade, childId)
+  const lastDate = localStorage.getItem(todayKey)
+  const today = getLocalDateString()
+  const isFirstToday = lastDate !== today
+
+  const streakKeyStr = streakKey(subject, grade, childId)
+  let streakDays = parseInt(localStorage.getItem(streakKeyStr) || '0')
+  if (isFirstToday) {
+    const yesterdayStr = getLocalDateString(-1)
+    if (lastDate === yesterdayStr) streakDays += 1
+    else streakDays = 1
+    localStorage.setItem(streakKeyStr, String(streakDays))
+    localStorage.setItem(todayKey, today)
+  }
+  const isStreak7Days = streakDays >= 7
+
+  return { isFirstToday, isStreak7Days, streakDays }
+}
+
+/**
+ * 从 localStorage 读取已解锁单词（缓存优先）
+ * @param {string} childId
+ * @returns {{ fromCache: boolean, unlockedIds: string[] }}
+ */
+export function loadUnlockedWordsWithCache(childId) {
+  const cacheKey = learningStateKey('english', 3, childId)
+  try {
+    const raw = localStorage.getItem(cacheKey)
+    if (raw) {
+      const cached = JSON.parse(raw)
+      if (cached?.unlockedWords?.length) return { fromCache: true, unlockedIds: cached.unlockedWords }
+    }
+  } catch {}
+  return { fromCache: false, unlockedIds: [] }
+}
+
+/**
+ * 将已解锁单词写入 localStorage 缓存
+ * @param {string} childId
+ * @param {string[]} unlockedIds
+ */
+export function saveUnlockedWordsToCache(childId, unlockedIds) {
+  try {
+    localStorage.setItem(learningStateKey('english', 3, childId), JSON.stringify({ unlockedWords: unlockedIds }))
+  } catch {}
 }

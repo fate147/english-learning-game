@@ -13,7 +13,7 @@
   {
     "id": "m_g3s2u5_02",
     "stage": "concrete",
-    "visual": "┌──────┐\n│      │\n│      │ 边长3cm\n│      │\n└──────┘",
+    "visual": "┌──────────┐\n│          │\n│          │ 边长3cm\n│          │\n└──────────┘",
     "question": "上面正方形的面积是多少？",
     "options": [
       { "text": "3 × 4 = 12平方厘米", "correct": false },
@@ -35,7 +35,7 @@
   {
     "id": "m_g3s2u5_04",
     "stage": "pictorial",
-    "visual": "┌──────┬──────┐\n│      │      │\n│   A   │   B   │ 两个正方形\n│      │      │\n└──────┴──────┘\nA边长2cm  B边长3cm",
+    "visual": "┌────┬────────┐\n│    │        │\n│ A  │   B    │ 两个正方形\n│    │        │\n└────┴────────┘\nA边长2cm  B边长3cm",
     "question": "正方形A和B的面积相差多少？",
     "options": [
       { "text": "3×3=9，2×2=4，9-4=5平方厘米", "correct": true },

@@ -1,13 +1,17 @@
 import { supabase } from './supabase.js'
 
 export async function getChildren(userId) {
-  const { data, error } = await supabase
-    .from('child_profiles')
-    .select('*')
-    .eq('user_id', userId)
-    .eq('is_archived', false)
-    .order('created_at', { ascending: true })
-  return { data, error }
+  try {
+    const { data, error } = await supabase
+      .from('child_profiles')
+      .select('*')
+      .eq('user_id', userId)
+      .eq('is_archived', false)
+      .order('created_at', { ascending: true })
+    return { data, error }
+  } catch (e) {
+    return { data: null, error: { message: e.message || '网络连接失败' } }
+  }
 }
 
 export async function createChild(userId, childId, name, avatar) {

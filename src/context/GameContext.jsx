@@ -19,6 +19,7 @@ export function GameProvider({ children }) {
   const sessionIdRef = useRef(null)
   // ref 同步最新值，解决 setTimeout 闭包捕获旧状态的问题
   const answersRef = useRef([])
+  const comboRef = useRef(0)
   const maxComboRef = useRef(0)
   const subjectRef = useRef('english')
 
@@ -32,7 +33,6 @@ export function GameProvider({ children }) {
         qs = pickMathQuestions(grade, 8)
       } else {
         qs = getQuestionSet({
-          unit,
           wordProgressMap: wordProgressMap || {},
           unlockedWords: unlockedWords || [],
           learnedWords: learnedWords || [],
@@ -46,6 +46,7 @@ export function GameProvider({ children }) {
       setResults(null)
       setAnswers([])
       answersRef.current = []
+      comboRef.current = 0
       maxComboRef.current = 0
       setGameState('playing')
       startTimeRef.current = Date.now()
@@ -59,11 +60,12 @@ export function GameProvider({ children }) {
       const q = questions[questionIndex]
       if (!q) return
 
-      const newCombo = isCorrect ? combo + 1 : 0
+      const newCombo = isCorrect ? comboRef.current + 1 : 0
       const newMaxCombo = Math.max(maxComboRef.current, newCombo)
 
       setCombo(newCombo)
       setMaxCombo(newMaxCombo)
+      comboRef.current = newCombo
       maxComboRef.current = newMaxCombo
       if (isCorrect) setScore((s) => s + 1)
 
@@ -88,7 +90,7 @@ export function GameProvider({ children }) {
 
       return { newCombo, newMaxCombo, answer }
     },
-    [questions, combo]
+    [questions]
   )
 
   const resetGame = useCallback(() => {
@@ -100,6 +102,7 @@ export function GameProvider({ children }) {
     setResults(null)
     setAnswers([])
     answersRef.current = []
+    comboRef.current = 0
     maxComboRef.current = 0
     setGameState('idle')
     startTimeRef.current = null

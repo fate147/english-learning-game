@@ -8,6 +8,7 @@ import App from './App.jsx'
 import { startSync } from './lib/offline.js'
 import { saveGameSession } from './lib/game.js'
 import { addEarnedStars } from './lib/stars.js'
+import { ToastProvider } from './components/ui/Toast.jsx'
 
 // 离线队列重传：按类型分发
 startSync(async (payload) => {
@@ -20,6 +21,8 @@ startSync(async (payload) => {
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App />
+    <ToastProvider>
+      <App />
+    </ToastProvider>
   </StrictMode>,
 )

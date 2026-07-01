@@ -3,15 +3,18 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useChild } from '../hooks/useChild.js'
 import { useGameSession } from '../hooks/useGameSession.js'
 import { useStars } from '../hooks/useStars.js'
-import { WORDS, getWordsByUnit, getWordById } from '../lib/words.js'
+import { useGameTheme } from '../context/GameThemeContext.jsx'
+import { WORDS, getWordById } from '../lib/words.js'
 import { CHARACTERS, getRandomDialogue } from '../config/characters.js'
 import { GAME_QUESTIONS_PER_ROUND } from '../config/index.js'
-import { getLearningState, getWordProgress, saveGameSession, getLocalDateString } from '../lib/game.js'
+import { getLearningState, getWordProgress, saveGameSession, updateWordProgress, buildGameSessionData, calcAndSaveStreak } from '../lib/game.js'
 import { calcScore } from '../engines/scoring.js'
 import { enqueue, isOnline } from '../lib/offline.js'
+import { learningStateKey } from '../lib/cache.js'
 
 import GameHeader from '../components/ui/GameHeader.jsx'
 import ProgressDots from '../components/ui/ProgressDots.jsx'
+import StarRain from '../components/ui/StarRain.jsx'
 import StartScreen from '../components/game/StartScreen.jsx'
 import ResultScreen from '../components/game/ResultScreen.jsx'
 import ImageChoice from '../components/question/ImageChoice.jsx'
@@ -27,6 +30,7 @@ export default function Game() {
   const subject = searchParams.get('subject') || 'english'
   const grade = parseInt(searchParams.get('grade')) || 3
   const { activeChild } = useChild()
+  const { gameTheme } = useGameTheme()
   const { results, gameState, startGame, submitAnswer, nextQuestion, resetGame, currentQuestion, currentIndex, score, combo, answers } = useGameSession()
   const { totalEarned, level, addStars, refreshStars } = useStars()
 
@@ -59,8 +63,6 @@ export default function Game() {
     prevComboRef.current = combo
   }, [combo])
 
-  if (!activeChild) return null
-
   const handleStart = useCallback(async (selectedChar) => {
     setCharacter(selectedChar || 'dino')
     setIsLoading(true)
@@ -75,7 +77,7 @@ export default function Game() {
     // 英语：获取家长解锁的单词 — 优先读 localStorage 缓存
     let unlockedIds = []
     if (activeChild) {
-      const cacheKey = subject + '_g' + grade + '_learning_state_' + activeChild.child_id
+      const cacheKey = learningStateKey(subject, grade, activeChild.child_id)
       let cached = null
       try {
         const raw = localStorage.getItem(cacheKey)
@@ -117,10 +119,8 @@ export default function Game() {
       return
     }
     setNoWordsMsg('')
-    const firstUnit = WORDS.find((w) => unlockedIds.includes(w.id))?.unit || 1
 
     startGame({
-      unit: firstUnit,
       wordProgressMap,
       unlockedWords: unlockedIds,
       learnedWords,
@@ -153,75 +153,48 @@ export default function Game() {
     }
   }, [currentIndex, submitAnswer, nextQuestion, isProcessing, currentQuestion, character])
 
-  const handleFinish = useCallback(async () => {
-    // 保存游戏记录
+  const handleFinish = useCallback(() => {
+    // 保存游戏记录（不阻塞UI，后台执行）
     if (!activeChild || !results) return
 
-    const sessionData = {
-      user_id: activeChild.user_id,
-      child_id: activeChild.child_id,
-      subject,
-      grade,
-      client_session_id: results.sessionId,
-      played_on: getLocalDateString(),
-      character: character || 'dino',
-      correct_count: results.correctCount,
-      wrong_count: results.wrongCount,
-      results: results.answers,
-    }
+    const sessionData = buildGameSessionData({ activeChild, subject, grade, results, character })
 
+    // 后台保存，不 await
     if (isOnline()) {
-      const { error } = await saveGameSession(sessionData)
-      if (error) {
-        enqueue(sessionData)
+      saveGameSession(sessionData).then(({ error }) => {
+        if (error) enqueue(sessionData)
+      })
+      if (subject === 'english' && results.answers?.length) {
+        updateWordProgress(
+          activeChild.user_id, activeChild.child_id,
+          subject, grade, results.answers
+        )
       }
     } else {
       enqueue(sessionData)
     }
 
-    // 判断每日首次
-    const todayKey = subject + '_g' + grade + '_game_last_date_' + activeChild.child_id
-    const lastDate = localStorage.getItem(todayKey)
-    const today = getLocalDateString()
-    const isFirstToday = lastDate !== today
-
-    // 判断连续7天（简化版：检查 localStorage 中最近7天都有记录）
-    const streakKey = subject + '_g' + grade + '_game_streak_' + activeChild.child_id
-    let streakDays = parseInt(localStorage.getItem(streakKey) || '0')
-    if (isFirstToday) {
-      // 检查昨天有没有玩
-      const yesterdayStr = getLocalDateString(-1)
-      if (lastDate === yesterdayStr) {
-        streakDays += 1
-      } else {
-        streakDays = 1
-      }
-      localStorage.setItem(streakKey, String(streakDays))
-      localStorage.setItem(todayKey, today)
-    }
-    const isStreak7Days = streakDays >= 7
+    // 判断每日首次 + 连续天数（本地操作，很快）
+    const { isFirstToday, isStreak7Days } = calcAndSaveStreak({ subject, grade, childId: activeChild.child_id })
 
     const { totalAdd, availableAdd } = calcScore(
-      results.correctCount,
-      results.maxCombo,
-      results.isPerfect,
-      isFirstToday,
-      isStreak7Days
+      results.correctCount, results.maxCombo,
+      results.isPerfect, isFirstToday, isStreak7Days
     )
     if (totalAdd > 0) {
       addStars(totalAdd, availableAdd).then(({ error }) => {
-        if (!error) refreshStars() // RPC 成功后才刷新，消除竞态
+        if (!error) refreshStars()
       })
     }
-  }, [activeChild, results, addStars, refreshStars, character])
+  }, [activeChild, results, subject, grade, character, addStars, refreshStars])
 
-  const handlePlayAgain = useCallback(async () => {
-    await handleFinish() // 等待保存完成
+  const handlePlayAgain = useCallback(() => {
+    handleFinish()
     handleStart(character)
   }, [handleFinish, handleStart, character])
 
-  const handleGoHome = useCallback(async () => {
-    await handleFinish() // 等待保存完成
+  const handleGoHome = useCallback(() => {
+    handleFinish()
     resetGame()
     navigate('/select-child')
   }, [handleFinish, resetGame, navigate])
@@ -231,6 +204,9 @@ export default function Game() {
     setIsProcessing(false)
     nextQuestion()
   }, [nextQuestion])
+
+  if (!activeChild) return null
+
 
   // 开始界面
   if (gameState === 'idle') {
@@ -244,15 +220,15 @@ export default function Game() {
           onBack={() => { resetGame(); navigate('/select-child'); setNoWordsMsg('') }}
         />
         {noWordsMsg && (
-          <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 bg-white/15 backdrop-blur-md border border-white/20 rounded-2xl px-6 py-3 text-white text-sm font-medium shadow-lg">
-            ⚠️ {noWordsMsg}
+          <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 border border-[var(--c-border)] rounded-xl px-5 py-2.5 text-[var(--c-text)] text-sm font-medium shadow-lg">
+            {noWordsMsg}
           </div>
         )}
         {isLoading && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
-            <div className="bg-white/20 backdrop-blur-md rounded-3xl p-8 flex flex-col items-center gap-4 border border-white/20">
-              <div className="w-10 h-10 border-4 border-white/30 border-t-white rounded-full animate-spin" />
-              <span className="text-white font-bold text-lg">加载中...</span>
+          <div className={`fixed inset-0 z-50 flex items-center justify-center ${gameTheme.pattern}`}>
+            <div className="text-center">
+              <div className="spinner spinner-lg mx-auto mb-4" style={{ borderColor: 'rgba(255,255,255,0.2)', borderTopColor: 'white' }} />
+              <span className="text-white font-bold">加载中...</span>
             </div>
           </div>
         )}
@@ -275,10 +251,11 @@ export default function Game() {
   const currentUnit = WORDS.find(w => w.id === currentQuestion?.wordId)?.unit || 1
 
   // 科目标签
-  const SUBJECT_LABEL = { english: '🔤 英语', chinese: '🀄 语文', math: '🔢 数学' }
+  const SUBJECT_LABEL = { english: '英语', chinese: '语文', math: '数学' }
 
   return (
-    <div className={`${subject === 'chinese' ? 'bg-chinese' : subject === 'math' ? 'bg-math' : 'bg-question-purple'} min-h-screen flex flex-col`} style={{transition: 'background 0.5s ease'}}>
+    <div className={`min-h-screen ${gameTheme.pattern} flex flex-col relative`} style={{transition: 'background 0.25s var(--ease-out)'}}>
+      <StarRain count={10} />
       {/* 顶部栏 */}
       <GameHeader
         onBack={() => { resetGame(); navigate('/select-child') }}
@@ -331,7 +308,7 @@ export default function Game() {
             disabled={isProcessing}
           />
         ) : (
-          <div className="text-center text-white/60 py-12">加载题目中...</div>
+          <div className="text-center text-[var(--c-text-muted)] py-12">加载题目中...</div>
         )}
       </main>
 

@@ -12,26 +12,18 @@ export default {
       },
       colors: {
         primary: {
-          DEFAULT: '#ff6b9d',
-          light: '#ff8fb4',
-          dark: '#ff4081',
+          DEFAULT: 'oklch(0.650 0.180 140.0)',
+          light: 'oklch(0.740 0.155 140.0)',
+          dark: 'oklch(0.550 0.200 140.0)',
         },
-        correct: '#4ade80',
-        wrong: '#f87171',
-        warning: '#fbbf24',
-        game: {
-          cyan: '#4DD0E1',
-          mint: '#81C784',
-          bg: '#f0faf5',
+        accent: {
+          DEFAULT: 'oklch(0.750 0.155 55.0)',
+          light: 'oklch(0.880 0.110 60.0)',
         },
-        parent: {
-          bg: '#0f172a',
-          card: '#1e293b',
-          border: '#334155',
-          accent: '#4DD0E1',
-          text: '#f1f5f9',
-          muted: '#94a3b8',
-        },
+        correct: 'oklch(0.680 0.190 140.0)',
+        wrong: 'oklch(0.620 0.210 25.0)',
+        warning: 'oklch(0.800 0.155 80.0)',
+        star: 'oklch(0.750 0.155 55.0)',
       },
       maxWidth: {
         content: '72rem',
@@ -40,7 +32,7 @@ export default {
         'xs': '475px',
       },
       animation: {
-        'fade-in': 'page-fade-in 0.35s cubic-bezier(0.4, 0, 0.2, 1) both',
+        'fade-in': 'page-fade-in 0.25s cubic-bezier(0.4, 0, 0.2, 1) both',
       },
     },
   },

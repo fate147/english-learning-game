@@ -1,15 +1,12 @@
 import { useState, useRef, useEffect } from 'react'
+import { vibrate } from '../../lib/haptics.js'
 
 const STAGE_LABELS = {
-  1: { label: '选标题', color: 'bg-emerald-500' },
-  2: { label: '段落大意', color: 'bg-sky-500' },
-  3: { label: '推理理解', color: 'bg-amber-500' },
-  4: { label: '概括填空', color: 'bg-violet-500' },
-  5: { label: '综合挑战', color: 'bg-rose-500' },
-}
-
-function vibrate(pattern) {
-  try { navigator.vibrate?.(pattern) } catch {}
+  1: { label: '选标题', color: 'bg-emerald-400/30 text-emerald-200' },
+  2: { label: '段落大意', color: 'bg-sky-400/30 text-sky-200' },
+  3: { label: '推理理解', color: 'bg-amber-400/30 text-amber-200' },
+  4: { label: '概括填空', color: 'bg-violet-400/30 text-violet-200' },
+  5: { label: '综合挑战', color: 'bg-rose-400/30 text-rose-200' },
 }
 
 export default function ChineseReadingChoice({ question, onAnswer, disabled }) {
@@ -42,38 +39,38 @@ export default function ChineseReadingChoice({ question, onAnswer, disabled }) {
   }
 
   return (
-    <div className="page-enter w-full max-w-2xl mx-auto space-y-4 sm:space-y-5">
+    <div className="page-enter w-full max-w-2xl mx-auto space-y-3 sm:space-y-4">
       <div className="flex items-center justify-between">
-        <span className={`px-3 py-1 rounded-full text-xs font-bold text-white ${stageInfo.color}`}>
+        <span className={`px-3 py-1 rounded-full text-xs font-bold ${stageInfo.color}`}>
           {stageInfo.label}
         </span>
-        <span className="text-white/70 text-xs">第 {question.stage} 阶</span>
+        <span className="text-white/75 text-xs">第 {question.stage} 阶</span>
       </div>
 
-      <div className="bg-white/12 backdrop-blur-md rounded-2xl p-5 border border-white/15">
-        <div className="text-white text-base leading-relaxed" style={{textShadow: '0 1px 3px rgba(0,0,0,0.15)'}}>
+      <div className="glass-card p-4">
+        <div className="text-white text-sm leading-relaxed">
           {question.passage}
         </div>
       </div>
 
-      <div className="text-white text-lg font-bold glass-text">
+      <div className="text-white text-base font-bold">
         {question.question}
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-2">
         {question.options.map((opt, idx) => {
           const isSelected = revealed && selected === idx
           const isThisCorrect = revealed && opt.correct
 
-          let btnClass = 'bg-white/12 hover:bg-white/20 border-white/20 text-white'
+          let btnClass = 'glass-card hover:bg-white/15 border-white/30 text-white cursor-pointer'
           let animClass = ''
           if (isSelected) {
             btnClass = opt.correct
-              ? 'bg-emerald-500/80 border-emerald-400 text-white ring-2 ring-emerald-300'
-              : 'bg-red-500/80 border-red-400 text-white'
+              ? 'bg-green-400/30 border-green-400 text-green-200 ring-2 ring-green-400/50'
+              : 'bg-red-400/30 border-red-400 text-red-200'
             animClass = opt.correct ? 'option-correct' : 'option-wrong'
           } else if (isThisCorrect) {
-            btnClass = 'bg-emerald-500/40 border-emerald-400/60 text-white ring-1 ring-emerald-300/50'
+            btnClass = 'bg-green-400/20 border-green-400/50 text-green-200'
             animClass = 'option-reveal-correct'
           }
 
@@ -82,12 +79,12 @@ export default function ChineseReadingChoice({ question, onAnswer, disabled }) {
               key={idx}
               onClick={() => handleSelect(idx)}
               disabled={disabled || revealed}
-              className={`w-full p-4 rounded-xl border-2 text-left font-medium transition-all
+              className={`w-full p-4 rounded-xl border-2 text-left font-medium transition-all text-sm
                 ${btnClass} ${animClass}
-                ${!revealed && !disabled ? 'active:scale-[0.98]' : ''}
+                ${!revealed && !disabled ? 'active:scale-[0.97]' : ''}
               `}
             >
-              <span className="inline-block w-7 h-7 rounded-lg bg-white/10 text-center leading-7 mr-3 text-sm font-bold shrink-0">
+              <span className="inline-block w-7 h-7 rounded-full bg-white/20 text-center leading-7 mr-3 text-xs font-bold shrink-0">
                 {String.fromCharCode(65 + idx)}
               </span>
               {opt.text}

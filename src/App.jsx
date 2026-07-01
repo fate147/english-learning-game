@@ -8,29 +8,32 @@ import { ChildProvider } from './context/ChildContext.jsx'
 import { StarProvider } from './context/StarContext.jsx'
 import { GameProvider } from './context/GameContext.jsx'
 import { ThemeProvider } from './context/ThemeContext.jsx'
+import { GameThemeProvider } from './context/GameThemeContext.jsx'
 import AppRoutes from './routes/index.jsx'
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <ErrorBoundary>
-        <OfflineGate>
-          <HashRouter future={routerFuture}>
-            <AuthProvider>
-              <ChildProvider>
-                <StarProvider>
-                  <GameProvider>
-                    <DataPrefetch>
-                      <a href="#main-content" className="skip-link">跳转到主内容</a>
-                      <AppRoutes />
-                    </DataPrefetch>
-                  </GameProvider>
-                </StarProvider>
-              </ChildProvider>
-            </AuthProvider>
-          </HashRouter>
-        </OfflineGate>
-      </ErrorBoundary>
-    </ThemeProvider>
+    <GameThemeProvider>
+      <ThemeProvider>
+        <ErrorBoundary>
+          <OfflineGate>
+            <HashRouter future={routerFuture}>
+              <AuthProvider>
+                <ChildProvider>
+                  <StarProvider>
+                    <GameProvider>
+                      <DataPrefetch>
+                        <a href="#main-content" className="skip-link">跳转到主内容</a>
+                        <AppRoutes />
+                      </DataPrefetch>
+                    </GameProvider>
+                  </StarProvider>
+                </ChildProvider>
+              </AuthProvider>
+            </HashRouter>
+          </OfflineGate>
+        </ErrorBoundary>
+      </ThemeProvider>
+    </GameThemeProvider>
   )
 }

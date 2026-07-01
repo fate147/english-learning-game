@@ -1,0 +1,313 @@
+/* ========================================
+   设计 Token - 所有项目共享
+   ======================================== */
+
+:root {
+  /* ========================================
+   颜色系统
+   ======================================== */
+  
+  /* 主色 - 绿色 */
+  --color-primary-50: #f0fdf4;
+  --color-primary-100: #dcfce7;
+  --color-primary-200: #bbf7d0;
+  --color-primary-300: #86efac;
+  --color-primary-400: #4ade80;
+  --color-primary-500: #6aab8a;
+  --color-primary-600: #5a9a7a;
+  --color-primary-700: #4a8a6a;
+  --color-primary-800: #3a7a5a;
+  --color-primary-900: #2a6a4a;
+
+  /* 灰色 */
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+
+  /* 语义色 */
+  --color-success: #10b981;
+  --color-danger: #ef4444;
+  --color-warning: #f59e0b;
+  --color-info: #3b82f6;
+
+  /* ========================================
+   组件色（语义映射）
+   ======================================== */
+  --c-primary: var(--color-primary-500);
+  --c-primary-hover: var(--color-primary-600);
+  --c-secondary: var(--color-gray-500);
+  --c-success: var(--color-success);
+  --c-danger: var(--color-danger);
+  --c-warning: var(--color-warning);
+  --c-info: var(--color-info);
+
+  /* 项目特定色 */
+  --c-star: #f59e0b;
+  --c-accent: #f59e0b;
+  --c-accent-light: #fcd34d;
+  --c-correct: var(--color-success);
+  --c-wrong: var(--color-danger);
+  --c-primary-bg: #f0fdf4;
+
+  /* 背景色 */
+  --c-bg: #ffffff;
+  --c-bg-secondary: var(--color-gray-50);
+  --c-bg-tertiary: var(--color-gray-100);
+
+  /* 文本色 */
+  --c-text: var(--color-gray-800);
+  --c-text-secondary: var(--color-gray-500);
+  --c-text-muted: var(--color-gray-400);
+
+  /* 边框色 */
+  --c-border: var(--color-gray-200);
+  --c-border-hover: var(--color-gray-300);
+
+  /* ========================================
+   间距系统
+   ======================================== */
+  --space-0: 0;
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+
+  /* ========================================
+   圆角系统
+   ======================================== */
+  --radius-none: 0;
+  --radius-sm: 4px;
+  --radius-md: 12px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
+
+  /* ========================================
+   字体系统
+   ======================================== */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'Monaco', 'Menlo', 'Consolas', monospace;
+
+  --font-size-xs: 0.75rem;    /* 12px */
+  --font-size-sm: 0.875rem;   /* 14px */
+  --font-size-base: 1rem;     /* 16px */
+  --font-size-lg: 1.125rem;   /* 18px */
+  --font-size-xl: 1.25rem;    /* 20px */
+  --font-size-2xl: 1.5rem;    /* 24px */
+  --font-size-3xl: 1.875rem;  /* 30px */
+  --font-size-4xl: 2.25rem;   /* 36px */
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+
+  /* ========================================
+   阴影系统
+   ======================================== */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+  /* ========================================
+   动画系统
+   ======================================== */
+  --transition-fast: 150ms ease;
+  --transition-normal: 200ms ease;
+  --transition-slow: 300ms ease;
+}
+
+/* ========================================
+   深色主题
+   ======================================== */
+[data-theme="dark"] {
+  --c-primary: var(--color-primary-400);
+  --c-primary-hover: var(--color-primary-300);
+  --c-bg: var(--color-gray-800);
+  --c-bg-secondary: var(--color-gray-900);
+  --c-bg-tertiary: #0f1117;
+  --c-text: var(--color-gray-100);
+  --c-text-secondary: var(--color-gray-400);
+  --c-text-muted: var(--color-gray-500);
+  --c-border: var(--color-gray-700);
+  --c-border-hover: var(--color-gray-600);
+}
+
+/* ========================================
+   蓝色主题
+   ======================================== */
+[data-theme="blue"] {
+  --c-primary: #3b82f6;
+  --c-primary-hover: #2563eb;
+  --c-bg: #f0f9ff;
+  --c-bg-secondary: #e0f2fe;
+  --c-bg-tertiary: #bae6fd;
+  --c-text: #1e3a5f;
+  --c-text-secondary: #475569;
+  --c-text-muted: #94a3b8;
+  --c-border: #bae6fd;
+  --c-border-hover: #7dd3fc;
+}
+
+/* ========================================
+   绿色主题
+   ======================================== */
+[data-theme="green"] {
+  --c-primary: #10b981;
+  --c-primary-hover: #059669;
+  --c-bg: #ecfdf5;
+  --c-bg-secondary: #d1fae5;
+  --c-bg-tertiary: #a7f3d0;
+  --c-text: #064e3b;
+  --c-text-secondary: #475569;
+  --c-text-muted: #94a3b8;
+  --c-border: #a7f3d0;
+  --c-border-hover: #6ee7b7;
+}
+
+/* ========================================
+   紫色主题
+   ======================================== */
+[data-theme="purple"] {
+  --c-primary: #8b5cf6;
+  --c-primary-hover: #7c3aed;
+  --c-bg: #faf5ff;
+  --c-bg-secondary: #f3e8ff;
+  --c-bg-tertiary: #ddd6fe;
+  --c-text: #3b0764;
+  --c-text-secondary: #475569;
+  --c-text-muted: #94a3b8;
+  --c-border: #ddd6fe;
+  --c-border-hover: #c4b5fd;
+}
+
+/* ========================================
+   橙色主题
+   ======================================== */
+[data-theme="orange"] {
+  --c-primary: #f97316;
+  --c-primary-hover: #ea580c;
+  --c-bg: #fff7ed;
+  --c-bg-secondary: #ffedd5;
+  --c-bg-tertiary: #fed7aa;
+  --c-text: #7c2d12;
+  --c-text-secondary: #475569;
+  --c-text-muted: #94a3b8;
+  --c-border: #fed7aa;
+  --c-border-hover: #fdba74;
+}
+
+/* ========================================
+   粉色主题
+   ======================================== */
+[data-theme="pink"] {
+  --c-primary: #ec4899;
+  --c-primary-hover: #db2777;
+  --c-bg: #fdf2f8;
+  --c-bg-secondary: #fce7f3;
+  --c-bg-tertiary: #fbcfe8;
+  --c-text: #831843;
+  --c-text-secondary: #475569;
+  --c-text-muted: #94a3b8;
+  --c-border: #fbcfe8;
+  --c-border-hover: #f9a8d4;
+}
+
+/* ========================================
+   暗黑主题
+   ======================================== */
+[data-theme="midnight"] {
+  --c-primary: #818cf8;
+  --c-primary-hover: #6366f1;
+  --c-bg: #0f172a;
+  --c-bg-secondary: #1e293b;
+  --c-bg-tertiary: #0f1117;
+  --c-text: #f1f5f9;
+  --c-text-secondary: #94a3b8;
+  --c-text-muted: #64748b;
+  --c-border: #334155;
+  --c-border-hover: #475569;
+}
+
+/* ========================================
+   纯黑主题
+   ======================================== */
+[data-theme="black"] {
+  --c-primary: #525252;
+  --c-primary-hover: #737373;
+  --c-bg: #000000;
+  --c-bg-secondary: #0a0a0a;
+  --c-bg-tertiary: #141414;
+  --c-text: #ffffff;
+  --c-text-secondary: #a3a3a3;
+  --c-text-muted: #525252;
+  --c-border: #262626;
+  --c-border-hover: #404040;
+}
+
+/* ========================================
+   高级灰主题
+   ======================================== */
+[data-theme="gray"] {
+  --c-primary: #404040;
+  --c-primary-hover: #262626;
+  --c-bg: #fafafa;
+  --c-bg-secondary: #f5f5f5;
+  --c-bg-tertiary: #e5e5e5;
+  --c-text: #171717;
+  --c-text-secondary: #525252;
+  --c-text-muted: #a3a3a3;
+  --c-border: #e5e5e5;
+  --c-border-hover: #d4d4d4;
+}
+
+/* ========================================
+   深灰主题
+   ======================================== */
+[data-theme="darkgray"] {
+  --c-primary: #525252;
+  --c-primary-hover: #737373;
+  --c-bg: #171717;
+  --c-bg-secondary: #262626;
+  --c-bg-tertiary: #0f0f0f;
+  --c-text: #f5f5f5;
+  --c-text-secondary: #a3a3a3;
+  --c-text-muted: #525252;
+  --c-border: #404040;
+  --c-border-hover: #525252;
+}
+
+/* ========================================
+   黑金主题
+   ======================================== */
+[data-theme="blackgold"] {
+  --c-primary: #d4a574;
+  --c-primary-hover: #c49a6c;
+  --c-bg: #0a0a0a;
+  --c-bg-secondary: #141414;
+  --c-bg-tertiary: #1f1f1f;
+  --c-text: #f5f0e8;
+  --c-text-secondary: #a39880;
+  --c-text-muted: #8a7d6f;
+  --c-border: #2a2520;
+  --c-border-hover: #3d362e;
+}

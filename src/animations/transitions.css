@@ -28,7 +28,7 @@
   100% { transform: scale(1); opacity: 1; }
 }
 .combo-pop {
-  animation: combo-pop 0.3s var(--ease-spring, cubic-bezier(0.175, 0.885, 0.32, 1.275));
+  animation: combo-pop 0.3s var(--ease-out);
 }
 
 /* 连击光晕脉冲 */
@@ -44,13 +44,13 @@
 .combo-break {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
-  background: rgba(100, 116, 139, 0.85);
-  backdrop-filter: blur(8px);
-  border-radius: 16px;
-  color: white;
-  font-size: 16px;
+  gap: var(--space-2);
+  padding: var(--space-2-5) var(--space-5);
+  background: var(--c-bg-tertiary);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-xl);
+  color: var(--c-text);
+  font-size: var(--font-size-base);
   white-space: nowrap;
   animation: combo-break-in 0.3s ease-out, combo-break-out 0.3s ease-in 0.9s forwards;
 }

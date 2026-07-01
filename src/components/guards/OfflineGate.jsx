@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import Button from '../ui/Button.jsx'
 
 const CACHE_KEY = 'app_data'
 
@@ -10,7 +11,7 @@ export default function OfflineGate({ children }) {
     checkConnection()
   }, [])
 
-  const checkConnection = () => {
+  function checkConnection() {
     const isOnline = navigator.onLine
     const hasCache = localStorage.getItem(CACHE_KEY) !== null
 
@@ -22,13 +23,11 @@ export default function OfflineGate({ children }) {
     setChecking(false)
   }
 
-  // 网络恢复监听
   useEffect(() => {
     const handleOnline = () => {
       if (showOffline) {
         const hasCache = localStorage.getItem(CACHE_KEY) !== null
         if (!hasCache) {
-          // 即使网络恢复，首次仍需拉数据
           window.location.reload()
         }
       }
@@ -48,22 +47,20 @@ export default function OfflineGate({ children }) {
 
   if (showOffline) {
     return (
-      <div className="min-h-screen flex items-center justify-center game-page-bg px-4">
-        <div className="text-center max-w-sm page-enter glass-card p-8">
-          <div className="text-6xl mb-6">⚠️</div>
-          <h1 className="text-2xl font-bold text-white mb-3">
-            首次使用需要联网
-          </h1>
-          <p className="text-white/60 mb-8">
-            检查网络连接后
-          </p>
-          <button
-            onClick={handleRetry}
-            className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-[var(--theme-color)] to-[var(--theme-color-light)] text-white font-bold text-lg
-                       hover:brightness-110 transition-all shadow-lg btn-ripple"
-          >
-            🔄 重试连接
-          </button>
+      <div className="min-h-screen flex items-center justify-center bg-[var(--c-bg-secondary)] px-4">
+        <div className="text-center max-w-sm page-enter card">
+          <div className="card-content">
+            <div className="text-5xl mb-4 font-bold text-[var(--c-warning)]">!</div>
+            <h1 className="text-xl font-bold text-[var(--c-text)] mb-2">
+              首次使用需要联网
+            </h1>
+            <p className="text-[var(--c-text-secondary)] text-sm mb-6">
+              检查网络连接后
+            </p>
+            <Button variant="primary" onClick={handleRetry}>
+              重试连接
+            </Button>
+          </div>
         </div>
       </div>
     )

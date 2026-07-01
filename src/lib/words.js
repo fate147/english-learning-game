@@ -1,33 +1,33 @@
-// 词库 — 210个单词，6个单元
+// 词库 — 210个单词，6个单元（三年级下学期）
 export const WORDS = [
   // Unit 1 (27)
-  { id: "feeling", word: "feeling", meaning: "感觉", phonetic: "/ˈfiːlɪŋ/", unit: 1 },
-  { id: "tired", word: "tired", meaning: "疲惫的", phonetic: "/ˈtaɪəd/", unit: 1 },
-  { id: "sad", word: "sad", meaning: "难过的", phonetic: "/sæd/", unit: 1 },
-  { id: "angry", word: "angry", meaning: "生气的", phonetic: "/ˈæŋɡri/", unit: 1 },
-  { id: "scared", word: "scared", meaning: "害怕的", phonetic: "/skeəd/", unit: 1 },
-  { id: "cry", word: "cry", meaning: "哭", phonetic: "/kraɪ/", unit: 1 },
-  { id: "laugh", word: "laugh", meaning: "笑", phonetic: "/lɑːf/", unit: 1 },
-  { id: "stamp", word: "stamp", meaning: "跺(脚)", phonetic: "/stæmp/", unit: 1 },
-  { id: "sleep", word: "sleep", meaning: "睡觉", phonetic: "/sliːp/", unit: 1 },
-  { id: "new", word: "new", meaning: "新的", phonetic: "/njuː/", unit: 1 },
-  { id: "game", word: "game", meaning: "游戏", phonetic: "/ɡeɪm/", unit: 1 },
-  { id: "excited", word: "excited", meaning: "兴奋的", phonetic: "/ɪkˈsaɪtɪd/", unit: 1 },
-  { id: "sorry", word: "sorry", meaning: "对不起", phonetic: "/ˈsɒri/", unit: 1 },
-  { id: "like", word: "like", meaning: "喜欢", phonetic: "/laɪk/", unit: 1 },
-  { id: "but", word: "but", meaning: "但是", phonetic: "/bʌt/", unit: 1 },
-  { id: "unhappy", word: "unhappy", meaning: "不开心的", phonetic: "/ʌnˈhæpi/", unit: 1 },
-  { id: "worried", word: "worried", meaning: "担心的", phonetic: "/ˈwʌrid/", unit: 1 },
-  { id: "not", word: "not", meaning: "不;不是", phonetic: "/nɒt/", unit: 1 },
-  { id: "feel", word: "feel", meaning: "感觉到", phonetic: "/fiːl/", unit: 1 },
-  { id: "find", word: "find", meaning: "找到", phonetic: "/faɪnd/", unit: 1 },
-  { id: "doll", word: "doll", meaning: "玩偶", phonetic: "/dɒl/", unit: 1 },
-  { id: "football", word: "football", meaning: "足球", phonetic: "/ˈfʊtbɔːl/", unit: 1 },
-  { id: "eat", word: "eat", meaning: "吃", phonetic: "/iːt/", unit: 1 },
-  { id: "his", word: "his", meaning: "他的", phonetic: "/hɪz/", unit: 1 },
-  { id: "cake", word: "cake", meaning: "蛋糕", phonetic: "/keɪk/", unit: 1 },
-  { id: "big", word: "big", meaning: "大的", phonetic: "/bɪɡ/", unit: 1 },
-  { id: "mouse", word: "mouse", meaning: "老鼠", phonetic: "/maʊs/", unit: 1 },
+  { id: "feeling", word: "feeling", meaning: "感觉", phonetic: "/ˈfiːlɪŋ/", unit: 1, grade: 3, semester: 2 },
+  { id: "tired", word: "tired", meaning: "疲惫的", phonetic: "/ˈtaɪəd/", unit: 1, grade: 3, semester: 2 },
+  { id: "sad", word: "sad", meaning: "难过的", phonetic: "/sæd/", unit: 1, grade: 3, semester: 2 },
+  { id: "angry", word: "angry", meaning: "生气的", phonetic: "/ˈæŋɡri/", unit: 1, grade: 3, semester: 2 },
+  { id: "scared", word: "scared", meaning: "害怕的", phonetic: "/skeəd/", unit: 1, grade: 3, semester: 2 },
+  { id: "cry", word: "cry", meaning: "哭", phonetic: "/kraɪ/", unit: 1, grade: 3, semester: 2 },
+  { id: "laugh", word: "laugh", meaning: "笑", phonetic: "/lɑːf/", unit: 1, grade: 3, semester: 2 },
+  { id: "stamp", word: "stamp", meaning: "跺(脚)", phonetic: "/stæmp/", unit: 1, grade: 3, semester: 2 },
+  { id: "sleep", word: "sleep", meaning: "睡觉", phonetic: "/sliːp/", unit: 1, grade: 3, semester: 2 },
+  { id: "new", word: "new", meaning: "新的", phonetic: "/njuː/", unit: 1, grade: 3, semester: 2 },
+  { id: "game", word: "game", meaning: "游戏", phonetic: "/ɡeɪm/", unit: 1, grade: 3, semester: 2 },
+  { id: "excited", word: "excited", meaning: "兴奋的", phonetic: "/ɪkˈsaɪtɪd/", unit: 1, grade: 3, semester: 2 },
+  { id: "sorry", word: "sorry", meaning: "对不起", phonetic: "/ˈsɒri/", unit: 1, grade: 3, semester: 2 },
+  { id: "like", word: "like", meaning: "喜欢", phonetic: "/laɪk/", unit: 1, grade: 3, semester: 2 },
+  { id: "but", word: "but", meaning: "但是", phonetic: "/bʌt/", unit: 1, grade: 3, semester: 2 },
+  { id: "unhappy", word: "unhappy", meaning: "不开心的", phonetic: "/ʌnˈhæpi/", unit: 1, grade: 3, semester: 2 },
+  { id: "worried", word: "worried", meaning: "担心的", phonetic: "/ˈwʌrid/", unit: 1, grade: 3, semester: 2 },
+  { id: "not", word: "not", meaning: "不;不是", phonetic: "/nɒt/", unit: 1, grade: 3, semester: 2 },
+  { id: "feel", word: "feel", meaning: "感觉到", phonetic: "/fiːl/", unit: 1, grade: 3, semester: 2 },
+  { id: "find", word: "find", meaning: "找到", phonetic: "/faɪnd/", unit: 1, grade: 3, semester: 2 },
+  { id: "doll", word: "doll", meaning: "玩偶", phonetic: "/dɒl/", unit: 1, grade: 3, semester: 2 },
+  { id: "football", word: "football", meaning: "足球", phonetic: "/ˈfʊtbɔːl/", unit: 1, grade: 3, semester: 2 },
+  { id: "eat", word: "eat", meaning: "吃", phonetic: "/iːt/", unit: 1, grade: 3, semester: 2 },
+  { id: "his", word: "his", meaning: "他的", phonetic: "/hɪz/", unit: 1, grade: 3, semester: 2 },
+  { id: "cake", word: "cake", meaning: "蛋糕", phonetic: "/keɪk/", unit: 1, grade: 3, semester: 2 },
+  { id: "big", word: "big", meaning: "大的", phonetic: "/bɪɡ/", unit: 1, grade: 3, semester: 2 },
+  { id: "mouse", word: "mouse", meaning: "老鼠", phonetic: "/maʊs/", unit: 1, grade: 3, semester: 2 },
 
   // Unit 2 (30)
   { id: "know", word: "know", meaning: "了解", phonetic: "/nəʊ/", unit: 2 },
@@ -224,8 +224,12 @@ export const WORDS = [
 ]
 
 // 辅助函数
-export function getWordsByUnit(unit) {
-  return WORDS.filter((w) => w.unit === unit)
+export function getWordsByUnit(unit, grade = 3, semester = 2) {
+  return WORDS.filter((w) => w.unit === unit && (w.grade || 3) === grade && (w.semester || 2) === semester)
+}
+
+export function getWordsByGradeSemester(grade, semester) {
+  return WORDS.filter((w) => (w.grade || 3) === grade && (w.semester || 2) === semester)
 }
 
 export function getWordById(id) {

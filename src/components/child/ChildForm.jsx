@@ -31,8 +31,8 @@ export default function ChildForm({ onSubmit, onCancel }) {
     <form onSubmit={handleSubmit} className="space-y-4">
       <AvatarPicker selected={avatar} onSelect={setAvatar} />
 
-      <div>
-        <label htmlFor="child-name" className="block text-sm font-medium text-white/60 mb-1.5">孩子名字</label>
+      <div className="input-group">
+        <label htmlFor="child-name" className="input-label">孩子名字</label>
         <input
           id="child-name"
           type="text"
@@ -40,25 +40,22 @@ export default function ChildForm({ onSubmit, onCancel }) {
           onChange={(e) => { setName(e.target.value); setError('') }}
           placeholder="输入名字"
           maxLength={20}
-          className="w-full px-4 py-3 bg-white/12 border-2 border-white/20 rounded-xl text-center text-lg text-white placeholder-white/30
-                     focus:border-[var(--theme-color)] focus:bg-white/18 focus:outline-none transition-all"
+          className="input text-center text-lg"
           autoFocus
         />
       </div>
 
-      {error && <p className="text-red-300 text-sm text-center">{error}</p>}
+      {error && <div className="alert alert-danger text-center">{error}</div>}
 
-      <div className="flex gap-3">
+      <div className="flex gap-2.5">
         {onCancel && (
-          <button type="button" onClick={onCancel}
-            className="flex-1 py-3 rounded-xl font-bold bg-white/12 border-2 border-white/20 text-white/70 hover:bg-white/18 transition-all btn-ripple">
+          <Button type="button" variant="secondary" onClick={onCancel} className="flex-1">
             取消
-          </button>
+          </Button>
         )}
-        <button type="submit" disabled={loading || !name.trim()}
-          className="flex-1 py-3 rounded-xl font-bold bg-gradient-to-r from-[var(--theme-color)] to-[var(--theme-color-light)] text-white hover:brightness-110 shadow-lg transition-all btn-ripple disabled:opacity-50">
+        <Button type="submit" disabled={loading || !name.trim()} className="flex-1">
           {loading ? '创建中...' : '添加孩子'}
-        </button>
+        </Button>
       </div>
     </form>
   )

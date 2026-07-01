@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect, useRef } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useChild } from '../hooks/useChild.js'
 import { useStars } from '../hooks/useStars.js'
+import { useGameTheme } from '../context/GameThemeContext.jsx'
 import { saveGameSession, getLocalDateString } from '../lib/game.js'
 import { enqueue, isOnline } from '../lib/offline.js'
 import { calcScore } from '../engines/scoring.js'
@@ -12,6 +13,7 @@ import ChoicePanel from '../components/dialogue/ChoicePanel.jsx'
 import GameHeader from '../components/ui/GameHeader.jsx'
 import Button from '../components/ui/Button.jsx'
 import ProgressDots from '../components/ui/ProgressDots.jsx'
+import StarRain from '../components/ui/StarRain.jsx'
 
 const ROUNDS_PER_SESSION = 8
 
@@ -19,6 +21,7 @@ export default function DialoguePractice() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const { activeChild } = useChild()
+  const { gameTheme } = useGameTheme()
   const { addStars, refreshStars } = useStars()
   const navigatedRef = useRef(false)
 
@@ -48,12 +51,20 @@ export default function DialoguePractice() {
 
   useEffect(() => {
     if (!activeChild) return
-    // 暂时只出下学期（7-12），后续调回 1-12
     const allUnitIds = [7, 8, 9, 10, 11, 12]
     const picked = pickRandomRounds(allUnitIds, ROUNDS_PER_SESSION)
+    // Fisher-Yates 洗牌
+    const shuffle = (arr) => {
+      const a = [...arr]
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+        ;[a[i], a[j]] = [a[j], a[i]]
+      }
+      return a
+    }
     const lines = picked.map((d) => ({
       ...d,
-      choices: [...d.choices].sort(() => Math.random() - 0.5),
+      choices: shuffle(d.choices),
     }))
     setLines(lines)
     setRoundIndex(0)
@@ -123,7 +134,6 @@ export default function DialoguePractice() {
       if (error) enqueue(sessionData)
     } else { enqueue(sessionData) }
 
-    // 计算奖励（复用 scoring.js，与主游戏一致）
     const todayKey = 'dialogue_last_date_' + activeChild.child_id
     const lastDate = localStorage.getItem(todayKey)
     const today = getLocalDateString()
@@ -165,22 +175,23 @@ export default function DialoguePractice() {
   // ===== 加载中 =====
   if (phase === 'loading') {
     return (
-      <div className="bg-question-purple min-h-screen flex flex-col items-center justify-center gap-4">
-        <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-white/20 bg-white/10 dialogue-avatar-frame dialogue-speaking">
+      <div className={`min-h-screen ${gameTheme.pattern} flex flex-col items-center justify-center gap-4`}>
+        <StarRain count={10} />
+        <div className="w-20 h-20 rounded-2xl overflow-hidden border-2 border-white/20 dialogue-avatar-frame dialogue-speaking">
           <img
             src={`images/${charConfig.image}_happy.png`}
             alt={charConfig.name}
             className="w-full h-full object-cover"
-            onError={(e) => { e.target.style.display = 'none'; e.target.parentElement.textContent = charConfig.emoji }}
+            onError={(e) => { e.target.style.display = 'none'; e.target.parentElement.classList.add('no-img') }}
           />
         </div>
         <div className="text-center">
           <p className="text-white font-bold text-lg">准备对话中...</p>
-          <p className="text-white/50 text-sm mt-1">{charConfig.name} 在等你</p>
+          <p className="text-white/80 text-sm mt-1">{charConfig.name} 在等你</p>
         </div>
         <div className="flex gap-1.5 mt-2">
           {[0, 1, 2].map(i => (
-            <div key={i} className="w-2 h-2 rounded-full bg-white/40 animate-bounce" style={{animationDelay: `${i * 150}ms`}} />
+            <div key={i} className="w-2 h-2 rounded-full bg-[var(--c-primary)]/40" style={{animation: `pulse-dot 1.2s ease-in-out ${i * 0.2}s infinite`}} />
           ))}
         </div>
       </div>
@@ -193,10 +204,11 @@ export default function DialoguePractice() {
     const accuracy = results.length > 0 ? Math.round((score / results.length) * 100) : 100
 
     return (
-      <div className="bg-question-purple min-h-screen flex flex-col">
+      <div className={`min-h-screen ${gameTheme.pattern} flex flex-col`}>
+        <StarRain count={10} />
         <GameHeader
           onBack={() => navigate('/select-child')}
-          title="💬 对话练习"
+          title="对话练习"
           stars={score}
         />
 
@@ -206,17 +218,16 @@ export default function DialoguePractice() {
           answers={results.map((r) => ({ correct: r.correct }))}
         />
 
-        {/* 实时准确率 */}
         {results.length > 0 && (
           <div className="flex justify-center mb-2">
             <span className={`text-xs font-bold px-3 py-0.5 rounded-full
-              ${accuracy >= 80 ? 'bg-green-500/20 text-green-300' : 'bg-amber-500/20 text-amber-300'}`}>
+              ${accuracy >= 80 ? 'bg-[var(--c-correct)]/15 text-[var(--c-correct)]' : 'bg-[var(--c-warning)]/15 text-[var(--c-warning)]'}`}>
               {accuracy}% 正确率
             </span>
           </div>
         )}
 
-        <main className="flex-1 flex flex-col justify-center px-4 pb-8 relative z-10 space-y-5">
+        <main className="flex-1 flex flex-col justify-center px-4 pb-8 relative z-10 space-y-4">
           {currentLine && (
             <div>
               <DialogueBubble
@@ -231,9 +242,9 @@ export default function DialoguePractice() {
                 <div className="flex justify-center mt-2">
                   <button
                     onClick={handleReplay}
-                    className="px-4 py-1.5 rounded-full bg-white/15 text-white/60 hover:text-white hover:bg-white/25 text-xs font-semibold transition-all"
+                    className="px-3 py-1 rounded-full text-white/75 hover:text-white border border-white/20 text-xs font-semibold transition-all"
                   >
-                    🔁 重播
+                    重播
                   </button>
                 </div>
               )}
@@ -258,13 +269,14 @@ export default function DialoguePractice() {
   const accuracy = total > 0 ? Math.round((correctCount / total) * 100) : 0
 
   return (
-    <div className="bg-question-purple min-h-screen flex flex-col relative overflow-hidden">
+    <div className={`min-h-screen ${gameTheme.pattern} flex flex-col relative overflow-hidden`}>
+      <StarRain count={10} />
       <div className="confetti-container">
-        {Array.from({ length: 12 }, (_, i) => (
+        {Array.from({ length: 10 }, (_, i) => (
           <div key={i} className="confetti-piece"
             style={{
-              left: `${(i / 12) * 100}%`,
-              background: ['#ff6b9d', '#fbbf24', '#4ade80', '#4d96ff', '#c084fc', '#fb923c'][i % 6],
+              left: `${(i / 10) * 100}%`,
+              background: ['#22c55e', '#f59e0b', '#22d3ee', '#a855f7', '#f97316', '#10b981'][i % 6],
               animationDuration: `${2 + Math.random() * 1.5}s`,
               animationDelay: `${i * 0.15}s`,
             }}
@@ -273,17 +285,17 @@ export default function DialoguePractice() {
       </div>
 
       <main className="flex-1 flex flex-col items-center justify-center px-6 relative z-10">
-        <div className="max-w-sm w-full space-y-5 text-center">
+        <div className="max-w-sm w-full space-y-4 text-center">
           <div className="page-enter">
             <img
               src={`images/${charConfig.image}_happy.png`}
               alt=""
-              className="w-28 h-28 mx-auto object-contain result-bounce"
-              onError={(e) => { e.target.style.display = 'none'; e.target.parentElement.textContent = '🎉' }}
+              className="w-24 h-24 mx-auto object-contain result-bounce"
+              onError={(e) => { e.target.style.display = 'none'; e.target.parentElement.classList.add('no-img') }}
             />
           </div>
 
-          <h2 className="text-2xl font-black text-white page-enter" style={{textShadow: '0 2px 12px rgba(0,0,0,0.3)'}}>
+          <h2 className="text-2xl font-black text-white page-enter" style={{animationDelay: '0.05s'}}>
             {accuracy === 100 ? '太棒了！全对！' : accuracy >= 75 ? '做得不错！' : '对话完成！'}
           </h2>
 
@@ -294,29 +306,32 @@ export default function DialoguePractice() {
             }
           </p>
 
-          {/* 数据卡片 */}
-          <div className="flex gap-3 page-enter" style={{animationDelay: '0.15s'}}>
-            <div className="flex-1 glass-card !p-3 text-center">
-              <div className="text-2xl font-black text-green-400">{correctCount}</div>
-              <div className="text-[10px] text-white/50 font-bold">✅ 答对</div>
+          <div className="flex gap-2.5 page-enter" style={{animationDelay: '0.15s'}}>
+            <div className="flex-1 stat-card">
+              <div className="text-2xl font-black text-[var(--c-correct)]">{correctCount}</div>
+              <div className="text-[10px] text-white/75 font-bold">答对</div>
             </div>
-            <div className="flex-1 glass-card !p-3 text-center">
-              <div className="text-2xl font-black text-red-400">{total - correctCount}</div>
-              <div className="text-[10px] text-white/50 font-bold">❌ 答错</div>
+            <div className="flex-1 stat-card">
+              <div className="text-2xl font-black text-[var(--c-wrong)]">{total - correctCount}</div>
+              <div className="text-[10px] text-white/75 font-bold">答错</div>
             </div>
-            <div className="flex-1 glass-card !p-3 text-center">
-              <div className="text-2xl font-black text-amber-400">⭐ {correctCount}</div>
-              <div className="text-[10px] text-white/50 font-bold">获得</div>
+            <div className="flex-1 stat-card">
+              <div className="text-2xl font-black text-yellow-400">★ {correctCount}</div>
+              <div className="text-[10px] text-white/75 font-bold">获得</div>
             </div>
           </div>
 
-          <div className="flex gap-3 page-enter" style={{animationDelay: '0.2s'}}>
-            <Button variant="game" size="xl" onClick={handlePlayAgain} className="flex-1">
-              🔄 再来一次
+          <div className="flex gap-2.5 page-enter" style={{animationDelay: '0.2s'}}>
+            <Button variant="primary" size="xl" onClick={handlePlayAgain} className="flex-1">
+              再来一次
             </Button>
-            <Button variant="glass" size="xl" onClick={handleGoHome} className="flex-1">
-              🏠 回首页
-            </Button>
+            <button
+              onClick={handleGoHome}
+              className="flex-1 py-3 rounded-xl font-bold text-white/80 border border-white/30
+                         hover:bg-white/10 hover:text-white transition-all duration-150"
+            >
+              回首页
+            </button>
           </div>
         </div>
       </main>

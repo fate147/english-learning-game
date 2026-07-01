@@ -43,47 +43,43 @@ export default function DialogueBubble({ characterId, text, cn, onTypingDone, au
 
   return (
     <div className="max-w-lg mx-auto">
-      {/* 对话场景容器 */}
-      <div className="relative bg-white/8 backdrop-blur-sm rounded-3xl p-4 sm:p-5 border border-white/10">
-        {/* 角色信息 + 头像 */}
+      <div className="relative rounded-2xl p-4 sm:p-5 bg-white/10 border border-white/20 shadow-sm">
         <div className="flex items-center gap-3 mb-3">
-          <div className={`w-14 h-14 rounded-2xl overflow-hidden border-2 border-white/25 bg-white/10 shrink-0
-                           flex items-center justify-center dialogue-avatar-frame ${isSpeaking ? 'dialogue-speaking' : ''}`}>
+          <div className={`w-12 h-12 rounded-xl overflow-hidden border border-white/20 shrink-0
+                           flex items-center justify-center ${isSpeaking ? 'ring-2 ring-green-400/50' : ''}`}>
             <img
               src={`images/${char.image}_normal.png`}
               alt={char.name}
               className="w-full h-full object-cover"
               onError={() => setImgError(true)}
             />
-            {imgError && <span className="text-2xl">{char.emoji}</span>}
+            {imgError && <span className="text-lg font-bold text-white/50">?</span>}
           </div>
           <div>
-            <div className="text-sm font-black text-white/90">{char.name}</div>
-            <div className="text-[10px] text-white/40">{isSpeaking ? '正在说话...' : isTyping ? '正在输入...' : ''}</div>
+            <div className="text-sm font-bold text-white">{char.name}</div>
+            <div className="text-[10px] text-white/75">{isSpeaking ? '正在说话...' : isTyping ? '正在输入...' : ''}</div>
           </div>
-          {/* 语音波形指示器 */}
           {isSpeaking && (
-            <div className="ml-auto flex items-end gap-0.5 h-4">
+            <div className="ml-auto flex items-end gap-0.5 h-3">
               {[0, 1, 2, 3].map(i => (
-                <span key={i} className="w-1 bg-green-400 rounded-full dialogue-wave"
+                <span key={i} className="w-0.5 bg-green-400 rounded-full dialogue-wave"
                   style={{ animationDelay: `${i * 100}ms` }} />
               ))}
             </div>
           )}
         </div>
 
-        {/* 对话气泡 */}
-        <div className="relative bg-white/20 backdrop-blur-sm rounded-2xl rounded-tl-sm px-5 py-4 border border-white/15 shadow-lg">
-          <p className="text-white text-lg font-bold leading-relaxed drop-shadow-sm">
+        <div className="relative bg-white/10 rounded-xl rounded-tl-sm px-4 py-3 border border-white/20">
+          <p className="text-white text-base font-bold leading-relaxed">
             "{displayed}"
-            {isTyping && <span className="inline-block w-0.5 h-5 bg-yellow-300 ml-0.5 animate-pulse" />}
+            {isTyping && <span className="inline-block w-0.5 h-4 bg-white ml-0.5 animate-pulse" />}
           </p>
           {showCn && cn && (
-            <p className="text-white/65 text-sm mt-2 border-t border-white/15 pt-2">
+            <p className="text-white/75 text-sm mt-2 border-t border-white/20 pt-2">
               {cn}
             </p>
           )}
-          <div className="absolute -left-1.5 top-4 w-3 h-3 bg-white/20 border-l border-b border-white/15 transform rotate-45" />
+          <div className="absolute -left-1.5 top-4 w-3 h-3 bg-white/10 border-l border-b border-white/20 transform rotate-45" />
         </div>
       </div>
     </div>

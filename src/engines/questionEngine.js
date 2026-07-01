@@ -1,4 +1,4 @@
-import { getWordsByUnit } from '../lib/words.js'
+import { WORDS, getWordsByUnit } from '../lib/words.js'
 
 // 题型
 export const TYPE_IMAGE_CHOICE = 'image_choice'
@@ -17,30 +17,34 @@ function shuffle(arr) {
 /**
  * 获取一局游戏的题目集合（8题，交替出题）
  *
+ * 从所有已解锁单词中选题，跨单元混合
  * 优先级：newWords → dueWords → fillWords → masteredWords
  * 交替：1/3/5/7 听音选图，2/4/6/8 字母填空
  * 约束：新词+复习词 ≤ 5，每词每局只出现一次
  */
 export function getQuestionSet({
-  unit,
   wordProgressMap,
   unlockedWords,
   learnedWords,
 }) {
-  const unitWords = getWordsByUnit(unit)
+  // 获取所有已解锁的单词（跨所有单元）
+  const allUnlocked = WORDS.filter((w) => unlockedWords.includes(w.id))
 
-  const newWords = unitWords.filter(
-    (w) => unlockedWords.includes(w.id) && !wordProgressMap[w.id]
+  // 如果无已解锁单词，返回空
+  if (allUnlocked.length === 0) return []
+
+  const newWords = allUnlocked.filter(
+    (w) => !wordProgressMap[w.id]
   )
-  const fillWords = unitWords.filter((w) => {
+  const fillWords = allUnlocked.filter((w) => {
     const wp = wordProgressMap[w.id]
-    return wp && (wp.level === 2)
+    return wp && wp.level === 2
   })
-  const dueWords = unitWords.filter((w) => {
+  const dueWords = allUnlocked.filter((w) => {
     const wp = wordProgressMap[w.id]
     return wp && wp.level >= 3 && (!wp.next_review || new Date(wp.next_review) <= new Date())
   })
-  const masteredWords = unitWords.filter(
+  const masteredWords = allUnlocked.filter(
     (w) => learnedWords.includes(w.id) && !dueWords.find((rw) => rw.id === w.id)
   )
 
@@ -52,9 +56,9 @@ export function getQuestionSet({
   const others = priorityPool.filter((w) => !newDue.find((s) => s.id === w.id)).slice(0, 8 - newDue.length)
   let selected = shuffle([...newDue, ...others]).slice(0, 8)
 
-  // 还不到8题补位
+  // 还不到8题，从所有已解锁词中补位
   if (selected.length < 8) {
-    const extra = shuffle(unitWords.filter((w) => !selected.find((s) => s.id === w.id)))
+    const extra = shuffle(allUnlocked.filter((w) => !selected.find((s) => s.id === w.id)))
     selected.push(...extra.slice(0, 8 - selected.length))
   }
 
@@ -71,6 +75,7 @@ export function getQuestionSet({
       meaning: wordObj.meaning,
       type: questionType,
       stage,
+      unit: wordObj.unit,
     }
   })
 }
@@ -99,8 +104,8 @@ export function generateBlanks(word) {
   const letters = word.split('')
   const len = letters.length
 
-  // 计算要隐藏的字母数（至少30%，至少2个，最多4个）
-  const hideCount = Math.max(2, Math.min(4, Math.ceil(len * 0.4)))
+  // 计算要隐藏的字母数（至少30%，至少2个，最多5个）
+  const hideCount = Math.max(2, Math.min(5, Math.ceil(len * 0.45)))
 
   // 优先隐藏辅音，不隐藏首字母
   const vowels = 'aeiou'
@@ -127,21 +132,31 @@ export function generateBlanks(word) {
     filled: null,
   }))
 
-  // 构建候选字母 Multiset
-  const candidates = {}
+  // 收集所有需要填的字母（正确字母 + 干扰字母）
+  const letterPool = []
   selected.forEach((index) => {
-    const letter = letters[index].toLowerCase()
+    letterPool.push(letters[index].toLowerCase())
+  })
+
+  // 加 3-4 个干扰字母
+  const allLetters = 'abcdefghijklmnopqrstuvwxyz'
+  const extraCount = 3 + Math.floor(Math.random() * 2) // 3-4 个
+  for (let i = 0; i < extraCount; i++) {
+    let randLetter
+    do {
+      randLetter = allLetters[Math.floor(Math.random() * 26)]
+    } while (letterPool.includes(randLetter))
+    letterPool.push(randLetter)
+  }
+
+  // 打乱字母顺序
+  const shuffledPool = shuffle(letterPool)
+
+  // 转为 Multiset（保持打乱后的顺序）
+  const candidates = {}
+  shuffledPool.forEach((letter) => {
     candidates[letter] = (candidates[letter] || 0) + 1
   })
-  // 加 2-3 个干扰字母
-  const allLetters = 'abcdefghijklmnopqrstuvwxyz'
-  const extraCount = Math.max(1, 3 - Object.keys(candidates).length)
-  for (let i = 0; i < extraCount; i++) {
-    const randLetter = allLetters[Math.floor(Math.random() * 26)]
-    if (!candidates[randLetter]) {
-      candidates[randLetter] = 1
-    }
-  }
 
   return { blanks, candidates }
 }
