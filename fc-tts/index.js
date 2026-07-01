@@ -75,7 +75,7 @@ module.exports.handler = function(event, context, callback) {
     getToken(AK, SK, RG).then(function(token) {
       return synth(token, AP, VO, RG, text);
     }).then(function(audio) {
-      callback(null, { statusCode: 200, headers: { 'Content-Type': 'audio/mpeg', 'Access-Control-Allow-Origin': '*' }, body: audio.toString('base64'), isBase64Encoded: true });
+      callback(null, { statusCode: 200, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify({ audio: audio.toString('base64') }) });
     }).catch(function(err) {
       callback(null, { statusCode: 500, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ error: err.message }) });
     });
