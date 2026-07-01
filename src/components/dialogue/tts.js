@@ -4,6 +4,20 @@
  */
 
 const audioCache = new Map()
+let audioContext = null
+
+// 解锁音频上下文（需要用户交互）
+function unlockAudio() {
+  if (audioContext) return
+  try {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)()
+    audioContext.resume()
+  } catch (e) {}
+}
+
+// 监听用户交互，解锁音频
+document.addEventListener('click', unlockAudio, { once: true })
+document.addEventListener('touchstart', unlockAudio, { once: true })
 
 // ====== 云端 TTS ======
 
@@ -24,7 +38,6 @@ async function speakCloud(text) {
 
     const data = await resp.json()
 
-    // FC 返回 base64 编码的音频
     if (data.audio) {
       const binary = atob(data.audio)
       const bytes = new Uint8Array(binary.length)
@@ -48,16 +61,22 @@ function playBlob(blob) {
     const audio = new Audio(url)
 
     audio.onended = () => { URL.revokeObjectURL(url); resolve(true) }
-    audio.onerror = (e) => { URL.revokeObjectURL(url); resolve(false) }
+    audio.onerror = () => { URL.revokeObjectURL(url); resolve(false) }
 
-    // 尝试播放，失败则用 Web Speech API 降级
-    audio.play().then(() => {
-      // 播放成功
-    }).catch(() => {
-      // 自动播放被阻止，降级到本地
-      URL.revokeObjectURL(url)
-      resolve(false)
-    })
+    // 设置 audio context 样式
+    audio.preload = 'auto'
+
+    const tryPlay = () => {
+      audio.play().then(() => {
+        // 播放成功
+      }).catch(() => {
+        URL.revokeObjectURL(url)
+        resolve(false)
+      })
+    }
+
+    // 立即尝试播放
+    tryPlay()
   })
 }
 
@@ -95,10 +114,8 @@ async function speakLocal(text) {
 export async function speakText(text) {
   if (!text) return false
   try {
-    const result = await speakCloud(text)
-    return result
+    return await speakCloud(text)
   } catch {
-    // 云端失败，降级本地
     return speakLocal(text)
   }
 }
