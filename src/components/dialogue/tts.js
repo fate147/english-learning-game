@@ -14,7 +14,7 @@ async function speakCloud(text) {
 
   const url = import.meta.env.VITE_VERCEL_TTS_URL || '/api/tts'
   const controller = new AbortController()
-  const timeout = setTimeout(() => controller.abort(), 3000)
+  const timeout = setTimeout(() => controller.abort(), 5000)
 
   try {
     const resp = await fetch(url, {
@@ -25,6 +25,22 @@ async function speakCloud(text) {
     })
     clearTimeout(timeout)
     if (!resp.ok) throw new Error(`TTS ${resp.status}`)
+
+    const data = await resp.json()
+
+    // FC 返回 base64 编码的音频
+    if (data.isBase64Encoded && data.body) {
+      const binary = atob(data.body)
+      const bytes = new Uint8Array(binary.length)
+      for (let i = 0; i < binary.length; i++) {
+        bytes[i] = binary.charCodeAt(i)
+      }
+      const blob = new Blob([bytes], { type: 'audio/mpeg' })
+      audioCache.set(text, blob)
+      return playBlob(blob)
+    }
+
+    // 直接返回 blob 的情况
     const blob = await resp.blob()
     audioCache.set(text, blob)
     return playBlob(blob)
@@ -57,7 +73,6 @@ async function speakLocal(text) {
 
     const voices = window.speechSynthesis.getVoices()
     if (voices.length > 0) {
-      // 找英文语音，找不到就用第一个
       const enVoice = voices.find(v => v.lang?.startsWith('en'))
       if (enVoice) utterance.voice = enVoice
     }
@@ -67,7 +82,6 @@ async function speakLocal(text) {
 
     try {
       window.speechSynthesis.speak(utterance)
-      // 华为设备有时需要 resume
       setTimeout(() => window.speechSynthesis?.resume(), 100)
     } catch {
       resolve(false)
