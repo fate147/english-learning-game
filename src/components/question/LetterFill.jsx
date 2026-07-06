@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect, useRef } from 'react'
 import { generateBlanks } from '../../engines/questionEngine.js'
+import { speakText } from '../dialogue/tts.js'
 
 export default function LetterFill({ question, onAnswer, unit, disabled }) {
   const [blanks, setBlanks] = useState([])
@@ -7,7 +8,6 @@ export default function LetterFill({ question, onAnswer, unit, disabled }) {
   const [showResult, setShowResult] = useState(false)
   const [resultCorrect, setResultCorrect] = useState(null)
   const [audioFailed, setAudioFailed] = useState(false)
-  const audioRef = useRef(null)
   const timerRef = useRef(null)
 
   const { blanks: initialBlanks, candidates: initialCandidates } = useMemo(
@@ -28,12 +28,10 @@ export default function LetterFill({ question, onAnswer, unit, disabled }) {
     return () => { if (timerRef.current) clearTimeout(timerRef.current) }
   }, [])
 
-  const playAudio = () => {
+  const playAudio = async () => {
     setAudioFailed(false)
-    const el = audioRef.current
-    if (!el) return
-    el.load()
-    el.play().catch(() => setAudioFailed(true))
+    const success = await speakText(question.word)
+    if (!success) setAudioFailed(true)
   }
 
   const letters = question.word.split('')
@@ -91,10 +89,6 @@ export default function LetterFill({ question, onAnswer, unit, disabled }) {
 
   return (
     <div className="page-enter flex flex-col items-center gap-5 sm:gap-6">
-      <audio ref={audioRef} preload="none">
-        <source src={`audio/${question.wordId}.mp3`} type="audio/mpeg" />
-      </audio>
-
       <div className="glass-card w-full max-w-sm text-center p-6">
           <div className="text-xs font-bold tracking-wider text-white/80 uppercase mb-3">
             ✏️ 根据发音和释义，填入正确的字母

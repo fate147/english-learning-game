@@ -90,5 +90,93 @@
       { "text": "3个朋友互相握手，握几次", "correct": false },
       { "text": "3个数字能组成几个不同的两位数", "correct": false }
     ]
+  },
+  {
+    "id": "m_g3s2u8_09",
+    "stage": "concrete",
+    "visual": "🎒 有 3 种颜色的书包\n📕 有 2 种颜色的文具盒",
+    "question": "选一个书包和一个文具盒，有几种搭配？",
+    "options": [
+      { "text": "6种", "correct": true },
+      { "text": "5种", "correct": false },
+      { "text": "3种", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u8_10",
+    "stage": "concrete",
+    "visual": "🍰 蛋糕有 4 种口味\n🍦 冰淇淋有 3 种口味",
+    "question": "选一种蛋糕和一种冰淇淋，有几种搭配？",
+    "options": [
+      { "text": "12种", "correct": true },
+      { "text": "7种", "correct": false },
+      { "text": "4种", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u8_11",
+    "stage": "pictorial",
+    "visual": "用 1、2、3 三个数字\n组成不同的三位数",
+    "question": "可以组成多少个不同的三位数？",
+    "options": [
+      { "text": "6个", "correct": true },
+      { "text": "3个", "correct": false },
+      { "text": "9个", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u8_12",
+    "stage": "pictorial",
+    "visual": "红、黄、蓝三种颜色的旗子\n每次选两面不同的旗子",
+    "question": "有多少种不同的选法？",
+    "options": [
+      { "text": "3种", "correct": true },
+      { "text": "6种", "correct": false },
+      { "text": "9种", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u8_13",
+    "stage": "abstract",
+    "question": "小明有 4 件上衣和 3 条裤子。他要选一件上衣和一条裤子出门，有多少种不同的穿法？",
+    "questionLabel": "这道题用什么方法？",
+    "options": [
+      { "text": "4 × 3 = 12种", "correct": true },
+      { "text": "4 + 3 = 7种", "correct": false },
+      { "text": "4 × 4 = 16种", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u8_14",
+    "stage": "abstract",
+    "question": "用红、黄、蓝三种颜色给一个圆涂色，要求相邻区域颜色不同。有多少种涂色方法？",
+    "questionLabel": "这道题需要仔细思考。",
+    "options": [
+      { "text": "需要更多信息才能确定", "correct": false },
+      { "text": "3种", "correct": false },
+      { "text": "6种", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u8_15",
+    "stage": "synthesis",
+    "question": "小红从家到学校有 2 条路，从学校到公园有 3 条路。小红从家经过学校到公园，有多少种不同的走法？",
+    "questionLabel": "这道题需要先理解什么？",
+    "options": [
+      { "text": "2 × 3 = 6种", "correct": true },
+      { "text": "2 + 3 = 5种", "correct": false },
+      { "text": "2 × 2 = 4种", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u8_16",
+    "stage": "synthesis",
+    "question": "用 0、1、2 三个数字组成不同的两位数（十位不能是 0）。可以组成多少个不同的两位数？",
+    "questionLabel": "这道题需要注意什么？",
+    "options": [
+      { "text": "十位只能是1或2，个位可以是0、1、2中剩下的，共4个", "correct": true },
+      { "text": "6个", "correct": false },
+      { "text": "3个", "correct": false }
+    ]
   }
 ]

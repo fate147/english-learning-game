@@ -5,10 +5,12 @@ import { useStars } from '../hooks/useStars.js'
 import { useAuth } from '../hooks/useAuth.js'
 import { useChild } from '../hooks/useChild.js'
 import { useGameTheme } from '../context/GameThemeContext.jsx'
-import { saveGameSession, getWordProgress, updateWordProgress } from '../lib/game.js'
+import { saveGameSession, getWordProgress, updateWordProgress, mergeWordProgressToCache, loadWordProgressWithCache } from '../lib/game.js'
 import { enqueue, isOnline } from '../lib/offline.js'
 import { calcScore } from '../engines/scoring.js'
 import { speakText } from '../components/dialogue/tts.js'
+import { recordErrors, getErrorBook } from '../lib/errorBook.js'
+import { useToast } from '../components/ui/Toast.jsx'
 import LetterFill from '../components/question/LetterFill.jsx'
 import Button from '../components/ui/Button.jsx'
 import EmptyState from '../components/ui/EmptyState.jsx'
@@ -21,7 +23,7 @@ const SEMESTERS = [1, 2]
 const SEMESTER_LABEL = { 1: '上学期', 2: '下学期' }
 
 const UNIT_NAMES = {
-  1: '感觉', 2: '身体', 3: '衣服', 4: '天气', 5: '日常', 6: '食物',
+  0: '欢迎', 1: '问候', 2: '颜色', 3: '数字', 4: '文具', 5: '教室', 6: '家庭',
 }
 const SPEED_OPTIONS = [
   { value: 1500, label: '1秒' },
@@ -36,6 +38,7 @@ export default function WordMemory() {
   const { activeChild } = useChild()
   const { gameTheme } = useGameTheme()
   const { addStars, refreshStars } = useStars()
+  const toast = useToast()
   const navigatedRef = useRef(false)
 
   const [step, setStep] = useState('select')
@@ -66,6 +69,16 @@ export default function WordMemory() {
 
   useEffect(() => {
     if (activeChild) {
+      // 优先从本地缓存加载
+      const { progressMap: cached } = loadWordProgressWithCache(activeChild.child_id, 'english', 3)
+      if (Object.keys(cached).length > 0) {
+        const progressMap = {}
+        Object.entries(cached).forEach(([wordId, item]) => {
+          progressMap[wordId] = item
+        })
+        setWordProgress(progressMap)
+      }
+      // 再从服务端同步最新数据
       getWordProgress(user.id, activeChild.child_id, 'english').then(res => {
         const progressMap = {}
         if (res.data) {
@@ -73,7 +86,9 @@ export default function WordMemory() {
             progressMap[item.word_id] = item
           })
         }
-        setWordProgress(progressMap)
+        if (Object.keys(progressMap).length > 0) {
+          setWordProgress(progressMap)
+        }
       })
     }
   }, [activeChild])
@@ -102,6 +117,19 @@ export default function WordMemory() {
 
   const selectAllWords = () => {
     setSelectedWords(allWords.map(w => w.id))
+  }
+
+  const selectErrorWords = () => {
+    const book = getErrorBook(activeChild.child_id, 'english')
+    const errorIds = Object.keys(book)
+    const availableIds = allWords.map(w => w.id)
+    const matchIds = errorIds.filter(id => availableIds.includes(id))
+    if (matchIds.length === 0) {
+      toast('当前学期暂无错词')
+      return
+    }
+    setSelectedWords(prev => [...new Set([...prev, ...matchIds])])
+    toast(`已选 ${matchIds.length} 个错词`)
   }
 
   const clearSelection = () => {
@@ -157,39 +185,57 @@ export default function WordMemory() {
     }
   }
 
-  const finishPractice = async () => {
+  const finishPractice = () => {
     if (!activeChild) return
     const results = practiceWords.map(w => ({
       wordId: w.id,
       correct: cardDone[w.id] === true,
     }))
     const { totalAdd } = calcScore(score, 0, score === practiceWords.length, false, false)
+
+    // 始终更新本地缓存
+    const updatedProgress = mergeWordProgressToCache(activeChild.child_id, 'english', 3, results)
+    setWordProgress(updatedProgress)
+
+    // 记录错词
+    const errors = results.filter(r => !r.correct).map(r => ({
+      wordId: r.wordId,
+      word: practiceWords.find(w => w.id === r.wordId)?.word || r.wordId,
+      meaning: practiceWords.find(w => w.id === r.wordId)?.meaning || '',
+      type: 'letter_fill',
+    }))
+    if (errors.length > 0) {
+      recordErrors(activeChild.child_id, 'english', errors)
+    }
+
+    // 后台保存，不阻塞跳转
     if (isOnline()) {
-      await saveGameSession({
+      saveGameSession({
+        user_id: user.id,
         child_id: activeChild.child_id,
         subject: 'english',
-        mode: 'memory',
+        grade: 3,
         correct_count: score,
         wrong_count: practiceWords.length - score,
-        total_questions: practiceWords.length,
-      })
-      await updateWordProgress(user.id, activeChild.child_id, 'english', 3, results)
-      await addStars(activeChild.child_id, totalAdd)
-      await refreshStars(activeChild.child_id)
-    } else {
-      enqueue({ type: 'save_session', child_id: activeChild.child_id, correct_count: score })
-    }
-    setStep('select')
-    setPracticeWords([])
-    getWordProgress(user.id, activeChild.child_id, 'english').then(res => {
-      const progressMap = {}
-      if (res.data) {
-        res.data.forEach(item => {
-          progressMap[item.word_id] = item
-        })
+        results,
+      }).catch(() => {})
+      updateWordProgress(user.id, activeChild.child_id, 'english', 3, results).catch(() => {})
+      if (totalAdd > 0) {
+        addStars(activeChild.child_id, totalAdd).then(() => refreshStars(activeChild.child_id)).catch(() => {})
       }
-      setWordProgress(progressMap)
-    })
+    } else {
+      enqueue({
+        user_id: user.id,
+        child_id: activeChild.child_id,
+        subject: 'english',
+        grade: 3,
+        correct_count: score,
+        wrong_count: practiceWords.length - score,
+        results,
+      })
+    }
+
+    navigate('/home')
   }
 
   if (!activeChild) return <EmptyState variant="child" text="请先选择一个孩子" />
@@ -274,7 +320,7 @@ export default function WordMemory() {
   // 完成
   if (step === 'done') {
     return (
-      <PageShell title="练习完成" onBack={() => setStep('select')} className={gameTheme.pattern}>
+      <PageShell title="练习完成" onBack={() => navigate('/home')} className={gameTheme.pattern}>
         <StarRain count={15} />
         <div className="relative z-10 flex flex-col items-center justify-center min-h-[60vh]">
           <div className="glass-card p-8 text-center w-full max-w-sm">
@@ -290,8 +336,8 @@ export default function WordMemory() {
             )}
             <div className="space-y-2">
               <Button variant="primary" onClick={finishPractice} className="w-full">完成</Button>
-              <Button variant="ghost" onClick={() => { setStep('select'); setPracticeWords([]) }} className="w-full text-white/90 hover:text-white">
-                返回选词
+              <Button variant="ghost" onClick={() => navigate('/home')} className="w-full text-white/90 hover:text-white">
+                回首页
               </Button>
             </div>
           </div>
@@ -339,18 +385,15 @@ export default function WordMemory() {
             已选 <span className="text-white font-bold">{selectedWords.length}</span> 词
           </span>
           <div className="flex gap-2">
-            <button onClick={selectAllWords} className="px-3 py-1.5 rounded-lg bg-white/10 text-white/80 text-xs font-bold hover:bg-white/20 transition-all">
-              全选
-            </button>
-            <button onClick={clearSelection} className="px-3 py-1.5 rounded-lg bg-white/10 text-white/80 text-xs font-bold hover:bg-white/20 transition-all">
-              清空
-            </button>
+            <button onClick={selectAllWords} className="btn btn-outline btn-sm">全选</button>
+            <button onClick={clearSelection} className="btn btn-outline btn-sm">清空</button>
+            <button onClick={selectErrorWords} className="btn btn-danger btn-sm">只练错词</button>
           </div>
         </div>
 
         {/* 单元手风琴 */}
         <div className="space-y-2 mb-4">
-          {[1, 2, 3, 4, 5, 6].map(unit => {
+          {[0, 1, 2, 3, 4, 5, 6].map(unit => {
             const unitWords = getWordsByUnit(unit, grade, semester)
             const isExpanded = expanded.includes(unit)
             const selectedCount = unitWords.filter(w => selectedWords.includes(w.id)).length
@@ -358,20 +401,16 @@ export default function WordMemory() {
 
             return (
               <div key={unit} className="accordion-item" data-state={isExpanded ? 'open' : 'closed'}>
-                <button onClick={() => toggleUnit(unit)} className="accordion-trigger">
+                <div onClick={() => toggleUnit(unit)} className="accordion-trigger cursor-pointer">
                   <div className="flex items-center gap-2.5 min-w-0">
-                    <span className="w-2 h-2 rounded-full shrink-0" style={{ background: allSelected ? '#4ade80' : selectedCount > 0 ? '#facc15' : 'rgba(255,255,255,0.3)' }} />
+                    <span className="w-2 h-2 rounded-full shrink-0" style={{ background: allSelected ? 'var(--c-success)' : selectedCount > 0 ? 'var(--c-warning)' : 'var(--c-text-muted)' }} />
                     <span className="font-bold text-sm text-white">Unit {unit}</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <span className="text-xs font-semibold text-white/80 tabular-nums">{selectedCount}/{unitWords.length}</span>
                     <button
                       onClick={(e) => { e.stopPropagation(); toggleUnitWords(unit) }}
-                      className="px-1.5 py-0.5 rounded text-[10px] font-bold border transition-all"
-                      style={{
-                        color: allSelected ? '#4ade80' : 'rgba(255,255,255,0.8)',
-                        borderColor: allSelected ? 'rgba(74,222,128,0.3)' : 'rgba(255,255,255,0.2)',
-                      }}
+                      className={`btn btn-sm btn-icon ${allSelected ? 'btn-primary' : 'btn-ghost'}`}
                     >
                       {allSelected ? '✓' : '全选'}
                     </button>
@@ -380,7 +419,7 @@ export default function WordMemory() {
                       <polyline points="6 9 12 15 18 9" />
                     </svg>
                   </div>
-                </button>
+                </div>
                 {isExpanded && (
                   <div className="accordion-content">
                     <div className="grid grid-cols-5 sm:grid-cols-6 gap-1.5">
@@ -410,7 +449,7 @@ export default function WordMemory() {
                                 style={{ background: isFull ? 'rgba(74,222,128,0.2)' : 'rgba(74,222,128,0.1)', width: `${fillPct}%` }} />
                             )}
                             <span className="font-bold relative z-10">{word.word}</span>
-                            <span className="text-[9px] relative z-10" style={{ color: isFull ? '#4ade80' : progress > 0 ? '#facc15' : 'rgba(255,255,255,0.4)' }}>
+                            <span className="text-[9px] relative z-10" style={{ color: isFull ? 'var(--c-success)' : progress > 0 ? 'var(--c-warning)' : 'var(--c-text-muted)' }}>
                               {isFull ? '✓ 已掌握' : `${progress}/10`}
                             </span>
                           </button>

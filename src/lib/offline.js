@@ -21,7 +21,7 @@ export function setCachedData(data) {
 
 // ---- 离线队列 ----
 
-export function getQueue() {
+function getQueue() {
   try {
     const raw = localStorage.getItem(QUEUE_KEY)
     return raw ? JSON.parse(raw) : []
@@ -46,7 +46,7 @@ export function enqueue(payload) {
   }
 }
 
-export function dequeue(id) {
+function dequeue(id) {
   const queue = getQueue().filter((item) => item.id !== id)
   try {
     localStorage.setItem(QUEUE_KEY, JSON.stringify(queue))
@@ -56,7 +56,7 @@ export function dequeue(id) {
   } catch {}
 }
 
-export function incrementRetry(id) {
+function incrementRetry(id) {
   const queue = getQueue().map((item) =>
     item.id === id ? { ...item, retries: item.retries + 1 } : item
   )

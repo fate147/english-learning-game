@@ -2,12 +2,13 @@
 
 ## 设计系统位置
 
-所有 UI 组件样式基于 `ui-design-system/` 目录：
+所有 UI 组件样式基于 `src/styles/` 目录：
 
 ```
-ui-design-system/
+src/styles/
 ├── tokens.css      # 设计 Token（颜色、间距、字体）
 ├── components.css  # 组件样式
+├── backgrounds.css # 背景/装饰样式
 └── README.md       # 使用文档
 ```
 
@@ -53,7 +54,7 @@ font-weight: 500;
 
 ```jsx
 // ✓ 正确 - 使用现有组件
-import { Button, Card, Input } from './components';
+import Button from './components/ui/Button.jsx';
 
 // ✗ 错误 - 自己写样式
 <button style={{ background: 'blue' }}>提交</button>
@@ -97,7 +98,7 @@ import { Button, Card, Input } from './components';
 
 ## 新组件开发流程
 
-1. 先查看 `ui-design-system/README.md` 是否有现成组件
+1. 先查看 `src/styles/README.md` 是否有现成组件
 2. 如果没有，基于 tokens.css 的变量创建新样式
 3. 样式必须使用 CSS 变量，不能硬编码
 4. 添加到 `components.css` 中

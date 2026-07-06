@@ -6,5 +6,3 @@ export const DEFAULT_REWARD_TEMPLATES = [
   { id: 'tv', name: '多看动画片15分钟', cost: 300, icon: '📺' },
   { id: 'park', name: '去公园玩', cost: 700, icon: '🎠' },
 ]
-
-export const MAX_CUSTOM_REWARDS = 10

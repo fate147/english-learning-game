@@ -90,5 +90,93 @@
       { "text": "4 × 4 × 2 = 32cm", "correct": false },
       { "text": "4 + 4 = 8，8 × 4 = 32cm", "correct": false }
     ]
+  },
+  {
+    "id": "m_g3s1u7_09",
+    "stage": "concrete",
+    "visual": "┌────┐\n│    │ 边长5cm\n│    │\n└────┘",
+    "question": "这个正方形的周长是多少厘米？",
+    "options": [
+      { "text": "20cm", "correct": true },
+      { "text": "10cm", "correct": false },
+      { "text": "25cm", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u7_10",
+    "stage": "concrete",
+    "visual": "┌──────┐\n│      │ 4cm\n│      │\n└──────┘\n  7cm",
+    "question": "这个长方形的周长是多少厘米？",
+    "options": [
+      { "text": "22cm", "correct": true },
+      { "text": "11cm", "correct": false },
+      { "text": "28cm", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u7_11",
+    "stage": "pictorial",
+    "visual": "一根绳子围成一个正方形\n正方形边长是 8 厘米\n这根绳子有多长？",
+    "question": "这根绳子的长度等于正方形的什么？",
+    "options": [
+      { "text": "周长", "correct": true },
+      { "text": "面积", "correct": false },
+      { "text": "边长", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u7_12",
+    "stage": "pictorial",
+    "visual": "一块长方形菜地\n长 15 米，宽 8 米\n要给菜地围一圈篱笆",
+    "question": "篱笆至少需要多少米？",
+    "options": [
+      { "text": "46米", "correct": true },
+      { "text": "23米", "correct": false },
+      { "text": "120米", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u7_13",
+    "stage": "abstract",
+    "question": "一个长方形的周长是 40 厘米，长是 12 厘米。这个长方形的宽是多少厘米？",
+    "questionLabel": "这道题需要先理解什么？",
+    "options": [
+      { "text": "周长=（长+宽）×2，所以宽=周长÷2-长", "correct": true },
+      { "text": "宽=周长÷长", "correct": false },
+      { "text": "宽=周长-长", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u7_14",
+    "stage": "abstract",
+    "question": "一个正方形的周长是 36 分米，它的边长是多少分米？",
+    "questionLabel": "正方形的周长和边长有什么关系？",
+    "options": [
+      { "text": "边长=周长÷4=9分米", "correct": true },
+      { "text": "边长=周长×4=144分米", "correct": false },
+      { "text": "边长=周长÷2=18分米", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u7_15",
+    "stage": "synthesis",
+    "question": "学校有一个长方形花坛，长 10 米，宽 6 米。要在花坛周围铺一条小路，小路宽 1 米。小路外沿的周长是多少米？",
+    "questionLabel": "铺了小路后，长和宽分别增加了多少？",
+    "options": [
+      { "text": "长变成12米，宽变成8米，周长=（12+8）×2=40米", "correct": true },
+      { "text": "（10+6）×2=32米", "correct": false },
+      { "text": "10×6=60米", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u7_16",
+    "stage": "synthesis",
+    "question": "用 36 厘米长的铁丝围成一个长方形，长和宽都是整厘米数。围成的长方形的长和宽可能是多少？",
+    "questionLabel": "这道题有多种可能，需要找到正确答案。",
+    "options": [
+      { "text": "长+宽=18cm，如长10cm宽8cm，或长12cm宽6cm", "correct": true },
+      { "text": "长和宽都是18cm", "correct": false },
+      { "text": "长36cm宽0cm", "correct": false }
+    ]
   }
 ]

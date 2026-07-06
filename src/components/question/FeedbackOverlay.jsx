@@ -1,5 +1,4 @@
-import { useEffect, useState, useRef } from 'react'
-import CharacterPortrait from '../game/CharacterPortrait.jsx'
+import { useEffect, useRef } from 'react'
 
 let audioCtx = null
 function getAudioCtx() {

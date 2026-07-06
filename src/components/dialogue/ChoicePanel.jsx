@@ -17,14 +17,12 @@ export default function ChoicePanel({ choices, onComplete, disabled }) {
 
     await speakText(choices[index].text)
 
-    // 显示中文翻译，停留后再进入下一题
     setShowCn(true)
-    setTimeout(() => {
-      setSelectedIndex(null)
-      setShowCn(false)
-      busyRef.current = false
-      onComplete(isCorrect)
-    }, 1800)
+    await new Promise(r => setTimeout(r, 1500))
+    setSelectedIndex(null)
+    setShowCn(false)
+    busyRef.current = false
+    onComplete(isCorrect)
   }, [disabled, selectedIndex, choices, onComplete])
 
   const getButtonStyle = (index) => {
@@ -62,7 +60,7 @@ export default function ChoicePanel({ choices, onComplete, disabled }) {
               <div className="text-sm leading-snug font-bold">
                 "{choice.text}"
               </div>
-              {showCn && index === selectedIndex && choice.cn && (
+              {showCn && choice.cn && (index === selectedIndex || (selectedIndex !== null && choice.correct)) && (
                 <div className="text-xs mt-1 text-white/75 animate-toast-in">{choice.cn}</div>
               )}
             </div>

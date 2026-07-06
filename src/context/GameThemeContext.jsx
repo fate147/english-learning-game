@@ -11,11 +11,6 @@ export function GameThemeProvider({ children }) {
     saveTheme(theme.id)
   }, [])
 
-  const setGameThemeById = useCallback((themeId) => {
-    const theme = THEMES.find(t => t.id === themeId)
-    if (theme) setGameTheme(theme)
-  }, [setGameTheme])
-
   // 应用主题到 CSS 变量
   useEffect(() => {
     const root = document.documentElement
@@ -26,7 +21,7 @@ export function GameThemeProvider({ children }) {
   }, [gameTheme])
 
   return (
-    <GameThemeContext.Provider value={{ gameTheme, setGameTheme, setGameThemeById }}>
+    <GameThemeContext.Provider value={{ gameTheme, setGameTheme }}>
       {children}
     </GameThemeContext.Provider>
   )

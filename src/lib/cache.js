@@ -19,3 +19,13 @@ export function gameLastDateKey(subject, grade, childId) {
 export function streakKey(subject, grade, childId) {
   return `${PREFIX}${subject}_g${grade}_game_streak_${childId}`
 }
+
+/** 单词进度缓存 key */
+export function wordProgressKey(subject, grade, childId) {
+  return `${PREFIX}${subject}_g${grade}_word_progress_${childId}`
+}
+
+/** 错词本缓存 key */
+export function errorBookKey(childId, subject = 'english') {
+  return `${PREFIX}error_book_${childId}_${subject}`
+}

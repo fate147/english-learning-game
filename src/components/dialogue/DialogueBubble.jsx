@@ -27,7 +27,6 @@ export default function DialogueBubble({ characterId, text, cn, onTypingDone, au
         clearInterval(timer)
         setIsTyping(false)
         setShowCn(true)
-        onTypingDone?.()
       }
     }, 40)
     return () => clearInterval(timer)
@@ -37,9 +36,15 @@ export default function DialogueBubble({ characterId, text, cn, onTypingDone, au
     if (!isTyping && autoSpeak && !spokenRef.current && text) {
       spokenRef.current = true
       setIsSpeaking(true)
-      speakText(text).then(() => setIsSpeaking(false))
+      speakText(text).then(() => {
+        setIsSpeaking(false)
+        onTypingDone?.()
+      })
     }
-  }, [isTyping, autoSpeak, text])
+    if (!isTyping && !autoSpeak) {
+      onTypingDone?.()
+    }
+  }, [isTyping, autoSpeak, text, onTypingDone])
 
   return (
     <div className="max-w-lg mx-auto">

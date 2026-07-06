@@ -86,5 +86,93 @@
       { "text": "9 + 3 = 12，12 - 5 = 7张", "correct": false },
       { "text": "9 - 3 = 6，6 + 5 = 11张", "correct": false }
     ]
+  },
+  {
+    "id": "m_g3s1u5_09",
+    "stage": "concrete",
+    "visual": "🌳 一棵大树高 8 米\n🌱 一棵小树高 2 米",
+    "question": "大树的高度是小树的几倍？",
+    "options": [
+      { "text": "4倍", "correct": true },
+      { "text": "6倍", "correct": false },
+      { "text": "2倍", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u5_10",
+    "stage": "concrete",
+    "visual": "妈妈买了 5 个苹果\n买的梨是苹果的 3 倍",
+    "question": "妈妈买了多少个梨？",
+    "options": [
+      { "text": "15个", "correct": true },
+      { "text": "8个", "correct": false },
+      { "text": "2个", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u5_11",
+    "stage": "pictorial",
+    "visual": "三年级有 45 人\n四年级的人数是三年级的 2 倍",
+    "question": "四年级有多少人？",
+    "options": [
+      { "text": "90人", "correct": true },
+      { "text": "47人", "correct": false },
+      { "text": "22人", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u5_12",
+    "stage": "pictorial",
+    "visual": "小明有 12 颗糖\n小红的糖是小明的 4 倍",
+    "question": "小红有多少颗糖？",
+    "options": [
+      { "text": "48颗", "correct": true },
+      { "text": "16颗", "correct": false },
+      { "text": "3颗", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u5_13",
+    "stage": "abstract",
+    "question": "哥哥有 24 本书，是弟弟的 6 倍。弟弟有多少本书？",
+    "questionLabel": "「是弟弟的6倍「是什么意思？",
+    "options": [
+      { "text": "弟弟的书 = 哥哥的书 ÷ 6", "correct": true },
+      { "text": "弟弟的书 = 哥哥的书 × 6", "correct": false },
+      { "text": "弟弟的书 = 哥哥的书 + 6", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u5_14",
+    "stage": "abstract",
+    "question": "一盒饼干 8 元，一盒巧克力的价格是饼干的 5 倍。买一盒巧克力和一盒饼干一共多少钱？",
+    "questionLabel": "这道题需要先算什么？",
+    "options": [
+      { "text": "先算巧克力的价格：8×5=40元，再加饼干：40+8=48元", "correct": true },
+      { "text": "8×5=40元", "correct": false },
+      { "text": "8+5=13元", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u5_15",
+    "stage": "synthesis",
+    "question": "小华家养了 6 只鸡，鸭的数量是鸡的 3 倍，鹅比鸭少 8 只。小华家养了多少只鹅？",
+    "questionLabel": "这道题有几步？",
+    "options": [
+      { "text": "6×3=18只鸭，18-8=10只鹅", "correct": true },
+      { "text": "6+3=9只，9-8=1只", "correct": false },
+      { "text": "6×3=18只", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u5_16",
+    "stage": "synthesis",
+    "question": "停车场有 45 辆小汽车，大卡车的数量是小汽车的 2 倍，面包车比大卡车少 15 辆。停车场有多少辆面包车？",
+    "questionLabel": "这道题需要仔细读题，理解各数量之间的关系。",
+    "options": [
+      { "text": "45×2=90辆卡车，90-15=75辆面包车", "correct": true },
+      { "text": "45×2=90辆卡车，90+15=105辆面包车", "correct": false },
+      { "text": "45+2=47辆卡车，47-15=32辆面包车", "correct": false }
+    ]
   }
 ]

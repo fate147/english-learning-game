@@ -11,7 +11,7 @@ export default function GameHeader({
         <div className={`flex items-center justify-between ${className}`}>
           <div className="w-20 shrink-0">
             {onBack && (
-              <button onClick={onBack} className="text-sm font-semibold text-white/70 hover:text-white transition-colors">
+              <button onClick={onBack} className="btn btn-ghost btn-sm">
                 ← 返回
               </button>
             )}

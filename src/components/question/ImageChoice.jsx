@@ -1,14 +1,14 @@
-import { useState, useMemo, useEffect, useRef } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { getWordById, getWordsByUnit } from '../../lib/words.js'
 import { generateChoices } from '../../engines/questionEngine.js'
 import { vibrate } from '../../lib/haptics.js'
+import { speakText } from '../dialogue/tts.js'
 
 export default function ImageChoice({ question, onAnswer, unit, disabled }) {
   const [selectedId, setSelectedId] = useState(null)
   const [audioFailed, setAudioFailed] = useState(false)
   const [audioPlayed, setAudioPlayed] = useState(false)
   const [answerState, setAnswerState] = useState(null)
-  const audioRef = useRef(null)
 
   const choices = useMemo(() => {
     const unitWords = getWordsByUnit(unit)
@@ -23,13 +23,14 @@ export default function ImageChoice({ question, onAnswer, unit, disabled }) {
     setAnswerState(null)
   }, [question.wordId])
 
-  const playAudio = () => {
+  const playAudio = async () => {
     setAudioPlayed(true)
     setAudioFailed(false)
-    const el = audioRef.current
-    if (!el) return
-    el.load()
-    el.play().catch(() => setAudioFailed(true))
+    const wordObj = getWordById(question.wordId)
+    if (wordObj) {
+      const success = await speakText(wordObj.word)
+      if (!success) setAudioFailed(true)
+    }
   }
 
   const handleSelect = (wordId) => {
@@ -45,17 +46,12 @@ export default function ImageChoice({ question, onAnswer, unit, disabled }) {
 
   return (
     <div className="page-enter flex flex-col items-center gap-4">
-      <audio ref={audioRef} preload="none">
-        <source src={`audio/${question.wordId}.mp3`} type="audio/mpeg" />
-      </audio>
-
       <button
         onClick={playAudio}
         disabled={disabled}
         type="button"
         aria-label="播放发音"
-        className="w-16 h-16 rounded-full flex items-center justify-center text-2xl transition-all duration-200 hover:scale-105 active:scale-95"
-        style={{ background: 'linear-gradient(135deg, #6aab8a 0%, #5a9a7a 100%)', color: 'white' }}
+        className="btn btn-primary btn-icon text-2xl"
       >
         🔊
       </button>

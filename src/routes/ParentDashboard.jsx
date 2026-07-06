@@ -7,6 +7,7 @@ import EmptyState from '../components/ui/EmptyState.jsx'
 import ParentLayout from '../components/parent/ParentLayout.jsx'
 import StatsPanel from '../components/parent/StatsPanel.jsx'
 import UnlockPanel from '../components/parent/UnlockPanel.jsx'
+import ErrorBookPanel from '../components/parent/ErrorBookPanel.jsx'
 import RewardsPanel from '../components/parent/RewardsPanel.jsx'
 
 export default function ParentDashboard() {
@@ -36,6 +37,8 @@ export default function ParentDashboard() {
         return <StatsPanel key={currentChildId} childId={currentChildId} />
       case 'unlock':
         return <UnlockPanel key={currentChildId} childId={currentChildId} />
+      case 'errors':
+        return <ErrorBookPanel key={currentChildId} childId={currentChildId} />
       case 'rewards':
         return <RewardsPanel key={currentChildId} childId={currentChildId} />
       default:

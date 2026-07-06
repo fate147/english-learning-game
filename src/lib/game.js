@@ -1,5 +1,5 @@
 import { supabase } from './supabase.js'
-import { gameLastDateKey, streakKey, learningStateKey } from './cache.js'
+import { gameLastDateKey, streakKey, learningStateKey, wordProgressKey } from './cache.js'
 
 // 获取本地日期 YYYY-MM-DD（解决 UTC 日期与本地日期不一致的问题）
 // offsetDays：偏移天数，如 -1 为昨天
@@ -153,6 +153,11 @@ export async function updateWordProgress(userId, childId, subject, grade, result
     if (error) errors.push(error)
   }
 
+  // 同步到本地缓存
+  if (errors.length === 0) {
+    try { mergeWordProgressToCache(childId, subject, grade, results) } catch {}
+  }
+
   return { data: null, error: errors.length > 0 ? errors[0] : null }
 }
 
@@ -227,4 +232,64 @@ export function saveUnlockedWordsToCache(childId, unlockedIds) {
   try {
     localStorage.setItem(learningStateKey('english', 3, childId), JSON.stringify({ unlockedWords: unlockedIds }))
   } catch {}
+}
+
+/**
+ * 从 localStorage 读取单词进度（缓存优先）
+ * @param {string} childId
+ * @param {string} subject
+ * @param {number} grade
+ * @returns {{ fromCache: boolean, progressMap: Object }}
+ */
+export function loadWordProgressWithCache(childId, subject = 'english', grade = 3) {
+  const cacheKey = wordProgressKey(subject, grade, childId)
+  try {
+    const raw = localStorage.getItem(cacheKey)
+    if (raw) {
+      const progressMap = JSON.parse(raw)
+      if (progressMap && Object.keys(progressMap).length > 0) {
+        return { fromCache: true, progressMap }
+      }
+    }
+  } catch {}
+  return { fromCache: false, progressMap: {} }
+}
+
+/**
+ * 将单词进度写入 localStorage 缓存
+ * @param {string} childId
+ * @param {string} subject
+ * @param {number} grade
+ * @param {Object} progressMap - { wordId: { correct_count, wrong_count, level, next_review }, ... }
+ */
+function saveWordProgressToCache(childId, subject, grade, progressMap) {
+  try {
+    localStorage.setItem(wordProgressKey(subject, grade, childId), JSON.stringify(progressMap))
+  } catch {}
+}
+
+/**
+ * 合并增量到本地缓存：在现有缓存基础上累加 correct/wrong 计数
+ * @param {string} childId
+ * @param {string} subject
+ * @param {number} grade
+ * @param {Array} results - [{ wordId, correct }, ...]
+ * @returns {Object} 更新后的 progressMap
+ */
+export function mergeWordProgressToCache(childId, subject, grade, results) {
+  const { progressMap } = loadWordProgressWithCache(childId, subject, grade)
+  for (const r of results) {
+    if (!r.wordId) continue
+    if (!progressMap[r.wordId]) {
+      progressMap[r.wordId] = { correct_count: 0, wrong_count: 0, level: 0 }
+    }
+    if (r.correct) {
+      progressMap[r.wordId].correct_count = (progressMap[r.wordId].correct_count || 0) + 1
+    } else {
+      progressMap[r.wordId].wrong_count = (progressMap[r.wordId].wrong_count || 0) + 1
+    }
+    progressMap[r.wordId].level = Math.min(Math.floor(progressMap[r.wordId].correct_count / 5), 3)
+  }
+  saveWordProgressToCache(childId, subject, grade, progressMap)
+  return progressMap
 }

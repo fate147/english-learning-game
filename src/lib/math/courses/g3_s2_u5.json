@@ -90,5 +90,93 @@
       { "text": "边长是12cm，剩下面积 0", "correct": false },
       { "text": "边长是6cm，剩下面积 12×8-6×6=96-36=60平方厘米", "correct": false }
     ]
+  },
+  {
+    "id": "m_g3s2u5_09",
+    "stage": "concrete",
+    "visual": "┌────┐\n│    │ 边长5cm\n│    │\n└────┘",
+    "question": "这个正方形的面积是多少平方厘米？",
+    "options": [
+      { "text": "25平方厘米", "correct": true },
+      { "text": "20平方厘米", "correct": false },
+      { "text": "10平方厘米", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u5_10",
+    "stage": "concrete",
+    "visual": "┌──────┐\n│      │ 6cm\n│      │\n└──────┘\n  8cm",
+    "question": "这个长方形的面积是多少平方厘米？",
+    "options": [
+      { "text": "48平方厘米", "correct": true },
+      { "text": "14平方厘米", "correct": false },
+      { "text": "28平方厘米", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u5_11",
+    "stage": "pictorial",
+    "visual": "一个长方形花坛\n长 12 米，宽 8 米\n要在里面种花",
+    "question": "这个花坛的面积是多少平方米？",
+    "options": [
+      { "text": "96平方米", "correct": true },
+      { "text": "20平方米", "correct": false },
+      { "text": "40平方米", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u5_12",
+    "stage": "pictorial",
+    "visual": "一块正方形菜地\n边长是 9 米\n要在四周围篱笆",
+    "question": "篱笆长多少米？菜地面积多大？",
+    "options": [
+      { "text": "篱笆36米，面积81平方米", "correct": true },
+      { "text": "篱笆18米，面积81平方米", "correct": false },
+      { "text": "篱笆36米，面积36平方米", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u5_13",
+    "stage": "abstract",
+    "question": "一个长方形的周长是 40 厘米，长是 12 厘米。这个长方形的面积是多少平方厘米？",
+    "questionLabel": "这道题需要先求什么？",
+    "options": [
+      { "text": "先求宽：40÷2-12=8cm，再求面积：12×8=96平方厘米", "correct": true },
+      { "text": "12 × 40 = 480平方厘米", "correct": false },
+      { "text": "40 ÷ 2 = 20平方厘米", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u5_14",
+    "stage": "abstract",
+    "question": "一个正方形的面积是 64 平方分米，它的边长是多少分米？",
+    "questionLabel": "正方形的面积和边长有什么关系？",
+    "options": [
+      { "text": "边长=√64=8分米", "correct": true },
+      { "text": "边长=64÷4=16分米", "correct": false },
+      { "text": "边长=64÷2=32分米", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u5_15",
+    "stage": "synthesis",
+    "question": "一块长方形土地，长 25 米，宽 16 米。如果在这块地上种树，每棵树占地 4 平方米，最多能种多少棵树？",
+    "questionLabel": "这道题需要先算什么？",
+    "options": [
+      { "text": "先算土地面积：25×16=400平方米，再算能种几棵：400÷4=100棵", "correct": true },
+      { "text": "25 × 16 = 400棵", "correct": false },
+      { "text": "25 + 16 = 41棵", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u5_16",
+    "stage": "synthesis",
+    "question": "一张长方形纸长 20 厘米，宽 15 厘米。把它剪成边长为 5 厘米的小正方形，最多能剪几个？",
+    "questionLabel": "这道题需要仔细思考。",
+    "options": [
+      { "text": "长能剪4个，宽能剪3个，共4×3=12个", "correct": true },
+      { "text": "20×15÷(5×5)=12个", "correct": true },
+      { "text": "20+15=35个", "correct": false }
+    ]
   }
 ]

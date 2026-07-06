@@ -90,5 +90,93 @@
       { "text": "400 + 3 = 403米", "correct": false },
       { "text": "400 - 3 = 397米", "correct": false }
     ]
+  },
+  {
+    "id": "m_g3s1u3_09",
+    "stage": "concrete",
+    "visual": "一棵大树高 12 米\n一座楼房高 36 米",
+    "question": "楼房的高度是大树的几倍？",
+    "options": [
+      { "text": "3倍", "correct": true },
+      { "text": "4倍", "correct": false },
+      { "text": "2倍", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u3_10",
+    "stage": "concrete",
+    "visual": "一箱牛奶重 3 千克\n一箱果汁重 4 千克",
+    "question": "2箱牛奶和1箱果汁一共重多少千克？",
+    "options": [
+      { "text": "10千克", "correct": true },
+      { "text": "7千克", "correct": false },
+      { "text": "12千克", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u3_11",
+    "stage": "pictorial",
+    "visual": "从家到公园：800米\n从公园到学校：1200米",
+    "question": "从家经过公园到学校一共多少米？合多少千米？",
+    "options": [
+      { "text": "2000米 = 2千米", "correct": true },
+      { "text": "400米", "correct": false },
+      { "text": "800米", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u3_12",
+    "stage": "pictorial",
+    "visual": "一根绳子长 2 米\n用去 8 分米",
+    "question": "还剩多少分米？",
+    "options": [
+      { "text": "12分米", "correct": true },
+      { "text": "18分米", "correct": false },
+      { "text": "1米", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u3_13",
+    "stage": "abstract",
+    "question": "小明家离超市有1500米，他走了500米后发现忘带钱，又走回家拿钱再去超市。小明一共走了多少米？",
+    "questionLabel": "仔细读题，小明走了几段路？",
+    "options": [
+      { "text": "500 + 500 + 1500 = 2500米", "correct": true },
+      { "text": "1500米", "correct": false },
+      { "text": "500 + 1500 = 2000米", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u3_14",
+    "stage": "abstract",
+    "question": "一根铁丝长6米，剪去35分米后，还剩多少分米？",
+    "questionLabel": "这道题的单位统一吗？",
+    "options": [
+      { "text": "6米=60分米，60-35=25分米", "correct": true },
+      { "text": "6-35= -29分米", "correct": false },
+      { "text": "6+35=41分米", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u3_15",
+    "stage": "synthesis",
+    "question": "一座桥长800米，一列火车长200米，火车从上桥到完全通过桥需要多长时间？（火车速度每分钟行1千米）",
+    "questionLabel": "火车通过桥意味着什么？",
+    "options": [
+      { "text": "火车走的路程 = 桥长 + 车身长 = 1000米，需要1分钟", "correct": true },
+      { "text": "火车走800米，需要48秒", "correct": false },
+      { "text": "火车走200米，需要12秒", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u3_16",
+    "stage": "synthesis",
+    "question": "小华家到图书馆有2千米，图书馆到学校有1500米。小华从家经过图书馆到学校，一共要走多少米？",
+    "questionLabel": "这道题需要注意什么？",
+    "options": [
+      { "text": "单位不同，2千米=2000米，2000+1500=3500米", "correct": true },
+      { "text": "2+1500=1502米", "correct": false },
+      { "text": "2×1500=3000米", "correct": false }
+    ]
   }
 ]

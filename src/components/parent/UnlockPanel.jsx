@@ -4,7 +4,7 @@ import { useToast } from '../ui/Toast.jsx'
 import { getWordsByUnit, getWordsByGradeSemester } from '../../lib/words.js'
 import EmptyState from '../ui/EmptyState.jsx'
 
-const UNIT_NAMES = { 1: '感觉', 2: '身体', 3: '衣服', 4: '天气', 5: '日常', 6: '食物' }
+const UNIT_NAMES = { 0: '欢迎', 1: '问候', 2: '颜色', 3: '数字', 4: '文具', 5: '教室', 6: '家庭' }
 const GRADES = [3, 4, 5, 6]
 const GRADE_LABEL = { 3: '三年级', 4: '四年级', 5: '五年级', 6: '六年级' }
 
@@ -51,8 +51,8 @@ function WordCell({ word, isUnlocked, progress, onToggle }) {
   )
 }
 
-function UnitSection({ unit, unlockedWords, wordProgress, filter, onToggleWord, onToggleAll, isExpanded, onToggle }) {
-  const words = getWordsByUnit(unit)
+function UnitSection({ unit, grade, semester, unlockedWords, wordProgress, filter, onToggleWord, onToggleAll, isExpanded, onToggle }) {
+  const words = getWordsByUnit(unit, grade, semester)
   const unitUnlocked = words.filter((w) => unlockedWords.includes(w.id))
   const allSelected = unitUnlocked.length === words.length
 
@@ -63,8 +63,8 @@ function UnitSection({ unit, unlockedWords, wordProgress, filter, onToggleWord, 
 
   return (
     <div className="rounded-xl overflow-hidden" style={{ background: '#141414', border: '1px solid #2a2520' }}>
-      <button onClick={onToggle}
-        className="w-full flex items-center justify-between px-4 py-1 hover:bg-[#1f1f1f] transition-all">
+      <div onClick={onToggle}
+        className="w-full flex items-center justify-between px-4 py-1 hover:bg-[#1f1f1f] transition-all cursor-pointer">
         <div className="flex items-center gap-2.5 min-w-0">
           <span className="w-2 h-2 rounded-full shrink-0" style={{ background: allSelected ? '#d4a574' : unitUnlocked.length > 0 ? '#a39880' : '#8a7d6f' }} />
           <span className="font-bold text-sm text-[#f5f0e8]">Unit {unit}</span>
@@ -74,7 +74,7 @@ function UnitSection({ unit, unlockedWords, wordProgress, filter, onToggleWord, 
           <span className="text-xs font-semibold text-[#a39880] tabular-nums">{unitUnlocked.length}/{words.length}</span>
           <button
             onClick={(e) => { e.stopPropagation(); onToggleAll(words.map(w => w.id), allSelected) }}
-            className="px-1.5 py-0.5 rounded text-[10px] font-bold border transition-all"
+            className="btn btn-sm btn-icon"
             style={{
               color: allSelected ? '#d4a574' : '#a39880',
               borderColor: allSelected ? 'rgba(212,165,116,0.3)' : '#2a2520',
@@ -87,7 +87,7 @@ function UnitSection({ unit, unlockedWords, wordProgress, filter, onToggleWord, 
             <polyline points="6 9 12 15 18 9" />
           </svg>
         </div>
-      </button>
+      </div>
       {isExpanded && (
         <div className="px-3 pt-2 pb-3">
           <div className="grid grid-cols-5 sm:grid-cols-6 gap-1.5">
@@ -166,7 +166,7 @@ export default function UnlockPanel({ childId }) {
         <p className="text-sm mb-2" style={{ color: '#f5f0e8' }}>加载失败</p>
         <p className="text-xs mb-4" style={{ color: '#8a7d6f' }}>{error}</p>
         <button onClick={() => { fetchedRef.current = false; fetch(childId, 'english', grade) }}
-          className="px-5 py-2 rounded-lg text-xs font-bold" style={{ background: '#d4a574', color: '#0a0a0a' }}>
+          className="btn btn-primary btn-sm">
           重试
         </button>
       </div>
@@ -178,8 +178,9 @@ export default function UnlockPanel({ childId }) {
       {/* 年级 */}
       <div className="flex gap-2 overflow-x-auto pb-1">
         {GRADES.map(g => (
-          <button key={g}               onClick={() => { setGrade(g); fetchedRef.current = false; fetch(childId, 'english', g) }}
-            className="px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all"
+          <button key={g}
+            onClick={() => { setGrade(g); fetchedRef.current = false; fetch(childId, 'english', g) }}
+            className="btn btn-sm whitespace-nowrap"
             style={{
               background: grade === g ? '#d4a574' : '#1f1f1f',
               color: grade === g ? '#0a0a0a' : '#a39880',
@@ -194,7 +195,7 @@ export default function UnlockPanel({ childId }) {
       <div className="flex gap-2">
         {[1, 2].map(s => (
           <button key={s} onClick={() => setSemester(s)}
-            className="flex-1 py-1.5 rounded-lg text-xs font-bold transition-all"
+            className="btn btn-sm flex-1"
             style={{
               background: semester === s ? 'rgba(212,165,116,0.2)' : '#1f1f1f',
               color: semester === s ? '#d4a574' : '#8a7d6f',
@@ -215,33 +216,27 @@ export default function UnlockPanel({ childId }) {
 
       {/* 筛选 + 全选 */}
       <div className="flex items-center justify-between">
-        <div className="inline-flex gap-1 p-0.5 rounded-lg" style={{ background: '#141414', border: '1px solid #2a2520' }}>
+        <div className="tabs">
           {filters.map((f) => (
             <button key={f.key} onClick={() => setFilter(f.key)}
-              className="px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all duration-100"
-              style={{
-                background: filter === f.key ? '#1f1f1f' : 'transparent',
-                color: filter === f.key ? '#d4a574' : '#8a7d6f',
-                border: filter === f.key ? '1px solid #2a2520' : '1px solid transparent',
-              }}>
+              className={`tab ${filter === f.key ? 'active' : ''}`}>
               {f.label} <span className="tabular-nums opacity-70">({f.count})</span>
             </button>
           ))}
         </div>
         <button onClick={selectAllSemester}
-          className="px-3 py-1.5 rounded-lg text-xs font-bold transition-all"
-          style={{ background: '#d4a574', color: '#0a0a0a' }}>
+          className="btn btn-primary btn-sm">
           全选学期
         </button>
       </div>
 
       {/* 单元列表 */}
       <div className="flex flex-col gap-2">
-        {[1, 2, 3, 4, 5, 6].map(unit => {
+        {[0, 1, 2, 3, 4, 5, 6].map(unit => {
           const unitWords = getWordsByUnit(unit, grade, semester)
           if (unitWords.length === 0) return null
           return (
-            <UnitSection key={unit} unit={unit} unlockedWords={unlocked} wordProgress={progress}
+            <UnitSection key={unit} unit={unit} grade={grade} semester={semester} unlockedWords={unlocked} wordProgress={progress}
               filter={filter}
               onToggleWord={(id) => { toggle(childId, id) }}
               onToggleAll={(ids, all) => { toggleAll(childId, ids) }}

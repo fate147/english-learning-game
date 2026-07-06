@@ -1,7 +1,7 @@
 import { createContext, useState, useCallback, useContext, useEffect } from 'react'
 import { AuthContext } from './AuthContext.jsx'
 import { ChildContext } from './ChildContext.jsx'
-import { getStars, addEarnedStars, spendStars, calcLevel } from '../lib/stars.js'
+import { getStars, addEarnedStars, calcLevel } from '../lib/stars.js'
 import { enqueue } from '../lib/offline.js'
 
 export const StarContext = createContext(null)
@@ -92,29 +92,15 @@ export function StarProvider({ children }) {
     [user, activeChild]
   )
 
-  const spend = useCallback(
-    async (cost) => {
-      if (!user || !activeChild) return { data: null, error: new Error('未选择孩子') }
-      const { data, error } = await spendStars(user.id, activeChild.child_id, cost)
-      if (!error && data) {
-        setAvailable(data.available_stars)
-      }
-      return { data, error }
-    },
-    [user, activeChild]
-  )
-
   const level = calcLevel(totalEarned)
 
   return (
     <StarContext.Provider
       value={{
         totalEarned,
-        available,
         level,
         refreshStars,
         addStars,
-        spend,
       }}
     >
       {children}

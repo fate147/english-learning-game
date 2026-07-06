@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Navigate } from 'react-router-dom'
 import { useChild } from '../hooks/useChild.js'
 import { useStars } from '../hooks/useStars.js'
 import { useGameTheme } from '../context/GameThemeContext.jsx'
@@ -19,10 +19,7 @@ export default function Home() {
   const { gameTheme } = useGameTheme()
   const subjects = getSubjectList()
 
-  if (!activeChild) {
-    navigate('/select-child', { replace: true })
-    return null
-  }
+  if (!activeChild) return <Navigate to="/select-child" replace />
 
   const handleModeSelect = (subjectId, mode) => {
     const params = new URLSearchParams({

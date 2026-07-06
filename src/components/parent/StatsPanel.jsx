@@ -214,7 +214,7 @@ export default function StatsPanel({ childId }) {
         <p className="text-sm mb-2" style={{ color: '#f5f0e8' }}>加载失败</p>
         <p className="text-xs mb-4" style={{ color: '#8a7d6f' }}>{error}</p>
         <button onClick={() => { fetchedRef.current = false; fetchRecentSessions(childId, 90, 0) }}
-          className="px-5 py-2 rounded-lg text-xs font-bold" style={{ background: '#d4a574', color: '#0a0a0a' }}>
+          className="btn btn-primary btn-sm">
           重试
         </button>
       </div>

@@ -90,5 +90,93 @@
       { "text": "2/8 + 3/8 = 5/8，奶奶吃了5/8", "correct": false },
       { "text": "8 - 2 - 3 = 3，奶奶吃了3/8", "correct": false }
     ]
+  },
+  {
+    "id": "m_g3s1u8_09",
+    "stage": "concrete",
+    "visual": "🍎 把一个苹果平均分成4份\n吃了1份",
+    "question": "吃了这个苹果的几分之几？",
+    "options": [
+      { "text": "1/4", "correct": true },
+      { "text": "1/3", "correct": false },
+      { "text": "3/4", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u8_10",
+    "stage": "concrete",
+    "visual": "🍫 一块巧克力有8格\n吃了3格",
+    "question": "还剩这块巧克力的几分之几？",
+    "options": [
+      { "text": "5/8", "correct": true },
+      { "text": "3/8", "correct": false },
+      { "text": "3/5", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u8_11",
+    "stage": "pictorial",
+    "visual": "一袋糖有 12 颗\n小明拿了其中的 4 颗",
+    "question": "小明拿了这袋糖的几分之几？",
+    "options": [
+      { "text": "4/12", "correct": true },
+      { "text": "12/4", "correct": false },
+      { "text": "4/8", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u8_12",
+    "stage": "pictorial",
+    "visual": "一个西瓜平均分成6块\n小红吃了1块，小明吃了2块",
+    "question": "两人一共吃了这个西瓜的几分之几？",
+    "options": [
+      { "text": "3/6", "correct": true },
+      { "text": "2/6", "correct": false },
+      { "text": "1/6", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u8_13",
+    "stage": "abstract",
+    "question": "一根绳子长 12 米，用去了它的 2/3。用去了多少米？",
+    "questionLabel": "这道题需要理解什么？",
+    "options": [
+      { "text": "先算1/3是多少，再乘以2", "correct": true },
+      { "text": "12 - 2 = 10米", "correct": false },
+      { "text": "12 × 2 = 24米", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u8_14",
+    "stage": "abstract",
+    "question": "一箱苹果有 24 个，小红拿走了它的 1/4。小红拿走了多少个苹果？",
+    "questionLabel": "这道题用什么方法？",
+    "options": [
+      { "text": "24 ÷ 4 = 6个", "correct": true },
+      { "text": "24 - 4 = 20个", "correct": false },
+      { "text": "24 × 4 = 96个", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u8_15",
+    "stage": "synthesis",
+    "question": "一块地的 2/5 种了白菜，3/5 种了萝卜。白菜和萝卜哪种占地多？多多少？",
+    "questionLabel": "这道题需要比较什么？",
+    "options": [
+      { "text": "3/5 > 2/5，萝卜多，多1/5", "correct": true },
+      { "text": "2/5 > 3/5，白菜多", "correct": false },
+      { "text": "一样多", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u8_16",
+    "stage": "synthesis",
+    "question": "一根绳子第一次用去了 1/4，第二次用去了 2/4。还剩这根绳子的几分之几？",
+    "questionLabel": "这道题需要注意什么？",
+    "options": [
+      { "text": "1 - 1/4 - 2/4 = 1/4", "correct": true },
+      { "text": "1/4 + 2/4 = 3/4", "correct": false },
+      { "text": "4 - 1 - 2 = 1", "correct": false }
+    ]
   }
 ]

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth.js'
 import { useGameTheme } from '../context/GameThemeContext.jsx'
 import { translateError } from '../lib/errors.js'
-import Button from '../components/ui/Button.jsx'
+
 
 export default function Login() {
   const { user, loading: authLoading, login, register } = useAuth()
@@ -24,7 +24,7 @@ export default function Login() {
   if (authLoading) {
     return (
       <div className={`min-h-screen ${gameTheme.pattern} flex items-center justify-center`}>
-        <div className="spinner spinner-lg" style={{ borderColor: 'rgba(255,255,255,0.2)', borderTopColor: 'white' }} />
+        <div className="spinner spinner-lg" />
       </div>
     )
   }
@@ -127,12 +127,11 @@ export default function Login() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full py-3 rounded-xl font-bold text-white transition-all duration-150"
-                  style={{ background: 'var(--game-gradient, linear-gradient(135deg, #6aab8a 0%, #5a9a7a 100%))' }}
+                  className="btn btn-primary btn-lg w-full"
                 >
                   {submitting ? (
                     <span className="flex items-center justify-center gap-2">
-                      <div className="spinner" style={{ borderColor: 'rgba(255,255,255,0.3)', borderTopColor: 'white' }} />
+                      <div className="spinner spinner-sm" />
                       处理中...
                     </span>
                   ) : isRegister ? '创建账号' : '开始学习'}

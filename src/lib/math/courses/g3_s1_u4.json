@@ -90,5 +90,93 @@
       { "text": "800 ÷ 385 ≈ 2，坐满了还有多的", "correct": false },
       { "text": "800 - 385 = 415，415 - 429 = -14，坐不下了", "correct": true }
     ]
+  },
+  {
+    "id": "m_g3s1u4_09",
+    "stage": "concrete",
+    "visual": "🛒 购物清单：\n书包 285 元\n文具盒 46 元",
+    "question": "买一个书包和一个文具盒一共需要多少钱？",
+    "options": [
+      { "text": "285 + 46 = 331", "correct": true },
+      { "text": "285 - 46 = 239", "correct": false },
+      { "text": "285 + 40 = 325", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u4_10",
+    "stage": "concrete",
+    "visual": "📱 一部手机 1280 元\n💰 一部手机比一个平板电脑贵 560 元",
+    "question": "一个平板电脑多少钱？",
+    "options": [
+      { "text": "1280 - 560 = 720", "correct": true },
+      { "text": "1280 + 560 = 1840", "correct": false },
+      { "text": "1280 - 500 = 780", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u4_11",
+    "stage": "pictorial",
+    "visual": "图书馆有三层：\n第一层：458 本书\n第二层：392 本书\n第三层比第一层多 106 本",
+    "question": "第三层有多少本书？",
+    "options": [
+      { "text": "458 + 106 = 564", "correct": true },
+      { "text": "392 + 106 = 498", "correct": false },
+      { "text": "458 - 106 = 352", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u4_12",
+    "stage": "pictorial",
+    "visual": "果园里：\n苹果树：524 棵\n梨树：387 棵\n桃树比梨树少 125 棵",
+    "question": "桃树有多少棵？",
+    "options": [
+      { "text": "387 - 125 = 262", "correct": true },
+      { "text": "524 - 125 = 399", "correct": false },
+      { "text": "387 + 125 = 512", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u4_13",
+    "stage": "abstract",
+    "question": "学校举行跳绳比赛。三年级有 256 人参加，四年级参加的人数比三年级多 78 人。四年级有多少人参加？",
+    "questionLabel": "「比三年级多78人「说明什么？",
+    "options": [
+      { "text": "四年级人数 = 三年级人数 + 78", "correct": true },
+      { "text": "四年级人数 = 三年级人数 - 78", "correct": false },
+      { "text": "四年级人数 = 78", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u4_14",
+    "stage": "abstract",
+    "question": "一个书架有 3 层，每层放 128 本书。这个书架一共能放多少本书？",
+    "questionLabel": "这道题需要理解什么？",
+    "options": [
+      { "text": "每层128本，3层就是128×3=384本", "correct": true },
+      { "text": "128 + 3 = 131本", "correct": false },
+      { "text": "128 - 3 = 125本", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u4_15",
+    "stage": "synthesis",
+    "question": "小明看一本 320 页的书，第一天看了 85 页，第二天看了 78 页。还剩多少页没看？",
+    "questionLabel": "这道题有几步？需要仔细读题。",
+    "options": [
+      { "text": "320 - 85 - 78 = 157页", "correct": true },
+      { "text": "85 + 78 = 163页", "correct": false },
+      { "text": "320 + 85 + 78 = 483页", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u4_16",
+    "stage": "synthesis",
+    "question": "学校组织春游，租了 3 辆大巴车，每辆坐 45 人。还租了 2 辆小巴车，每辆坐 18 人。一共可以坐多少人？",
+    "questionLabel": "这道题需要先算什么再算什么？",
+    "options": [
+      { "text": "先算大巴车能坐多少人，再算小巴车能坐多少人，最后加起来", "correct": true },
+      { "text": "直接用3+2=5辆", "correct": false },
+      { "text": "用45+18=63人", "correct": false }
+    ]
   }
 ]

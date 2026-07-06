@@ -1,4 +1,5 @@
 // 语文题库索引 — AI 生成内容，无需手动维护
+// 出题规则：先下学期，轮过5次后加入上学期内容
 
 import g3s1u1 from './g3_s1_u1.json'
 import g3s1u2 from './g3_s1_u2.json'
@@ -25,24 +26,51 @@ const COURSES = {
   },
 }
 
+// 记录游戏轮次（用于判断是否轮过5次后加入上学期）
+let gameRound = 0
+const ROUNDS_BEFORE_SEMESTER1 = 5 // 轮过5次后加入上学期
+
+// Fisher-Yates 洗牌
+function shuffle(arr) {
+  const a = [...arr]
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[a[i], a[j]] = [a[j], a[i]]
+  }
+  return a
+}
+
 // 获取指定年级的所有题目，打乱后返回 count 道
-// 默认只出下学期（semester 2），后面可通过第二个参数调回
+// 先下学期，轮过5次后加入上学期内容
 export function pickChineseQuestions(grade = 3, count = 8, semester = 2) {
+  gameRound++
+
   const semesters = COURSES[grade]
   if (!semesters) return []
-  const all = []
-  const target = semesters[semester]
-  if (target) {
-    target.forEach((unit) => {
+
+  let all = []
+
+  // 下学期题目
+  const semester2 = semesters[2]
+  if (semester2) {
+    semester2.forEach((unit) => {
       unit.forEach((q) => {
         all.push({ ...q, type: 'chinese_reading' })
       })
     })
   }
-  // Fisher-Yates 洗牌
-  for (let i = all.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[all[i], all[j]] = [all[j], all[i]]
+
+  // 轮过5次后加入上学期题目
+  if (gameRound > ROUNDS_BEFORE_SEMESTER1) {
+    const semester1 = semesters[1]
+    if (semester1) {
+      semester1.forEach((unit) => {
+        unit.forEach((q) => {
+          all.push({ ...q, type: 'chinese_reading' })
+        })
+      })
+    }
   }
-  return all.slice(0, count)
+
+  return shuffle(all).slice(0, count)
 }

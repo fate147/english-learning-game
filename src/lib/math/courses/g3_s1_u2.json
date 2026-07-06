@@ -86,5 +86,93 @@
       { "text": "5000 - 2680 = 2320，再跟1950比", "correct": false },
       { "text": "2680 - 1950 = 730，再跟5000比", "correct": false }
     ]
+  },
+  {
+    "id": "m_g3s1u2_09",
+    "stage": "concrete",
+    "visual": "图书馆借出 156 本书\n还剩 328 本",
+    "question": "图书馆原来有多少本书？",
+    "options": [
+      { "text": "156 + 328 = 484", "correct": true },
+      { "text": "328 - 156 = 172", "correct": false },
+      { "text": "156 - 328 = -172", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u2_10",
+    "stage": "concrete",
+    "visual": "水果店运来 420 千克苹果\n卖出了 185 千克",
+    "question": "还剩多少千克苹果？",
+    "options": [
+      { "text": "420 - 185 = 235", "correct": true },
+      { "text": "420 + 185 = 605", "correct": false },
+      { "text": "185 + 185 = 370", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u2_11",
+    "stage": "pictorial",
+    "visual": "三年级有 245 人\n四年级有 278 人\n五年级有 316 人",
+    "question": "三年级和四年级一共有多少人？",
+    "options": [
+      { "text": "245 + 278 = 523", "correct": true },
+      { "text": "245 + 316 = 561", "correct": false },
+      { "text": "278 + 316 = 594", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u2_12",
+    "stage": "pictorial",
+    "visual": "学校有 560 名男生\n女生比男生少 87 人",
+    "question": "学校有多少名女生？",
+    "options": [
+      { "text": "560 - 87 = 473", "correct": true },
+      { "text": "560 + 87 = 647", "correct": false },
+      { "text": "560 - 80 = 480", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u2_13",
+    "stage": "abstract",
+    "question": "养殖场养了 850 只鸡，鸭比鸡多 120 只。养殖场养了多少只鸭？",
+    "questionLabel": "「鸭比鸡多120只「是什么意思？",
+    "options": [
+      { "text": "鸭的数量 = 鸡的数量 + 120", "correct": true },
+      { "text": "鸭的数量 = 鸡的数量 - 120", "correct": false },
+      { "text": "鸭的数量 = 120", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u2_14",
+    "stage": "abstract",
+    "question": "小明有 500 元，买了一个书包 185 元，又买了一双鞋 238 元。小明还剩多少钱？",
+    "questionLabel": "这道题需要哪几步计算？",
+    "options": [
+      { "text": "500 - 185 - 238 = 77", "correct": true },
+      { "text": "500 + 185 + 238 = 923", "correct": false },
+      { "text": "500 - 185 = 315", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u2_15",
+    "stage": "synthesis",
+    "question": "一辆客车能坐 45 人，一辆轿车能坐 5 人。学校组织 200 名学生去春游，需要几辆客车和几辆轿车才能坐下？",
+    "questionLabel": "这道题需要先理解什么？",
+    "options": [
+      { "text": "先算200人需要几辆车，再考虑怎么搭配", "correct": true },
+      { "text": "直接用200除以45", "correct": false },
+      { "text": "只需要一辆车就够了", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u2_16",
+    "stage": "synthesis",
+    "question": "小华家到学校的距离是 680 米，小华每天上学要走一个来回。小华每天走多少米？",
+    "questionLabel": "「一个来回「是什么意思？",
+    "options": [
+      { "text": "一个来回是去一次再回来一次，所以是680×2=1360米", "correct": true },
+      { "text": "就是680米", "correct": false },
+      { "text": "680 + 680 + 680 = 2040米", "correct": false }
+    ]
   }
 ]

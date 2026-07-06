@@ -48,9 +48,7 @@ export default function MathChoice({ question, onAnswer, disabled }) {
 
       {question.visual && (
         <div className="glass-card p-4 flex justify-center">
-          <pre className="text-white text-base leading-relaxed font-mono text-center">
-            {question.visual}
-          </pre>
+          <pre className="text-white text-sm leading-relaxed font-mono whitespace-pre">{question.visual}</pre>
         </div>
       )}
 

@@ -90,5 +90,97 @@
       { "text": "8:30 - 5:30 = 3小时", "correct": false },
       { "text": "5:30 + 8:30 = 14小时", "correct": false }
     ]
+  },
+  {
+    "id": "m_g3s1u1_09",
+    "stage": "concrete",
+    "visual": "⏰ 时钟显示：9:00",
+    "question": "电影9:00开始，小明8:30出门，他提前了几分钟到电影院？",
+    "options": [
+      { "text": "30分钟", "correct": true },
+      { "text": "60分钟", "correct": false },
+      { "text": "15分钟", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u1_10",
+    "stage": "concrete",
+    "visual": "上午课程表：\n第一节：8:00-8:40\n第二节：8:50-9:30\n课间休息：10分钟",
+    "question": "两节课之间休息了几分钟？",
+    "options": [
+      { "text": "10分钟", "correct": true },
+      { "text": "20分钟", "correct": false },
+      { "text": "50分钟", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u1_11",
+    "stage": "pictorial",
+    "visual": "小红的作息时间：\n起床 6:30\n早读 7:00-7:30\n上学 7:40",
+    "question": "小红从起床到上学用了多长时间？",
+    "options": [
+      { "text": "1小时10分钟", "correct": true },
+      { "text": "1小时", "correct": false },
+      { "text": "40分钟", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u1_12",
+    "stage": "pictorial",
+    "visual": "跑步比赛用时：\n小明：12秒\n小刚：10秒\n小红：14秒",
+    "question": "谁跑得最快？比最慢的快了几秒？",
+    "options": [
+      { "text": "小刚最快，比小红快4秒", "correct": true },
+      { "text": "小红最快，比小刚快4秒", "correct": false },
+      { "text": "小明最快，比小红快2秒", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u1_13",
+    "stage": "abstract",
+    "visual": null,
+    "question": "一列火车3:15出发，5:45到达目的地。这列火车行驶了多长时间？",
+    "questionLabel": "这道题需要理解什么？",
+    "options": [
+      { "text": "计算出发时间到到达时间的间隔", "correct": true },
+      { "text": "把两个时间加起来", "correct": false },
+      { "text": "计算火车的速度", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u1_14",
+    "stage": "abstract",
+    "visual": null,
+    "question": "小明看一本书，从下午2:30看到4:15。他看了多长时间？",
+    "questionLabel": "理解「从...看到...「是什么意思？",
+    "options": [
+      { "text": "计算开始时间和结束时间的差", "correct": true },
+      { "text": "把两个时间相加", "correct": false },
+      { "text": "直接看结束时间", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u1_15",
+    "stage": "synthesis",
+    "visual": null,
+    "question": "学校8:00上课，小华家离学校要走25分钟。小华最晚几点出门才不会迟到？",
+    "questionLabel": "这道题需要先理解什么再计算？",
+    "options": [
+      { "text": "先理解「不会迟到「就是必须在8:00之前到，再用8:00减去25分钟", "correct": true },
+      { "text": "直接用8:00加上25分钟", "correct": false },
+      { "text": "随便什么时候出门都行", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u1_16",
+    "stage": "synthesis",
+    "visual": null,
+    "question": "爷爷每天早上6:40开始锻炼，锻炼30分钟后休息10分钟，然后去吃早餐。爷爷几点开始吃早餐？",
+    "questionLabel": "这道题有几步？需要仔细读题。",
+    "options": [
+      { "text": "6:40 + 30分 + 10分 = 7:20", "correct": true },
+      { "text": "6:40 + 30分 = 7:10", "correct": false },
+      { "text": "6:40 + 10分 = 6:50", "correct": false }
+    ]
   }
 ]

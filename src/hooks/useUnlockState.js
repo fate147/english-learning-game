@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef } from 'react'
 import { useAuth } from './useAuth.js'
-import { getLearningState, upsertLearningState, getWordProgress, loadUnlockedWordsWithCache, saveUnlockedWordsToCache } from '../lib/game.js'
+import { getLearningState, upsertLearningState, getWordProgress, loadUnlockedWordsWithCache, saveUnlockedWordsToCache, loadWordProgressWithCache } from '../lib/game.js'
 
 export function useUnlockState() {
   const { user } = useAuth()
@@ -18,6 +18,13 @@ export function useUnlockState() {
     try {
       const { unlockedIds } = loadUnlockedWordsWithCache(childId)
       if (unlockedIds.length) setUnlocked(unlockedIds)
+
+      // 优先从本地缓存加载单词进度
+      const { progressMap: cachedProgress } = loadWordProgressWithCache(childId, subject, grade)
+      if (Object.keys(cachedProgress).length > 0) {
+        setProgress(cachedProgress)
+      }
+
       const [s, wp] = await Promise.all([
         getLearningState(user.id, childId, subject, grade),
         getWordProgress(user.id, childId, subject, grade),
@@ -25,7 +32,10 @@ export function useUnlockState() {
       if (s.data?.unlocked_words) setUnlocked(s.data.unlocked_words)
       const map = {}
       if (wp.data) wp.data.forEach((w) => { map[w.word_id] = w })
-      setProgress(map)
+      // 服务端数据覆盖本地缓存（服务端为准）
+      if (Object.keys(map).length > 0) {
+        setProgress(map)
+      }
     } catch (e) {
       console.error('加载解锁数据失败:', e)
       setError(e.message || '加载失败')

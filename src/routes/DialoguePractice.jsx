@@ -51,7 +51,7 @@ export default function DialoguePractice() {
 
   useEffect(() => {
     if (!activeChild) return
-    const allUnitIds = [7, 8, 9, 10, 11, 12]
+    const allUnitIds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     const picked = pickRandomRounds(allUnitIds, ROUNDS_PER_SESSION)
     // Fisher-Yates 洗牌
     const shuffle = (arr) => {
@@ -157,14 +157,14 @@ export default function DialoguePractice() {
     }
   }, [activeChild, results, lines, character, subject, grade, maxCombo, addStars, refreshStars])
 
-  const handlePlayAgain = useCallback(async () => {
-    await handleFinish()
+  const handlePlayAgain = useCallback(() => {
+    handleFinish()
     setGameKey((k) => k + 1)
     setPhase('loading')
   }, [handleFinish])
 
-  const handleGoHome = useCallback(async () => {
-    await handleFinish()
+  const handleGoHome = useCallback(() => {
+    handleFinish()
     navigate('/select-child')
   }, [handleFinish, navigate])
 
@@ -322,9 +322,6 @@ export default function DialoguePractice() {
           </div>
 
           <div className="flex gap-2.5 page-enter" style={{animationDelay: '0.2s'}}>
-            <Button variant="primary" size="xl" onClick={handlePlayAgain} className="flex-1">
-              再来一次
-            </Button>
             <button
               onClick={handleGoHome}
               className="flex-1 py-3 rounded-xl font-bold text-white/80 border border-white/30
@@ -332,6 +329,9 @@ export default function DialoguePractice() {
             >
               回首页
             </button>
+            <Button variant="primary" size="lg" onClick={handlePlayAgain} className="flex-1">
+              再来一次
+            </Button>
           </div>
         </div>
       </main>

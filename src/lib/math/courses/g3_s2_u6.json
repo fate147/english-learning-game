@@ -90,5 +90,93 @@
       { "text": "下午2:30到5:30是几小时", "correct": false },
       { "text": "小明每天跑步30分钟，一周跑多少分钟", "correct": false }
     ]
+  },
+  {
+    "id": "m_g3s2u6_09",
+    "stage": "concrete",
+    "visual": "📅 2024年日历\n二月有29天",
+    "question": "2024年是什么年？",
+    "options": [
+      { "text": "闰年", "correct": true },
+      { "text": "平年", "correct": false },
+      { "text": "不知道", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u6_10",
+    "stage": "concrete",
+    "visual": "上午 9:00 开始上课\n一节课 40 分钟",
+    "question": "第一节课几点下课？",
+    "options": [
+      { "text": "9:40", "correct": true },
+      { "text": "9:50", "correct": false },
+      { "text": "10:00", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u6_11",
+    "stage": "pictorial",
+    "visual": "一年各月天数：\n大月（31天）：1,3,5,7,8,10,12\n小月（30天）：4,6,9,11\n特殊月：2月（28或29天）",
+    "question": "一年中哪个月的天数最少？",
+    "options": [
+      { "text": "2月", "correct": true },
+      { "text": "4月", "correct": false },
+      { "text": "所有月一样多", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u6_12",
+    "stage": "pictorial",
+    "visual": "电影院放映时间：\n第一场：14:00-15:30\n第二场：16:00-17:30",
+    "question": "第一场电影放映了多长时间？",
+    "options": [
+      { "text": "1小时30分钟", "correct": true },
+      { "text": "1小时", "correct": false },
+      { "text": "2小时", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u6_13",
+    "stage": "abstract",
+    "question": "小华每天晚上9:00睡觉，早上6:30起床。小华每天睡多长时间？",
+    "questionLabel": "这道题需要计算跨越午夜的时间。",
+    "options": [
+      { "text": "9小时30分钟", "correct": true },
+      { "text": "3小时", "correct": false },
+      { "text": "15小时", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u6_14",
+    "stage": "abstract",
+    "question": "2023年是平年，全年有多少天？2024年是闰年，全年有多少天？",
+    "questionLabel": "平年和闰年的区别是什么？",
+    "options": [
+      { "text": "平年365天，闰年366天", "correct": true },
+      { "text": "平年360天，闰年365天", "correct": false },
+      { "text": "都是365天", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u6_15",
+    "stage": "synthesis",
+    "question": "妈妈早上7:30上班，下午5:00下班。妈妈一天工作多长时间？中间休息1小时，实际工作几小时？",
+    "questionLabel": "这道题需要几步计算？",
+    "options": [
+      { "text": "7:30到17:00是9小时30分钟，减去1小时休息，实际工作8小时30分钟", "correct": true },
+      { "text": "7:30+5:00=12:30", "correct": false },
+      { "text": "17:00-7:30=9小时30分钟", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u6_16",
+    "stage": "synthesis",
+    "question": "学校5月1日放假，5月5日开学。五一假期一共放了几天假？",
+    "questionLabel": "这道题需要注意什么？",
+    "options": [
+      { "text": "从5月1日到5月5日，一共放了5天假", "correct": true },
+      { "text": "5-1=4天", "correct": false },
+      { "text": "5+1=6天", "correct": false }
+    ]
   }
 ]

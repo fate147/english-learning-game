@@ -86,5 +86,93 @@
       { "text": "12x5=60画", "correct": false },
       { "text": "12-5=7画", "correct": false }
     ]
+  },
+  {
+    "id": "m_g3s2u3_09",
+    "stage": "concrete",
+    "visual": "天气记录：\n晴天：正正正\n多云：正\n雨天：正一",
+    "question": "这周有几天是雨天？",
+    "options": [
+      { "text": "6天", "correct": true },
+      { "text": "15天", "correct": false },
+      { "text": "5天", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u3_10",
+    "stage": "concrete",
+    "visual": "三(1)班图书角：\n故事书：24本\n科普书：16本\n漫画书：20本",
+    "question": "图书角一共有多少本书？",
+    "options": [
+      { "text": "60本", "correct": true },
+      { "text": "40本", "correct": false },
+      { "text": "44本", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u3_11",
+    "stage": "pictorial",
+    "visual": "上午卖出：苹果8箱，梨6箱，香蕉4箱\n下午卖出：苹果5箱，梨9箱，香蕉7箱",
+    "question": "哪种水果全天卖得最多？",
+    "options": [
+      { "text": "苹果13箱", "correct": false },
+      { "text": "梨15箱", "correct": true },
+      { "text": "香蕉11箱", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u3_12",
+    "stage": "pictorial",
+    "visual": "一周气温记录：\n周一：22℃\n周二：24℃\n周三：20℃\n周四：26℃\n周五：23℃",
+    "question": "这周的最高气温和最低气温相差多少度？",
+    "options": [
+      { "text": "6℃", "correct": true },
+      { "text": "4℃", "correct": false },
+      { "text": "2℃", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u3_13",
+    "stage": "abstract",
+    "question": "三(2)班同学最喜欢的运动：跑步15人，跳绳12人，踢球8人，游泳10人。喜欢跑步的比喜欢游泳的多几人？",
+    "questionLabel": "这道题需要从统计表中获取什么信息？",
+    "options": [
+      { "text": "15-10=5人", "correct": true },
+      { "text": "15+10=25人", "correct": false },
+      { "text": "15×10=150人", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u3_14",
+    "stage": "abstract",
+    "question": "某超市一周销售情况：周一250元，周二320元，周三280元，周四350元，周五400元。这周平均每天销售额是多少元？",
+    "questionLabel": "求平均数需要怎么算？",
+    "options": [
+      { "text": "总销售额÷天数=1600÷5=320元", "correct": true },
+      { "text": "选出最高的一天", "correct": false },
+      { "text": "把所有数字加起来", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u3_15",
+    "stage": "synthesis",
+    "question": "三(1)班和三(2)班同学最喜欢的课外书类型统计：\n三(1)班：故事书18人，科普书12人\n三(2)班：故事书15人，科普书16人\n哪个班更喜欢科普书？",
+    "questionLabel": "这道题需要比较什么？",
+    "options": [
+      { "text": "三(2)班喜欢科普书的人更多", "correct": true },
+      { "text": "三(1)班喜欢故事书的人更多", "correct": false },
+      { "text": "两个班一样", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u3_16",
+    "stage": "synthesis",
+    "question": "学校运动会报名情况：跑步20人，跳远15人，跳高8人，投掷12人。如果每项比赛需要裁判2人，一共需要多少名裁判？",
+    "questionLabel": "这道题需要先算什么？",
+    "options": [
+      { "text": "先算有几项比赛：4项，再算裁判数：4×2=8人", "correct": true },
+      { "text": "20+15+8+12=55人", "correct": false },
+      { "text": "55×2=110人", "correct": false }
+    ]
   }
 ]

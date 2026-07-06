@@ -86,5 +86,93 @@
       { "text": "28 + 20 = 48人", "correct": false },
       { "text": "28 - 10 = 18人", "correct": false }
     ]
+  },
+  {
+    "id": "m_g3s1u9_09",
+    "stage": "concrete",
+    "visual": "🍎 苹果：3个\n🍌 香蕉：5个\n🍊 橘子：2个",
+    "question": "三种水果一共有多少个？",
+    "options": [
+      { "text": "10个", "correct": true },
+      { "text": "8个", "correct": false },
+      { "text": "6个", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u9_10",
+    "stage": "concrete",
+    "visual": "全班30人\n喜欢红色：12人\n喜欢蓝色：15人",
+    "question": "两种都不喜欢的至少有多少人？",
+    "options": [
+      { "text": "3人", "correct": true },
+      { "text": "27人", "correct": false },
+      { "text": "30人", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u9_11",
+    "stage": "pictorial",
+    "visual": "三(1)班同学参加课外活动：\n参加书法组：16人\n参加绘画组：14人\n两组都参加：6人",
+    "question": "三(1)班一共有多少人？",
+    "options": [
+      { "text": "24人", "correct": true },
+      { "text": "30人", "correct": false },
+      { "text": "20人", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u9_12",
+    "stage": "pictorial",
+    "visual": "公园里的人：\n跑步的：25人\n跳舞的：18人\n既跑步又跳舞的：7人",
+    "question": "公园里一共有多少人在运动？",
+    "options": [
+      { "text": "36人", "correct": true },
+      { "text": "43人", "correct": false },
+      { "text": "50人", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u9_13",
+    "stage": "abstract",
+    "question": "三(2)班有50人，会弹钢琴的有18人，会拉小提琴的有15人，两样都会的有5人。两样都不会的有多少人？",
+    "questionLabel": "这道题需要理解什么概念？",
+    "options": [
+      { "text": "需要先算至少会一样的人数，再用总人数减去", "correct": true },
+      { "text": "直接用50-18-15", "correct": false },
+      { "text": "直接用18+15+5", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u9_14",
+    "stage": "abstract",
+    "question": "图书馆借书情况：借了故事书的有32人，借了科技书的有28人，两样都借了的有12人。只借了故事书的有多少人？",
+    "questionLabel": "「只借了故事书「是什么意思？",
+    "options": [
+      { "text": "借了故事书但没借科技书的人：32-12=20人", "correct": true },
+      { "text": "32人", "correct": false },
+      { "text": "32+28=60人", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u9_15",
+    "stage": "synthesis",
+    "question": "某班有45人参加课外活动。参加英语组的有24人，参加数学组的有20人，两组都不参加的有5人。两组都参加的有多少人？",
+    "questionLabel": "这道题需要反向思考。",
+    "options": [
+      { "text": "至少参加一组的有45-5=40人，24+20-40=4人", "correct": true },
+      { "text": "24+20+5=49人", "correct": false },
+      { "text": "45-24-20=1人", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u9_16",
+    "stage": "synthesis",
+    "question": "学校调查了100名学生喜欢的运动。喜欢足球的有45人，喜欢篮球的有38人，喜欢乒乓球的有30人。三样都喜欢的有10人。只喜欢足球的有多少人？",
+    "questionLabel": "这道题需要理解集合的概念。",
+    "options": [
+      { "text": "需要更多数据才能算出，但至少知道喜欢足球的45人中包含了三样都喜欢的10人", "correct": true },
+      { "text": "45人", "correct": false },
+      { "text": "45-10=35人", "correct": false }
+    ]
   }
 ]

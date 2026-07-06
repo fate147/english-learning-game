@@ -1909,3 +1909,98 @@
 .calendar-event-dot.green { background: var(--c-success); }
 .calendar-event-dot.red { background: var(--c-danger); }
 .calendar-event-dot.yellow { background: var(--c-warning); }
+
+/* ========================================
+   家长页面黑金主题覆盖
+   ======================================== */
+.parent-theme .btn-primary {
+  background: #d4a574;
+  color: #0a0a0a;
+}
+
+.parent-theme .btn-primary:hover:not(:disabled) {
+  background: #c49a6c;
+}
+
+.parent-theme .btn-primary:focus {
+  box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.3);
+}
+
+.parent-theme .btn-outline {
+  background: transparent;
+  border-color: #2a2520;
+  color: #a39880;
+}
+
+.parent-theme .btn-outline:hover:not(:disabled) {
+  background: #1f1f1f;
+  color: #d4a574;
+  border-color: #d4a574;
+}
+
+.parent-theme .btn-ghost {
+  background: transparent;
+  color: #a39880;
+}
+
+.parent-theme .btn-ghost:hover:not(:disabled) {
+  background: #1f1f1f;
+  color: #d4a574;
+}
+
+.parent-theme .btn-danger {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.parent-theme .btn-danger:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.25);
+}
+
+.parent-theme .btn-success {
+  background: rgba(74, 222, 128, 0.15);
+  color: #4ade80;
+  border: 1px solid rgba(74, 222, 128, 0.2);
+}
+
+.parent-theme .btn-success:hover:not(:disabled) {
+  background: rgba(74, 222, 128, 0.25);
+}
+
+.parent-theme .btn:focus {
+  box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.3);
+}
+
+.parent-theme .tab.active {
+  color: #d4a574;
+  border-bottom-color: #d4a574;
+}
+
+.parent-theme .tab:hover {
+  color: #a39880;
+}
+
+.parent-theme .tabs {
+  border-bottom-color: #2a2520;
+}
+
+.parent-theme .input {
+  background: #1f1f1f;
+  color: #f5f0e8;
+  border-color: #2a2520;
+}
+
+.parent-theme .input::placeholder {
+  color: #8a7d6f;
+}
+
+.parent-theme .input:focus {
+  border-color: #d4a574;
+  box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.1);
+}
+
+.parent-theme .card {
+  background: #141414;
+  border-color: #2a2520;
+}

@@ -90,5 +90,93 @@
       { "text": "36 ÷ 4 = 9元，毛巾比香皂贵", "correct": false },
       { "text": "36 + 24 = 60元，60 ÷ 7 ≈ 8.6元", "correct": false }
     ]
+  },
+  {
+    "id": "m_g3s2u2_09",
+    "stage": "concrete",
+    "visual": "🍎 12个苹果\n平均分给4个小朋友",
+    "question": "每个小朋友分到几个苹果？",
+    "options": [
+      { "text": "3个", "correct": true },
+      { "text": "4个", "correct": false },
+      { "text": "8个", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u2_10",
+    "stage": "concrete",
+    "visual": "📚 60本书\n放在3个书架上",
+    "question": "每个书架放几本书？",
+    "options": [
+      { "text": "20本", "correct": true },
+      { "text": "180本", "correct": false },
+      { "text": "57本", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u2_11",
+    "stage": "pictorial",
+    "visual": "一辆汽车可以坐 5 人\n有 45 人要坐车",
+    "question": "需要几辆这样的汽车？",
+    "options": [
+      { "text": "9辆", "correct": true },
+      { "text": "40辆", "correct": false },
+      { "text": "50辆", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u2_12",
+    "stage": "pictorial",
+    "visual": "有 96 个座位\n每排有 8 个座位",
+    "question": "一共有多少排座位？",
+    "options": [
+      { "text": "12排", "correct": true },
+      { "text": "104排", "correct": false },
+      { "text": "88排", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u2_13",
+    "stage": "abstract",
+    "question": "小明3分钟走了240米，照这样的速度，他6分钟能走多少米？",
+    "questionLabel": "这道题需要先算什么？",
+    "options": [
+      { "text": "先算每分钟走多少米：240÷3=80米，再算6分钟：80×6=480米", "correct": true },
+      { "text": "240 ÷ 6 = 40米", "correct": false },
+      { "text": "240 × 6 = 1440米", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u2_14",
+    "stage": "abstract",
+    "question": "一块布长180厘米，做一面小旗用30厘米。这块布可以做几面小旗？",
+    "questionLabel": "这道题用什么方法？",
+    "options": [
+      { "text": "180 ÷ 30 = 6面", "correct": true },
+      { "text": "180 + 30 = 210面", "correct": false },
+      { "text": "180 × 30 = 5400面", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u2_15",
+    "stage": "synthesis",
+    "question": "小华有48颗糖，他把糖平均分给6个好朋友。每人分到几颗？如果每人再给2颗，小华还剩几颗？",
+    "questionLabel": "这道题需要几步计算？",
+    "options": [
+      { "text": "48÷6=8颗，每人再给2颗：8+2=10颗，小华还剩：48-6×10=-12颗（不够）", "correct": false },
+      { "text": "48÷6=8颗，如果每人给2颗就是8×6=48颗，没剩的", "correct": true },
+      { "text": "48÷6=8颗", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u2_16",
+    "stage": "synthesis",
+    "question": "学校买了3箱粉笔，每箱24盒。平均分给8个班，每班分几盒？",
+    "questionLabel": "这道题需要先算什么？",
+    "options": [
+      { "text": "先算总共有多少盒：3×24=72盒，再除以8：72÷8=9盒", "correct": true },
+      { "text": "24 ÷ 8 = 3盒", "correct": false },
+      { "text": "3 × 8 = 24盒", "correct": false }
+    ]
   }
 ]

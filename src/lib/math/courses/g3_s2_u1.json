@@ -90,5 +90,93 @@
       { "text": "200 + 300 + 150 + 150 = 800米", "correct": false },
       { "text": "300 - 200 = 100米", "correct": false }
     ]
+  },
+  {
+    "id": "m_g3s2u1_09",
+    "stage": "concrete",
+    "visual": "地图上标有：\n学校 ●\n书店在学校的北面\n超市在学校的东面",
+    "question": "从学校去书店应该往哪个方向走？",
+    "options": [
+      { "text": "北面", "correct": true },
+      { "text": "南面", "correct": false },
+      { "text": "东面", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u1_10",
+    "stage": "concrete",
+    "visual": "小明家在学校的南面\n公园在学校的东面",
+    "question": "小明家在公园的什么方向？",
+    "options": [
+      { "text": "西南方向", "correct": true },
+      { "text": "东南方向", "correct": false },
+      { "text": "西北方向", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u1_11",
+    "stage": "pictorial",
+    "visual": "    北\n    ↑\n图书馆 — 学校 — 银行\n    ↓\n    医院",
+    "question": "图书馆在医院的什么方向？",
+    "options": [
+      { "text": "北面", "correct": true },
+      { "text": "南面", "correct": false },
+      { "text": "东面", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u1_12",
+    "stage": "pictorial",
+    "visual": "    北\n    ↑\n公园 ● — ● 学校\n        ↓\n      ● 超市\n      ↓\n      ● 家",
+    "question": "公园在小明家的什么方向？",
+    "options": [
+      { "text": "西北方向", "correct": true },
+      { "text": "东南方向", "correct": false },
+      { "text": "东北方向", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u1_13",
+    "stage": "abstract",
+    "question": "小红从家向北走了400米到学校，再向东走了300米到图书馆。小红一共走了多少米？",
+    "questionLabel": "这道题需要理解什么？",
+    "options": [
+      { "text": "求总路程，400+300=700米", "correct": true },
+      { "text": "求直线距离", "correct": false },
+      { "text": "求方向", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u1_14",
+    "stage": "abstract",
+    "question": "小明从家向东走了500米到公园，再向北走了200米到学校。如果小明从家直接走到学校，需要走多少米？",
+    "questionLabel": "这道题需要理解什么？",
+    "options": [
+      { "text": "求直线距离，需要画图分析，答案是√(500²+200²)≈539米", "correct": false },
+      { "text": "700米", "correct": true },
+      { "text": "300米", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u1_15",
+    "stage": "synthesis",
+    "question": "学校在邮局的北面200米处，图书馆在学校的东面300米处。小明从邮局出发去图书馆，一共要走多少米？",
+    "questionLabel": "这道题需要理解位置关系。",
+    "options": [
+      { "text": "200+300=500米", "correct": true },
+      { "text": "300-200=100米", "correct": false },
+      { "text": "200×300=60000米", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u1_16",
+    "stage": "synthesis",
+    "question": "小华家在学校的南面，小明家在学校的北面。小华家到学校是450米，小明家到学校是380米。小华家和小明家相距多少米？",
+    "questionLabel": "这道题的关键是什么？",
+    "options": [
+      { "text": "两家在学校两侧，距离=450+380=830米", "correct": true },
+      { "text": "450-380=70米", "correct": false },
+      { "text": "450+380+学校长度", "correct": false }
+    ]
   }
 ]

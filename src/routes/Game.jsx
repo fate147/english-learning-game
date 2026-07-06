@@ -7,9 +7,10 @@ import { useGameTheme } from '../context/GameThemeContext.jsx'
 import { WORDS, getWordById } from '../lib/words.js'
 import { CHARACTERS, getRandomDialogue } from '../config/characters.js'
 import { GAME_QUESTIONS_PER_ROUND } from '../config/index.js'
-import { getLearningState, getWordProgress, saveGameSession, updateWordProgress, buildGameSessionData, calcAndSaveStreak } from '../lib/game.js'
+import { getLearningState, getWordProgress, saveGameSession, updateWordProgress, buildGameSessionData, calcAndSaveStreak, mergeWordProgressToCache } from '../lib/game.js'
 import { calcScore } from '../engines/scoring.js'
 import { enqueue, isOnline } from '../lib/offline.js'
+import { recordErrors } from '../lib/errorBook.js'
 import { learningStateKey } from '../lib/cache.js'
 
 import GameHeader from '../components/ui/GameHeader.jsx'
@@ -159,6 +160,18 @@ export default function Game() {
 
     const sessionData = buildGameSessionData({ activeChild, subject, grade, results, character })
 
+    // 英语单词进度：始终更新本地缓存
+    if (subject === 'english' && results.answers?.length) {
+      mergeWordProgressToCache(activeChild.child_id, subject, grade, results.answers)
+      // 记录错词
+      const errors = results.answers
+        .filter(a => !a.correct && a.wordId)
+        .map(a => ({ wordId: a.wordId, word: a.word, type: a.type }))
+      if (errors.length > 0) {
+        recordErrors(activeChild.child_id, subject, errors)
+      }
+    }
+
     // 后台保存，不 await
     if (isOnline()) {
       saveGameSession(sessionData).then(({ error }) => {
@@ -227,7 +240,7 @@ export default function Game() {
         {isLoading && (
           <div className={`fixed inset-0 z-50 flex items-center justify-center ${gameTheme.pattern}`}>
             <div className="text-center">
-              <div className="spinner spinner-lg mx-auto mb-4" style={{ borderColor: 'rgba(255,255,255,0.2)', borderTopColor: 'white' }} />
+              <div className="spinner spinner-lg mx-auto mb-4" />
               <span className="text-white font-bold">加载中...</span>
             </div>
           </div>

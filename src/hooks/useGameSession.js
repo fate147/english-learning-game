@@ -1,4 +1,4 @@
-import { useContext, useCallback } from 'react'
+import { useContext } from 'react'
 import { GameContext } from '../context/GameContext.jsx'
 
 export function useGameSession() {

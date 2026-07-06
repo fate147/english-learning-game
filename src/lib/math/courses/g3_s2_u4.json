@@ -90,5 +90,93 @@
       { "text": "180 ÷ 4 = 45，45 > 42，不够", "correct": false },
       { "text": "42 × 4 = 168，168 > 180，够了", "correct": false }
     ]
+  },
+  {
+    "id": "m_g3s2u4_09",
+    "stage": "concrete",
+    "visual": "🍎 苹果每箱 25 个\n📦 买了 12 箱",
+    "question": "一共有多少个苹果？",
+    "options": [
+      { "text": "300个", "correct": true },
+      { "text": "37个", "correct": false },
+      { "text": "250个", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u4_10",
+    "stage": "concrete",
+    "visual": "🎬 电影院有 15 排座位\n每排有 18 个座位",
+    "question": "电影院一共有多少个座位？",
+    "options": [
+      { "text": "270个", "correct": true },
+      { "text": "33个", "correct": false },
+      { "text": "180个", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u4_11",
+    "stage": "pictorial",
+    "visual": "小明每分钟走 65 米\n走了 14 分钟",
+    "question": "小明一共走了多少米？",
+    "options": [
+      { "text": "910米", "correct": true },
+      { "text": "79米", "correct": false },
+      { "text": "650米", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u4_12",
+    "stage": "pictorial",
+    "visual": "一个书架有 5 层\n每层可以放 32 本书",
+    "question": "这个书架一共可以放多少本书？",
+    "options": [
+      { "text": "160本", "correct": true },
+      { "text": "37本", "correct": false },
+      { "text": "150本", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u4_13",
+    "stage": "abstract",
+    "question": "一个足球 65 元，买 18 个足球需要多少钱？",
+    "questionLabel": "这道题用乘法还是加法？",
+    "options": [
+      { "text": "65 × 18 = 1170元", "correct": true },
+      { "text": "65 + 18 = 83元", "correct": false },
+      { "text": "65 - 18 = 47元", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u4_14",
+    "stage": "abstract",
+    "question": "学校买了 15 箱粉笔，每箱 24 盒。一共买了多少盒粉笔？",
+    "questionLabel": "估算一下，结果大约是多少？",
+    "options": [
+      { "text": "360盒", "correct": true },
+      { "text": "39盒", "correct": false },
+      { "text": "240盒", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u4_15",
+    "stage": "synthesis",
+    "question": "小华家到学校有 680 米，他每天上学要走一个来回。小华每天走多少米？",
+    "questionLabel": "「一个来回「是什么意思？",
+    "options": [
+      { "text": "一个来回是去一次再回来一次，所以是680×2=1360米", "correct": true },
+      { "text": "就是680米", "correct": false },
+      { "text": "680+680+680=2040米", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s2u4_16",
+    "stage": "synthesis",
+    "question": "一个工厂每天生产 35 台机器，生产了 18 天。已经运走了 280 台，还剩多少台？",
+    "questionLabel": "这道题需要先算什么？",
+    "options": [
+      { "text": "先算总产量：35×18=630台，再算剩余：630-280=350台", "correct": true },
+      { "text": "35 × 18 = 630台", "correct": false },
+      { "text": "630 + 280 = 910台", "correct": false }
+    ]
   }
 ]

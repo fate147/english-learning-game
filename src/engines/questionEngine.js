@@ -1,8 +1,8 @@
-import { WORDS, getWordsByUnit } from '../lib/words.js'
+import { WORDS } from '../lib/words.js'
 
 // 题型
-export const TYPE_IMAGE_CHOICE = 'image_choice'
-export const TYPE_LETTER_FILL = 'letter_fill'
+const TYPE_IMAGE_CHOICE = 'image_choice'
+const TYPE_LETTER_FILL = 'letter_fill'
 
 // Fisher-Yates 洗牌（均匀随机）
 function shuffle(arr) {
@@ -19,6 +19,7 @@ function shuffle(arr) {
  *
  * 从所有已解锁单词中选题，跨单元混合
  * 优先级：newWords → dueWords → fillWords → masteredWords
+ * 学期顺序：先下册(semester:2)后上册(semester:1)
  * 交替：1/3/5/7 听音选图，2/4/6/8 字母填空
  * 约束：新词+复习词 ≤ 5，每词每局只出现一次
  */
@@ -48,8 +49,14 @@ export function getQuestionSet({
     (w) => learnedWords.includes(w.id) && !dueWords.find((rw) => rw.id === w.id)
   )
 
-  // 按优先级排列：newWords → dueWords → fillWords → masteredWords
-  const priorityPool = shuffle([...newWords, ...dueWords, ...fillWords, ...masteredWords])
+  // 按优先级排列，先下册(semester:2)后上册(semester:1)
+  const sortBySemester = (a, b) => {
+    const sa = a.semester || 2
+    const sb = b.semester || 2
+    if (sa !== sb) return sb - sa // 下册优先
+    return 0
+  }
+  const priorityPool = shuffle([...newWords, ...dueWords, ...fillWords, ...masteredWords].sort(sortBySemester))
 
   // 选8题，新词+复习词不超过5
   const newDue = priorityPool.filter((w) => newWords.includes(w) || dueWords.includes(w)).slice(0, 5)
@@ -103,6 +110,20 @@ export function generateChoices(correctId, unit, allUnitWords, exceptIds = []) {
 export function generateBlanks(word) {
   const letters = word.split('')
   const len = letters.length
+
+  // 单字母词：唯一字母作为填空位
+  if (len === 1) {
+    const letterPool = [letters[0].toLowerCase()]
+    const allLetters = 'abcdefghijklmnopqrstuvwxyz'
+    for (let i = 0; i < 3; i++) {
+      let r
+      do { r = allLetters[Math.floor(Math.random() * 26)] } while (r === letters[0].toLowerCase())
+      letterPool.push(r)
+    }
+    const candidates = {}
+    shuffle(letterPool).forEach(l => { candidates[l] = (candidates[l] || 0) + 1 })
+    return { blanks: [{ index: 0, correctLetter: letters[0], filled: null }], candidates }
+  }
 
   // 计算要隐藏的字母数（至少30%，至少2个，最多5个）
   const hideCount = Math.max(2, Math.min(5, Math.ceil(len * 0.45)))

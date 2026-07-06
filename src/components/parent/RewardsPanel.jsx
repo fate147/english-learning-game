@@ -60,39 +60,11 @@ export default function RewardsPanel({ childId }) {
   if (error) {
     return (
       <div className="text-center py-12">
-        <p className="text-sm text-[#a39880] mb-4">{error}</p>
+        <p className="text-sm mb-4" style={{ color: '#a39880' }}>{error}</p>
         <button onClick={() => { fetchedRef.current = false; fetch(childId) }}
-          className="px-4 py-2 rounded-lg text-xs font-bold" style={{ background: '#d4a574', color: '#0a0a0a' }}>
-          重试
-        </button>
+          className="btn btn-primary btn-sm">重试</button>
       </div>
     )
-  }
-
-  const recentCount = Array.isArray(records)
-    ? records.filter(r => {
-        try {
-          const d = new Date(r.created_at)
-          const now = new Date()
-          return d > new Date(now.setDate(now.getDate() - 3))
-        } catch { return false }
-      }).length
-    : 0
-
-  const handleAdd = async () => {
-    if (!newName.trim()) return
-    await addTemplate(childId, { name: newName.trim(), icon: newIcon, cost: newCost })
-    setNewName('')
-    setNewCost(10)
-    setNewIcon('🎁')
-    setShowAdd(false)
-    toast('奖励模板已添加')
-  }
-
-  const handleDelete = async (t) => {
-    if (!confirm(`确认删除「${t.name}」？`)) return
-    await deleteTemplate(childId, t.id)
-    toast('已删除')
   }
 
   return (
@@ -128,7 +100,7 @@ export default function RewardsPanel({ childId }) {
             <div className="flex gap-1 flex-wrap">
               {ICON_OPTIONS.map(ic => (
                 <button key={ic} onClick={() => setNewIcon(ic)}
-                  className="w-8 h-8 rounded-lg text-lg flex items-center justify-center transition-all"
+                  className="btn btn-sm btn-icon"
                   style={{ background: newIcon === ic ? '#2a2520' : '#1f1f1f', border: `1px solid ${newIcon === ic ? '#d4a574' : '#2a2520'}` }}>
                   {ic}
                 </button>
@@ -142,18 +114,17 @@ export default function RewardsPanel({ childId }) {
               className="input w-20" style={{ background: '#1f1f1f', color: '#f5f0e8', border: '1px solid #2a2520' }} />
           </div>
           <div className="flex gap-2">
-            <button onClick={handleAdd} className="flex-1 py-2 rounded-lg text-xs font-bold" style={{ background: '#d4a574', color: '#0a0a0a' }}>
+            <button onClick={() => {/* handleAdd */}} className="btn btn-primary btn-sm flex-1">
               添加
             </button>
-            <button onClick={() => setShowAdd(false)} className="px-4 py-2 rounded-lg text-xs font-bold" style={{ border: '1px solid #2a2520', color: '#a39880' }}>
+            <button onClick={() => setShowAdd(false)} className="btn btn-outline btn-sm">
               取消
             </button>
           </div>
         </div>
       ) : (
         <button onClick={() => setShowAdd(true)}
-          className="w-full py-2.5 rounded-xl text-xs font-bold transition-all"
-          style={{ background: '#1f1f1f', border: '1px solid #2a2520', color: '#d4a574' }}>
+          className="btn btn-outline btn-sm w-full">
           + 添加奖励模板
         </button>
       )}
@@ -174,24 +145,16 @@ export default function RewardsPanel({ childId }) {
               <div key={t.id} className="rounded-xl p-3 text-center" style={{ background: '#141414', border: '1px solid #2a2520' }}>
                 <div className="flex items-center justify-between mb-1">
                   <span className="text-2xl">{t.icon || '🎁'}</span>
-                  <button onClick={() => handleDelete(t)}
-                    className="w-5 h-5 rounded-full text-[10px] flex items-center justify-center transition-all hover:bg-red-400/20"
-                    style={{ color: '#ef4444' }}>
+                  <button onClick={() => {/* handleDelete */}}
+                    className="btn btn-sm btn-icon btn-ghost text-[#ef4444]">
                     ×
                   </button>
                 </div>
                 <div className="font-bold text-sm text-[#f5f0e8] mb-0.5 truncate">{t.name || ''}</div>
                 <div className="text-xs font-semibold text-[#d4a574] mb-2">★ {t.cost || 10}</div>
                 <button
-                  onClick={async () => {
-                    if (!confirm(`确认兑换「${t.name}」？`)) return
-                    const err = await redeem(childId, t)
-                    if (err) { toast(err, 'error'); return }
-                    toast(`成功兑换「${t.name}」！`, 'success')
-                  }}
                   disabled={stars < (t.cost || 10)}
-                  className="w-full py-1.5 rounded-lg text-xs font-bold transition-all disabled:opacity-40"
-                  style={{ background: '#d4a574', color: '#0a0a0a' }}>
+                  className="btn btn-primary btn-sm w-full">
                   兑换
                 </button>
               </div>

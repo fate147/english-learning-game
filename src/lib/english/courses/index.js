@@ -31,7 +31,7 @@ const DIALOGUE_MAP = {
 }
 
 // 每个单元 8 轮对话，单元编号：1-6 上册，7-12 下册
-export function getDialoguesForUnits(unitIds) {
+function getDialoguesForUnits(unitIds) {
   const all = []
   unitIds.forEach((uid) => {
     const unit = DIALOGUE_MAP[uid]

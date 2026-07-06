@@ -90,5 +90,93 @@
       { "text": "150 - 26 = 124个", "correct": false },
       { "text": "26 × 8 = 208，208 + 150 = 358个", "correct": false }
     ]
+  },
+  {
+    "id": "m_g3s1u6_09",
+    "stage": "concrete",
+    "visual": "📚 一层书架有 8 本书\n📚📚📚📚📚📚📚📚📚📚📚📚\n共3层",
+    "question": "书架上一共有多少本书？",
+    "options": [
+      { "text": "24本", "correct": true },
+      { "text": "11本", "correct": false },
+      { "text": "8本", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u6_10",
+    "stage": "concrete",
+    "visual": "一个书包 65 元\n买 4 个书包",
+    "question": "买4个书包需要多少钱？",
+    "options": [
+      { "text": "260元", "correct": true },
+      { "text": "69元", "correct": false },
+      { "text": "16元", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u6_11",
+    "stage": "pictorial",
+    "visual": "操场有 5 排树\n每排种 9 棵树",
+    "question": "操场一共种了多少棵树？",
+    "options": [
+      { "text": "45棵", "correct": true },
+      { "text": "14棵", "correct": false },
+      { "text": "5棵", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u6_12",
+    "stage": "pictorial",
+    "visual": "一辆大巴车能坐 48 人\n有 3 辆大巴车",
+    "question": "3辆大巴车一共能坐多少人？",
+    "options": [
+      { "text": "144人", "correct": true },
+      { "text": "51人", "correct": false },
+      { "text": "16人", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u6_13",
+    "stage": "abstract",
+    "question": "一个足球 85 元，买 6 个足球需要多少钱？",
+    "questionLabel": "这道题用乘法还是加法？",
+    "options": [
+      { "text": "85 × 6 = 510元", "correct": true },
+      { "text": "85 + 6 = 91元", "correct": false },
+      { "text": "85 - 6 = 79元", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u6_14",
+    "stage": "abstract",
+    "question": "小明每天看 25 页书，看了 4 天。这本书一共有 120 页，还剩多少页没看？",
+    "questionLabel": "这道题需要先算什么？",
+    "options": [
+      { "text": "先算看了多少页：25×4=100页，再算剩多少：120-100=20页", "correct": true },
+      { "text": "25 × 4 = 100页", "correct": false },
+      { "text": "120 + 25 = 145页", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u6_15",
+    "stage": "synthesis",
+    "question": "学校买来 5 箱粉笔，每箱 24 盒。用了 68 盒后，还剩多少盒？",
+    "questionLabel": "这道题有几步？需要仔细读题。",
+    "options": [
+      { "text": "5×24=120盒，120-68=52盒", "correct": true },
+      { "text": "5×24=120盒", "correct": false },
+      { "text": "24-5=19盒", "correct": false }
+    ]
+  },
+  {
+    "id": "m_g3s1u6_16",
+    "stage": "synthesis",
+    "question": "超市有 4 箱苹果，每箱 35 个。卖出了 80 个后，还剩多少个？平均每天卖出 20 个，几天能卖完剩下的？",
+    "questionLabel": "这道题需要几步？",
+    "options": [
+      { "text": "4×35=140个，140-80=60个，60÷20=3天", "correct": true },
+      { "text": "4×35=140个", "correct": false },
+      { "text": "35-5=30个", "correct": false }
+    ]
   }
 ]
