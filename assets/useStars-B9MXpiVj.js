@@ -1,0 +1,1 @@
+import{H as e,V as t,h as n}from"./index-D7qQhiFr.js";var r=e(t(),1);function i(){let e=(0,r.useContext)(n);if(!e)throw Error(`useStars 必须在 StarProvider 内使用`);return e}export{i as t};
