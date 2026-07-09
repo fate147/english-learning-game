@@ -1,1 +1,0 @@
-import{H as e,V as t,g as n}from"./index-BG5VYpm9.js";var r=e(t(),1);function i(){let e=(0,r.useContext)(n);if(!e)throw Error(`useChild 必须在 ChildProvider 内使用`);return e}export{i as t};
